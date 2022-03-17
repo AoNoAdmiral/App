@@ -55,22 +55,49 @@ class Client:
 
     def createBox(self):
         self.counter =self.counter+1
-        x = self.round_rectangle(self.canvas2,100,0, 700, 300,fill="white")
-        self.canvas2.create_rectangle(110,10, 690, 150,fill="white")
+        self.round_rectangle(self.canvas2,100,0, 700, 300,fill="white")
+        self.gh = Image.open("image/Greenhouse1.png") 
+        self.gh = ImageTk.PhotoImage(self.gh.resize((690-110,170), Image.ANTIALIAS))
+        self.canvas2.create_image(110,10, anchor=NW, image=self.gh)    
+        self.canvas2.imageG = self.gh 
+        
+        self.gh1 = Image.open("image/Sun.png") 
+        self.gh1 = ImageTk.PhotoImage(self.gh1.resize((50,50), Image.ANTIALIAS))
+        self.canvas2.create_image(195,200, anchor=NW, image=self.gh1)    
+        self.canvas2.imageG2 = self.gh1
+        
+        self.gh2 = Image.open("image/Temp.jpg") 
+        self.gh2 = ImageTk.PhotoImage(self.gh2.resize((50,50), Image.ANTIALIAS))
+        self.canvas2.create_image(340,200, anchor=NW, image=self.gh2)    
+        self.canvas2.imageG3 = self.gh2
+        
+        self.gh3 = Image.open("image/Drop.jpg") 
+        self.gh3 = ImageTk.PhotoImage(self.gh3.resize((50,50), Image.ANTIALIAS))
+        self.canvas2.create_image(475,200, anchor=NW, image=self.gh3)    
+        self.canvas2.imageG4 = self.gh3
+        
+        self.gh4 = Image.open("image/Wind.png") 
+        self.gh4 = ImageTk.PhotoImage(self.gh4.resize((50,50), Image.ANTIALIAS))
+        self.canvas2.create_image(600,200, anchor=NW, image=self.gh4)    
+        self.canvas2.imageG4 = self.gh4
+        
         self.canvas2.create_text(195,250, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvas2.create_text(340,250, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvas2.create_text(475,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvas2.create_text(600,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
-        x = self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
-        self.canvas2.create_rectangle(110,10+400, 690, 150+400,fill="white")
-        self.canvas2.create_text(195,250+400, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvas2.create_text(340,250+400, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvas2.create_text(475,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvas2.create_text(600,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.round_rectangle(self.canvas2,110,10, 300, 50,fill="green")
+        self.canvas2.create_text(120,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        # x = self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
+        # self.canvas2.create_rectangle(110,10+400, 690, 150+400,fill="white")
+        # self.canvas2.create_text(195,250+400, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        # self.canvas2.create_text(340,250+400, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        # self.canvas2.create_text(475,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        # self.canvas2.create_text(600,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         # self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
         # self.canvas2.create_rectangle(110,410, 690, 550,fill="white")
-        return x
+        # return x
     
     def _on_mousewheel(self, event):
         self.canvas2.yview_scroll(int(-1*(event.delta/120)), "units")
@@ -85,8 +112,11 @@ class Client:
         def switchBack():
             self.switch(1)
         # Page 1
-        self.label1 = Label(self.page1, height=8, width=25,bg='#00BFFF')
-        self.label1.place(x=50, y=40)
+        
+        self.weather = Image.open("image/Sunny.png") 
+        self.weather = ImageTk.PhotoImage(self.weather.resize((240,200), Image.ANTIALIAS))
+        self.canvas.create_image(10,7, anchor=NW, image=self.weather)    
+        self.canvas.image = self.weather   
         
         self.frame1 = Frame(self.page1,bg="black",width=1800,height=300)
         self.frame1.place(x=0,y=440)
@@ -124,16 +154,19 @@ class Client:
         # Page 2
         self.canvasP2= Canvas(self.page2, bg='black', highlightthickness=0)
         self.canvasP2.pack(fill='both', expand=True) 
-        im = Image.open("Image.png")
-        self.img = Image.open("Image.png") 
-        self.img = ImageTk.PhotoImage(self.img.resize((1200,400), Image.ANTIALIAS))
-        self.canvasP2.create_image(180,100, anchor=NW, image=self.img)    
+        self.img = Image.open("image/Greenhouse1.png") 
+        self.img = ImageTk.PhotoImage(self.img.resize((1200,450), Image.ANTIALIAS))
+        self.canvasP2.create_image(180,10, anchor=NW, image=self.img)    
         self.canvasP2.image = self.img   
         self.round_rectangle(self.canvasP2,240,500, 440, 700,fill="white")
         self.round_rectangle(self.canvasP2,540,500, 740, 700,fill="white")
         self.round_rectangle(self.canvasP2,840,500, 1040, 700,fill="white")
         self.round_rectangle(self.canvasP2,1140,500, 1340, 700,fill="white")
-        Button(self.canvasP2,width = 10, height = 6,command = switchBack).place(x=25,y=25)
+        self.back = Image.open("image/Back.png") 
+        self.back = ImageTk.PhotoImage(self.back.resize((100,100), Image.ANTIALIAS)) 
+        self.master.bbk = self.back 
+        
+        Button(self.canvasP2,width = 100, height = 100,command = switchBack,image = self.back).place(x=25,y=25)
         
         self.canvasP2.create_text(268,600, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(568,600, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
@@ -150,21 +183,30 @@ class Client:
         
         
         # Bottom bar
-
-        self.home = Button(self.master, width=10, padx=3, height = 4,
-                            pady=3,  bg='black', fg='black', activeforeground="black",
-                            activebackground="black", justify="right", relief="groove")
-        self.home.place(x=500, y=780)
-
-        self.option = Button(self.master, width=10, height = 4,
-                            padx=3, pady=3, bg='black', fg='black', activeforeground="black",
-                            activebackground="black", justify="right", relief="groove")
-        self.option.place(x=700, y=780)
         
-        self.user = Button(self.master, width=10, padx=3, height = 4,
-                            pady=3,  bg='black', fg='black', activeforeground="black",
-                            activebackground="black", justify="right", relief="groove")
-        self.user.place(x=900, y=780)
+        self.Button1 = Image.open("image/Home.png") 
+        self.Button1 = ImageTk.PhotoImage(self.Button1.resize((80,100), Image.ANTIALIAS)) 
+        self.master.image = self.Button1 
+        
+        self.Button2 = Image.open("image/Setting.png") 
+        self.Button2 = ImageTk.PhotoImage(self.Button2.resize((80,100), Image.ANTIALIAS)) 
+        self.master.image1 = self.Button2    
+        
+        self.Button3 = Image.open("image/User.png") 
+        self.Button3 = ImageTk.PhotoImage(self.Button3.resize((80,100), Image.ANTIALIAS)) 
+        self.master.image2 = self.Button3    
+
+        self.home = Button(self.master, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black")
+        self.home.place(x=500, y=750)
+
+        self.option = Button(self.master, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black")
+        self.option.place(x=700, y=750)
+        
+        self.user = Button(self.master, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black")
+        self.user.place(x=900, y=750)
 
 
 
