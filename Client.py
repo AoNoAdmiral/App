@@ -5,7 +5,11 @@ import tkinter.font as font
 from turtle import color
 from PIL import Image, ImageTk
 from tkinter import PhotoImage
-
+import threading
+import paho.mqtt.client as mqtt
+import time
+import json
+import geocoder
 
 class Client:
 
@@ -15,12 +19,13 @@ class Client:
         self.counter = 0
         self.master.protocol("WM_DELETE_WINDOW", self.handler)
         self.master.attributes('-fullscreen', True)
-        self.page1 = Frame(master,bg='black',width = 3000,height = 1000)
-        self.page2 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.page1 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
+        self.page2 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.switch(1)
         self.canvas = Canvas(self.page1, bg='black', highlightthickness=0)
         self.canvas.pack(fill='both', expand=True)
         self.initOption()
+        threading.Thread(target=self.update).start()
         
     def switch(self,a):
         for frame in (self.page1, self.page2):
@@ -29,6 +34,35 @@ class Client:
             self.page2.pack_forget()
         else: 
             self.page1.pack_forget()
+            
+    def update(self):
+        THINGSBOARD_HOST = "demo.thingsboard.io"
+        ACCESS_TOKEN = 'LyoSMl8n9Yoki1fBpJoj'   
+        request = {"method": "gettelemetry", "params": {}}
+
+# MQTT on_connect callback function
+        def on_connect(client, userdata, flags, rc):
+            print("rc code:", rc)
+            client.subscribe('v1/devices/me/rpc/response/+')
+
+# MQTT on_message caallback function
+        def on_message(client, userdata, msg):
+            print('Topic: ' + msg.topic + '\nMessage: ' + msg.payload.decode("utf-8"))
+
+# start the client instance
+        client = mqtt.Client()
+
+# registering the callbacks
+        client.loop_start()
+        client.on_connect = on_connect
+        client.on_message = on_message
+
+        client.username_pw_set(ACCESS_TOKEN)
+        client.connect(THINGSBOARD_HOST, 1883,60)
+        while True:
+            client.publish('v1/devices/me/rpc/request/1',json.dumps(request), 1)
+            time.sleep(5)
+            
 
     def round_rectangle(self,canvas,x1, y1, x2, y2, radius=25, **kwargs):      
         points = [x1+radius, y1,
@@ -118,9 +152,9 @@ class Client:
         self.canvas.create_image(10,7, anchor=NW, image=self.weather)    
         self.canvas.image = self.weather   
         
-        self.frame1 = Frame(self.page1,bg="black",width=1800,height=300)
+        self.frame1 = Frame(self.page1,bg="#2B2B2B",width=1800,height=300)
         self.frame1.place(x=0,y=440)
-        self.canvas2 = Canvas(self.frame1,bg="black",width=1800,height=300,highlightthickness=0)
+        self.canvas2 = Canvas(self.frame1,bg="#2B2B2B",width=1800,height=300,highlightthickness=0)
         self.scroll = ttk.Scrollbar(self.frame1,orient='horizontal',command=self.canvas2.yview)
         self.scroll.pack(side = RIGHT, fill = Y)
         self.canvas2.configure(yscrollcommand=self.scroll.set)
@@ -128,14 +162,14 @@ class Client:
         self.canvas2.bind("<Key>", key)
         self.canvas2.bind("<Button-1>", callback)
         self.canvas2.pack(fill='both', expand=True)
-        self.frame2 = Frame(self.frame1,bg="black",width=1800,height=300)
-        self.canvas3 = Canvas(self.frame2,bg="black",highlightthickness=0)
+        self.frame2 = Frame(self.frame1,bg="#2B2B2B",width=1800,height=300)
+        self.canvas3 = Canvas(self.frame2,bg="#2B2B2B",highlightthickness=0)
         self.canvas2.bind_all("<MouseWheel>", self._on_mousewheel)
         self.canvas3.pack(fill='both', expand=True)
         
         self.canvas2.create_window((0,0),window=self.frame2,anchor="nw")
         for i in range(0,5):
-            Button(self.canvas3,text=i,width = 1,bg='black',highlightthickness = 0,borderwidth = 0).pack()
+            Button(self.canvas3,text=i,width = 1,bg='#2B2B2B',highlightthickness = 0,borderwidth = 0).pack()
         self.createBox()
         
         self.canvas.create_text(150,400, text="GLASSHOUSE:", fill="white", font=('Helvetica 20 bold'))
