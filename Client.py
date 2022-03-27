@@ -123,14 +123,14 @@ class Client:
         self.round_rectangle(self.canvas2,110,10, 300, 50,fill="green")
         self.canvas2.create_text(120,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         
-        # x = self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
-        # self.canvas2.create_rectangle(110,10+400, 690, 150+400,fill="white")
-        # self.canvas2.create_text(195,250+400, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.canvas2.create_text(340,250+400, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.canvas2.create_text(475,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.canvas2.create_text(600,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
-        # self.canvas2.create_rectangle(110,410, 690, 550,fill="white")
+        self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
+        self.canvas2.create_rectangle(110,10+400, 690, 150+400,fill="white")
+        self.canvas2.create_text(195,250+400, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvas2.create_text(340,250+400, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvas2.create_text(475,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvas2.create_text(600,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
+        self.canvas2.create_rectangle(110,410, 690, 550,fill="white")
         # return x
     
     def _on_mousewheel(self, event):
