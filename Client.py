@@ -18,7 +18,6 @@ class Client:
         self.master = master
         self.counter = 0
         self.trI = 0
-        self.master.protocol("WM_DELETE_WINDOW", self.handler)
         self.master.attributes('-fullscreen', True)
         self.page1 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.page2 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
@@ -159,6 +158,9 @@ class Client:
             self.pw = inputPW.get(1.0, "end-1c")
             self.trI = 1
             print(self.username)
+        def exit():
+            self.master.destroy()
+
         # Page 1
         
         self.weather = Image.open("image/Sunny.png") 
@@ -225,20 +227,32 @@ class Client:
         self.canvasP2.create_text(568,650, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(868,650, text="60%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,650, text="", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+  
+        self.canvasP2.create_image(268,520, anchor=NW, image=self.gh1)    
+        self.canvasP2.imageG2 = self.gh1
+
+        self.canvasP2.create_image(568,520, anchor=NW, image=self.gh2)    
+        self.canvasP2.imageG3 = self.gh2
+
+        self.canvasP2.create_image(868,520, anchor=NW, image=self.gh3)    
+        self.canvasP2.imageG4 = self.gh3
+
+        self.canvasP2.create_image(1168,520, anchor=NW, image=self.gh4)    
+        self.canvasP2.imageG4 = self.gh4
         
         # Login
         self.canvasP3= Canvas(self.page3, bg='black', highlightthickness=0)
         self.canvasP3.pack(fill='both', expand=True) 
         self.canvasP3.create_text(450,400, text="Username", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP3.create_text(450,500, text="Password", fill="white", font=('Helvetica 20 bold'),anchor=NW)
-        self.login = Image.open("image/Home.png") 
-        self.login = ImageTk.PhotoImage(self.login.resize((80,100), Image.ANTIALIAS)) 
+        self.login = Image.open("image/276156773_395766165713386_5796930991960104386_n.png") 
+        self.login = ImageTk.PhotoImage(self.login.resize((200,100), Image.ANTIALIAS)) 
         self.master.imageL = self.login 
         inputtxt = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
         inputtxt.place(x=600,y=400)
         inputPW = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
         inputPW.place(x=600,y=500)
-        self.login = Button(self.page3, width=100, height = 100,image =self.login,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+        self.login = Button(self.page3, width=200, height = 100,image =self.login,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",text="LOGIN",command=connect)
         self.login.place(x=650, y=600)
         
@@ -256,6 +270,10 @@ class Client:
         self.Button3 = Image.open("image/User.png") 
         self.Button3 = ImageTk.PhotoImage(self.Button3.resize((80,100), Image.ANTIALIAS)) 
         self.master.image2 = self.Button3    
+        
+        self.buttq = Image.open("image/275769692_2055769447935399_2377188200629673018_n.jpg") 
+        self.buttq = ImageTk.PhotoImage(self.buttq.resize((80,100), Image.ANTIALIAS)) 
+        self.master.image2 = self.buttq    
 
         self.home = Button(self.page2, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
@@ -280,13 +298,9 @@ class Client:
         self.user = Button(self.page1, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
         self.user.place(x=900, y=750)
+        
+        self.quit = Button(self.master, width=100, height = 100,image =self.buttq,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=exit)
+        self.quit.place(x=1400, y=50)
 
 
-
-    def exitClient(self):
-        pass
-
-    def handler(self):
-        """Handler on explicitly closing the GUI window."""
-        if tkMessageBox.askokcancel("Quit?", "Are you sure you want to quit?"):
-            self.exitClient()
