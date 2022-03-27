@@ -80,8 +80,7 @@ class Client:
         while True:
             client.publish('v1/devices/me/rpc/request/1',json.dumps(request), 1)
             time.sleep(5)
-            
-
+      
     def round_rectangle(self,canvas,x1, y1, x2, y2, radius=25, **kwargs):      
         points = [x1+radius, y1,
               x1+radius, y1,
