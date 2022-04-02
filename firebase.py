@@ -7,7 +7,6 @@ config = {
   "authDomain": "chill-2ddd1.firebaseapp.com",
   "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
   "projectId": "chill-2ddd1",
-  "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com/",
   "storageBucket": "chill-2ddd1.appspot.com",
   "messagingSenderId": "62414238957",
   "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
