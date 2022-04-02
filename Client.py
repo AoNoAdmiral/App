@@ -17,23 +17,29 @@ class Client:
         self.myFont = font.Font(family='Courier', weight='bold')
         self.master = master
         self.counter = 0
-        self.master.protocol("WM_DELETE_WINDOW", self.handler)
+        self.trI = 0
         self.master.attributes('-fullscreen', True)
         self.page1 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.page2 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
-        self.switch(1)
+        self.page3 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
+        self.switch(3)
         self.canvas = Canvas(self.page1, bg='black', highlightthickness=0)
         self.canvas.pack(fill='both', expand=True)
         self.initOption()
         threading.Thread(target=self.update).start()
         
     def switch(self,a):
-        for frame in (self.page1, self.page2):
+        for frame in (self.page1, self.page2,self.page3):
             frame.pack(fill='both', expand=True)
         if a == 1:
             self.page2.pack_forget()
-        else: 
+            self.page3.pack_forget()
+        elif a==2: 
             self.page1.pack_forget()
+            self.page3.pack_forget()
+        else:
+            self.page1.pack_forget()
+            self.page2.pack_forget()
             
     def update(self):
         THINGSBOARD_HOST = "demo.thingsboard.io"
@@ -43,16 +49,27 @@ class Client:
 # MQTT on_connect callback function
         def on_connect(client, userdata, flags, rc):
             print("rc code:", rc)
+            self.switch(1)
             client.subscribe('v1/devices/me/rpc/response/+')
+            
+        def check(a):
+            if a == 1:
+                return "on"
+            return "off" 
 
 # MQTT on_message caallback function
         def on_message(client, userdata, msg):
-            print('Topic: ' + msg.topic + '\nMessage: ' + msg.payload.decode("utf-8"))
-
-# start the client instance
+            value = json.loads(msg.payload.decode("utf-8"))
+            print(value)
+            self.canvas2.itemconfig(self.box["temp"], text=str(json.loads(value["temperature"])["value"])+"oC")
+            self.canvas2.itemconfig(self.box["humid"], text=str(json.loads(value["humidity"])["value"])+"%")
+            self.canvas2.itemconfig(self.box["pump"], text= check(json.loads(value["PUMP"])["value"]))
+            self.canvas2.itemconfig(self.box["led"], text=  check(json.loads(value["LED"])["value"]))
+            print(json.loads(value["temperature"])["value"])
+        while(self.trI==0):
+            pass
         client = mqtt.Client()
 
-# registering the callbacks
         client.loop_start()
         client.on_connect = on_connect
         client.on_message = on_message
@@ -62,8 +79,7 @@ class Client:
         while True:
             client.publish('v1/devices/me/rpc/request/1',json.dumps(request), 1)
             time.sleep(5)
-            
-
+      
     def round_rectangle(self,canvas,x1, y1, x2, y2, radius=25, **kwargs):      
         points = [x1+radius, y1,
               x1+radius, y1,
@@ -88,6 +104,7 @@ class Client:
         return canvas.create_polygon(points, **kwargs, smooth=True)
 
     def createBox(self):
+        x = {}
         self.counter =self.counter+1
         self.round_rectangle(self.canvas2,100,0, 700, 300,fill="white")
         self.gh = Image.open("image/Greenhouse1.png") 
@@ -115,23 +132,14 @@ class Client:
         self.canvas2.create_image(600,200, anchor=NW, image=self.gh4)    
         self.canvas2.imageG4 = self.gh4
         
-        self.canvas2.create_text(195,250, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvas2.create_text(340,250, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvas2.create_text(475,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvas2.create_text(600,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["humid"]=self.canvas2.create_text(195,250, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["temp"]=self.canvas2.create_text(340,250, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["pump"]=self.canvas2.create_text(475,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["led"]=self.canvas2.create_text(600,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
         self.round_rectangle(self.canvas2,110,10, 300, 50,fill="green")
         self.canvas2.create_text(120,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
-        
-        # x = self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
-        # self.canvas2.create_rectangle(110,10+400, 690, 150+400,fill="white")
-        # self.canvas2.create_text(195,250+400, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.canvas2.create_text(340,250+400, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.canvas2.create_text(475,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.canvas2.create_text(600,250+400, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        # self.round_rectangle(self.canvas2,100,400, 700, 700,fill="white")
-        # self.canvas2.create_rectangle(110,410, 690, 550,fill="white")
-        # return x
+        return x
     
     def _on_mousewheel(self, event):
         self.canvas2.yview_scroll(int(-1*(event.delta/120)), "units")
@@ -145,6 +153,14 @@ class Client:
                 self.switch(2)
         def switchBack():
             self.switch(1)
+        def connect():
+            self.username = inputtxt.get(1.0, "end-1c")
+            self.pw = inputPW.get(1.0, "end-1c")
+            self.trI = 1
+            print(self.username)
+        def exit():
+            self.master.destroy()
+
         # Page 1
         
         self.weather = Image.open("image/Sunny.png") 
@@ -170,7 +186,7 @@ class Client:
         self.canvas2.create_window((0,0),window=self.frame2,anchor="nw")
         for i in range(0,5):
             Button(self.canvas3,text=i,width = 1,bg='#2B2B2B',highlightthickness = 0,borderwidth = 0).pack()
-        self.createBox()
+        self.box = self.createBox()
         
         self.canvas.create_text(150,400, text="GLASSHOUSE:", fill="white", font=('Helvetica 20 bold'))
 
@@ -211,9 +227,34 @@ class Client:
         self.canvasP2.create_text(568,650, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(868,650, text="60%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,650, text="", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+  
+        self.canvasP2.create_image(268,520, anchor=NW, image=self.gh1)    
+        self.canvasP2.imageG2 = self.gh1
+
+        self.canvasP2.create_image(568,520, anchor=NW, image=self.gh2)    
+        self.canvasP2.imageG3 = self.gh2
+
+        self.canvasP2.create_image(868,520, anchor=NW, image=self.gh3)    
+        self.canvasP2.imageG4 = self.gh3
+
+        self.canvasP2.create_image(1168,520, anchor=NW, image=self.gh4)    
+        self.canvasP2.imageG4 = self.gh4
         
-        # im = im.resize((1000,300))
-        # self.renderimage(self.canvasP2,im.load(),im.size[0],im.size[1])
+        # Login
+        self.canvasP3= Canvas(self.page3, bg='black', highlightthickness=0)
+        self.canvasP3.pack(fill='both', expand=True) 
+        self.canvasP3.create_text(450,400, text="Username", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP3.create_text(450,500, text="Password", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.login = Image.open("image/276156773_395766165713386_5796930991960104386_n.png") 
+        self.login = ImageTk.PhotoImage(self.login.resize((200,100), Image.ANTIALIAS)) 
+        self.master.imageL = self.login 
+        inputtxt = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputtxt.place(x=600,y=400)
+        inputPW = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputPW.place(x=600,y=500)
+        self.login = Button(self.page3, width=200, height = 100,image =self.login,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",text="LOGIN",command=connect)
+        self.login.place(x=650, y=600)
         
         
         # Bottom bar
@@ -229,25 +270,37 @@ class Client:
         self.Button3 = Image.open("image/User.png") 
         self.Button3 = ImageTk.PhotoImage(self.Button3.resize((80,100), Image.ANTIALIAS)) 
         self.master.image2 = self.Button3    
+        
+        self.buttq = Image.open("image/275769692_2055769447935399_2377188200629673018_n.jpg") 
+        self.buttq = ImageTk.PhotoImage(self.buttq.resize((80,100), Image.ANTIALIAS)) 
+        self.master.image2 = self.buttq    
 
-        self.home = Button(self.master, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+        self.home = Button(self.page2, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
         self.home.place(x=500, y=750)
 
-        self.option = Button(self.master, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+        self.option = Button(self.page2, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
         self.option.place(x=700, y=750)
         
-        self.user = Button(self.master, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+        self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
         self.user.place(x=900, y=750)
+        
+        self.home = Button(self.page1, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black")
+        self.home.place(x=500, y=750)
+
+        self.option = Button(self.page1, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black")
+        self.option.place(x=700, y=750)
+        
+        self.user = Button(self.page1, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black")
+        self.user.place(x=900, y=750)
+        
+        self.quit = Button(self.master, width=100, height = 100,image =self.buttq,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=exit)
+        self.quit.place(x=1400, y=50)
 
 
-
-    def exitClient(self):
-        pass
-
-    def handler(self):
-        """Handler on explicitly closing the GUI window."""
-        if tkMessageBox.askokcancel("Quit?", "Are you sure you want to quit?"):
-            self.exitClient()
