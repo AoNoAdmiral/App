@@ -111,8 +111,8 @@ class Client:
         self.gh = ImageTk.PhotoImage(self.gh.resize((690-110,170), Image.ANTIALIAS))
         self.canvas2.create_image(110,10, anchor=NW, image=self.gh)    
         self.canvas2.imageG = self.gh 
-        
-        self.gh1 = Image.open("image/Sun.png") 
+        self.gh1 = Image.open("image/Drop.jpg")       
+        self.gh3 = Image.open("image/Sun.png") 
         self.gh1 = ImageTk.PhotoImage(self.gh1.resize((50,50), Image.ANTIALIAS))
         self.canvas2.create_image(195,200, anchor=NW, image=self.gh1)    
         self.canvas2.imageG2 = self.gh1
@@ -122,7 +122,6 @@ class Client:
         self.canvas2.create_image(340,200, anchor=NW, image=self.gh2)    
         self.canvas2.imageG3 = self.gh2
         
-        self.gh3 = Image.open("image/Drop.jpg") 
         self.gh3 = ImageTk.PhotoImage(self.gh3.resize((50,50), Image.ANTIALIAS))
         self.canvas2.create_image(475,200, anchor=NW, image=self.gh3)    
         self.canvas2.imageG4 = self.gh3
@@ -195,10 +194,10 @@ class Client:
     
         self.round_rectangle(self.canvas,200, 190, 800, 350,fill="white")
         self.label31 = self.canvas.create_text(225,230, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.label32 = self.canvas.create_text(425,230, text="SUNNY", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.label32 = self.canvas.create_text(410,230, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.label33 = self.canvas.create_text(605,230, text="Precipitation", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.humidity = self.canvas.create_text(245,300, text="54%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.temp = self.canvas.create_text(440,300, text="11oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.humidity = self.canvas.create_text(245,300, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.temp = self.canvas.create_text(440,300, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.prep = self.canvas.create_text(625,300, text="0.5 cm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
 
         # Page 2
@@ -218,15 +217,15 @@ class Client:
         
         Button(self.canvasP2,width = 100, height = 100,command = switchBack,image = self.back).place(x=25,y=25)
         
-        self.canvasP2.create_text(268,600, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(268,600, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(568,600, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(868,600, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(868,600, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,600, text="CO2", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
-        self.canvasP2.create_text(268,650, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(268,650, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(568,650, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(868,650, text="60%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(1168,650, text="", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(868,650, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(1168,650, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
   
         self.canvasP2.create_image(268,520, anchor=NW, image=self.gh1)    
         self.canvasP2.imageG2 = self.gh1
