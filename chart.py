@@ -1,32 +1,111 @@
-import numpy as np # for math ops
-import matplotlib.pyplot as plt # making figures of graphs
-import pandas as pd # handle table like data, excel
-import sys
-import datetime # for handling date and time in python
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
 
 
-## Read price dataset from a CSV file.
-price = pd.read_csv("../dataset/pricedata_reshaped.csv") # DataFrame is returned
-price_apple = price["AAPL"] # get Apple's price
-price_nvidia = price["NVDA"] # get Nvidia's price
-
-## Convert strings like "2015-10-01" to Python datetime objects. We can't
-## feed strings directly to Matplotlib.
-date_strings = price["date"].to_list() # ["2015-10-01", "2015-10-02", ...]
-date = []
-# convert strings to datetime objects
-for i in range(len(date_strings)): # i = 0, ...., 1413
-    # append to list
-    date += [datetime.datetime.strptime(date_strings[i], "%Y-%m-%d")]
+import pandas as pd
+from pandas_datareader import data as web
+import plotly.graph_objects as go
 
 
-## Make a fugre and graph
-fig = plt.figure() # make a canvas
-plt.plot(date, price_apple, label="Apple (AAPL)") # draw line chart
-plt.plot(date, price_nvidia, label="Nvidia (NVDA)") # add one more line
-plt.grid() # add grid line (optional)
-plt.xlabel("date") # add label to the x-axis (optional)
-plt.ylabel("price") # add label to the y-axis (optional)
-plt.legend(loc="best") # add label of the lines (optional)
-plt.suptitle("Apple's price - 5Y") # add title of figure (optional)
-fig.savefig("prices.png") # save as image
+# In[29]:
+
+
+stock = 'MSFT'
+ 
+df = web.DataReader(stock, data_source='yahoo', start='01-01-2019')
+
+df.to_csv('test.csv')
+
+
+# In[35]:
+
+
+trace1 = {
+    'x': df.index,
+    'open': df.Open,
+    'close': df.Close,
+    'high': df.High,
+    'low': df.Low,
+    'type': 'candlestick',
+    'name': 'MSFT',
+    'showlegend': False
+}
+
+
+# In[24]:
+
+
+# Calculate and define moving average of 30 periods
+avg_30 = df.Close.rolling(window=30, min_periods=1).mean()
+
+# Calculate and define moving average of 50 periods
+avg_50 = df.Close.rolling(window=50, min_periods=1).mean()
+
+
+# In[25]:
+
+
+trace2 = {
+    'x': df.index,
+    'y': avg_30,
+    'type': 'scatter',
+    'mode': 'lines',
+    'line': {
+        'width': 1,
+        'color': 'blue'
+            },
+    'name': 'Moving Average of 30 periods'
+}
+
+
+# In[34]:
+
+
+
+
+
+# In[26]:
+
+
+trace3 = {
+    'x': df.index,
+    'y': avg_50,
+    'type': 'scatter',
+    'mode': 'lines',
+    'line': {
+        'width': 1,
+        'color': 'red'
+    },
+    'name': 'Moving Average of 50 periods'
+}
+
+
+# In[37]:
+
+
+data = [trace1, trace2, trace3]
+# Config graph layout
+layout = go.Layout({
+    'title': {
+        'text': 'Microsoft(MSFT) Moving Averages',
+        'font': {
+            'size': 15
+        }
+    }
+})
+
+
+# In[38]:
+
+
+fig = go.Figure(data=data, layout=layout)
+fig.write_html("Microsoft(MSFT) Moving Averages.html")
+fig.show()
+
+
+# In[ ]:
+
+
+
