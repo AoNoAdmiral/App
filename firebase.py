@@ -22,4 +22,8 @@ data = {"Age":21, "Name": "Kha", "Staff": True}
 #----------------------------------------
 #create data
 
-db.push(data)
+#db.push(data) 
+db.child("User").child("First").set(data)
+
+
+
