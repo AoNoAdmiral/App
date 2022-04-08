@@ -17,9 +17,14 @@ firebase = pyrebase.initialize_app(config)
 
 db = firebase.database()
 
-data = {"Age":21, "Name": "Kha", "Staff": True}
+data = {"Heta":67, "Name": "Nhat", "Staff": True}
 
 #----------------------------------------
 #create data
 
-db.push(data)
+#db.push(data)
+# db.child("User").child("second").set(data)
+
+DuLieu = db.child("User").get()
+print(DuLieu.val())
+

@@ -24,11 +24,15 @@ client.connect(THINGSBOARD_HOST, 1883,60)
 
 
 ser = serial.Serial('COM4', 19200)
-while  True:
-    while ser.in_waiting:
-        data_in = ser.readline()
-        print(data_in)
-        client.publish('v1/devices/me/telemetry', json.dumps(data_in), 1)
+# while  True:
+#     while ser.in_waiting:
+#         data_in = ser.readline()
+#         print(data_in)
+#         client.publish('v1/devices/me/telemetry', json.dumps(data_in), 1)
+
+while True:
+    client.publish('v1/devices/me/rpc/request/1',json.dumps(request), 1)
+    time.sleep(5)
         
 
 
