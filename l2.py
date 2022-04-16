@@ -1,49 +1,24 @@
-print("Xin chào ThingsBoard")
-import paho.mqtt.client as mqttclient
+import sys
 import time
-import json
-import geocoder
+import random
+from Adafruit_IO import MQTTClient
 import serial.tools.list_ports
 import serial
-
-BROKER_ADDRESS = "demo.thingsboard.io"
-PORT = 1883
-THINGS_BOARD_ACCESS_TOKEN = "LyoSMl8n9Yoki1fBpJoj"
-
-
-def subscribed(client, userdata, mid, granted_qos):
-    print("Subscribed...")
+import json
+AIO_FEED_ID = "Watering"
+AIO_USERNAME = "Airforce"
+AIO_KEY = "aio_Qmkq90BKruJ2NFxaiehyybaxirPu"
 
 def processData(data):
     data = data.replace("!", "")
     data = data.replace("#", "")
     splitData = data.split(":")
-    print(splitData)
-
-def recv_message(client, userdata, message):
-    print("Received: ", message.payload.decode("utf-8"))
-    temp_data = {'value': True}
-    try:
-        jsonobj = json.loads(message.payload)
-        if jsonobj['method'] == "setValue":
-            temp_data['value'] = jsonobj['params']
-            client.publish('v1/devices/me/attributes', json.dumps(temp_data), 1)
-        if jsonobj['method'] == "setPUMP":
-            temp_data['value'] = jsonobj['params']
-            client.publish('v1/devices/me/attributes', json.dumps(temp_data), 1)
-    except:
-        pass
-    
-    if len(bbc_port) > 0:
-        ser.write((str(message) + "#").encode())
-
-
-def connected(client, usedata, flags, rc):
-    if rc == 0:
-        print("Thingsboard connected successfully!!")
-        client.subscribe("v1/devices/me/rpc/request/+")
-    else:
-        print("Connection is failed")
+    if splitData[0]==1:
+        client.publish("Heat",splitData[1])
+    if splitData[0]==2:
+        client.publish("Humd",splitData[1])
+    if splitData[0]==3: 
+        client.publish("Earth",splitData[1])    
 
 def readSerial():
     bytesToRead = ser.inWaiting()
@@ -59,28 +34,36 @@ def readSerial():
             else:
                 mess = mess[end+1:]
 
-client = mqttclient.Client("GATE")
-client.username_pw_set(THINGS_BOARD_ACCESS_TOKEN)
+def connected ( client ) :
+    print ("Ket noi thanh cong ...")
+    client . subscribe ( AIO_FEED_ID )
 
-client.on_connect = connected
-client.connect(BROKER_ADDRESS, 1883)
-client.loop_start()
+def subscribe ( client , userdata , mid , granted_qos ):
+    print (" Subcribe thanh cong ...")
 
-client.on_subscribe = subscribed
-client.on_message = recv_message
+def disconnected ( client ) :
+    print (" Ngat ket noi ...")
+    sys . exit (1)
 
-temp = 30
-humi = 50
-light_intesity = 100
-counter = 0
+def message ( client , feed_id , payload ):
+    print (" Nhan du lieu : " + payload )
+    if len(bbc_port) > 0:
+        ser.write((str(message) + "#").encode())
+
+client = MQTTClient ( AIO_USERNAME , AIO_KEY )
+client . on_connect = connected
+client . on_disconnect = disconnected
+client . on_message = message
+client . on_subscribe = subscribe
+client . connect ()
+client . loop_background ()
 mess = ""
 bbc_port = ""
 if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
-    
-while True:
-    
-    g = geocoder.ip('me')
-    collect_data = {'temperature': temp, 'humidity': humi, 'light':light_intesity, 'bud1': 1 , 'bud2': 1}
-    client.publish('v1/devices/me/telemetry', json.dumps(collect_data), 1)
-    time.sleep(1)
+while True :
+    # value = random . randint (0 , 100)
+    # print ("Cap nhat :", value )
+    client.publish("Watering","1#{\"ConditionHeat\":80,\"ConditionHumd\":80,\"ConditionEarth\":80}  ")
+    # readSerial()
+    time . sleep (30)

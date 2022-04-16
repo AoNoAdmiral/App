@@ -1,5 +1,7 @@
 
 import pyrebase
+import time
+from datetime import datetime
 
 
 config = {
@@ -22,9 +24,13 @@ data = {"Heta":67, "Name": "Nhat", "Staff": True}
 #----------------------------------------
 #create data
 
-#db.push(data)
-# db.child("User").child("second").set(data)
+mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
+mark2 = str(datetime.now().date())
+db.push(data)
+db.child("User").child(mark).set(data)
+
 
 DuLieu = db.child("User").get()
-print(DuLieu.val())
+for x, y in DuLieu.val().items():
+  print(x, y)
 

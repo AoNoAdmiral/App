@@ -1,61 +1,84 @@
-import serial
-import paho.mqtt.client as mqtt
+import sys
 import time
+import random
+from Adafruit_IO import MQTTClient
+import serial.tools.list_ports
+import serial
 import json
-import threading
+AIO_FEED_ID = "Watering"
+AIO_USERNAME = "Airforce"
+AIO_KEY = "aio_Qmkq90BKruJ2NFxaiehyybaxirPu"
 
-THINGSBOARD_HOST = "demo.thingsboard.io"
-ACCESS_TOKEN = 'LyoSMl8n9Yoki1fBpJoj'   
-request = {"method": "check1", "params": {}}
+def processData(data):
+    data = data.replace("!", "")
+    data = data.replace("#", "")
+    splitData = data.split(":")
+    if splitData[0]==1:
+        client.publish("Heat",splitData[1])
+        if splitData[1] < ConditionalHeat:
+            ser.write(("B#").encode()) 
+    if splitData[0]==2:
+        client.publish("Humd",splitData[1])
+        if splitData[1] < ConditionalHumd:
+            ser.write(("B#").encode()) 
+    if splitData[0]==3: 
+        client.publish("Earth",splitData[1])   
+        if splitData[1] < ConditionalEarth:
+            ser.write(("B#").encode())  
 
+def readSerial():
+    bytesToRead = ser.inWaiting()
+    if (bytesToRead > 0):
+        global mess
+        mess = mess + ser.read(bytesToRead).decode("UTF-8")
+        while ("#" in mess) and ("!" in mess):
+            start = mess.find("!")
+            end = mess.find("#")
+            processData(mess[start:end + 1])
+            if (end == len(mess)):
+                mess = ""
+            else:
+                mess = mess[end+1:]
 
-def update():
-    while True:
-        client.publish('v1/devices/me/rpc/request/1',json.dumps(request), 1)
-        time.sleep(100)
+def connected ( client ) :
+    print ("Ket noi thanh cong ...")
+    client.subscribe(AIO_FEED_ID)
 
-def on_connect(client, userdata, flags, rc):
-    print("rc code:", rc)
-    client.subscribe('v1/devices/me/rpc/response/1')
-    
+def subscribe ( client , userdata , mid , granted_qos ):
+    print (" Subcribe thanh cong ...")
 
-def on_message(client, userdata, msg):
-    print('Topic: ' + msg.topic + '\nMessage: ' + msg.payload.decode("utf-8"))
-    r =   json.loads(msg.payload.decode("utf-8"))
-    #dk
-    # r luu dk tuoi tu dong. No print message khi chay nen may biet dang data
-    # ko biet nhan t
-    watering = 1
+def disconnected ( client ) :
+    print (" Ngat ket noi ...")
+    sys . exit (1)
 
-watering = 0
-client = mqtt.Client()    
-client.loop_start()
-client.on_connect = on_connect
-client.on_message = on_message
+def message ( client , feed_id , payload ):
+    print (" Nhan du lieu : " + payload )
+    msg = payload.split("#")
+    if len(bbc_port) > 0:
+        if msg[0]=="1":
+            ser.write(("A#").encode()) 
+        data = json.loads (msg[1])
+        global ConditionalHeat
+        global ConditionalHumd
+        global ConditionalEarth
+        ConditionalHeat = data["ConditionHeat"]
+        ConditionalHumd = data["ConditionalHumd"]
+        ConditionalEarth = data["ConditionalEarth"]
 
-client.username_pw_set(ACCESS_TOKEN)
-client.connect(THINGSBOARD_HOST, 1883,60)
-
-threading.Thread(target=update).start()
-
-#time lay bang
-import datetime
-# hour = datetime.now().hour() -> Nho cong 7 roi mod 24 ( no lay h 0 va minh h bay)
-# min = datetime.now().minute()
-
-ser = serial.Serial('COM4', 19200)
-while  True:
-    # lay data
-    if watering:
-        #tuoi cay
-        pass
-    else:
-        #show bang
-        pass
-
-
-        
-
-
-
-
+client = MQTTClient ( AIO_USERNAME , AIO_KEY )
+client . on_connect = connected
+client . on_disconnect = disconnected
+client . on_message = message
+client . on_subscribe = subscribe
+client . connect ()
+client . loop_background ()
+mess = ""
+bbc_port = ""
+if len(bbc_port) > 0:
+    ser = serial.Serial(port=bbc_port, baudrate=115200)
+ConditionalHeat = 80 
+ConditionalHumd = 80    
+ConditionalEarth = 80       
+while True :
+    readSerial()
+    time . sleep (30)
