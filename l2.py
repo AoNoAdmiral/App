@@ -7,7 +7,9 @@ import serial
 import json
 AIO_FEED_ID = "Watering"
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_Qmkq90BKruJ2NFxaiehyybaxirPu"
+AIO_KEY = "aio_QkXE28JPekrFO6aZHyys6cFYTi4I"
+
+
 
 def processData(data):
     data = data.replace("!", "")
@@ -36,7 +38,8 @@ def readSerial():
 
 def connected ( client ) :
     print ("Ket noi thanh cong ...")
-    client . subscribe ( AIO_FEED_ID )
+    client . subscribe ( "Watering" )
+    client . subscribe ( "Total" )
 
 def subscribe ( client , userdata , mid , granted_qos ):
     print (" Subcribe thanh cong ...")
@@ -46,6 +49,7 @@ def disconnected ( client ) :
     sys . exit (1)
 
 def message ( client , feed_id , payload ):
+    print(feed_id)
     print (" Nhan du lieu : " + payload )
     if len(bbc_port) > 0:
         ser.write((str(message) + "#").encode())
@@ -62,8 +66,7 @@ bbc_port = ""
 if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
 while True :
-    # value = random . randint (0 , 100)
-    # print ("Cap nhat :", value )
+    client.publish("Total","1#{\"ConditionHeat\":80,\"ConditionHumd\":80,\"ConditionEarth\":80}  ")
     client.publish("Watering","1#{\"ConditionHeat\":80,\"ConditionHumd\":80,\"ConditionEarth\":80}  ")
-    # readSerial()
-    time . sleep (30)
+
+    time . sleep (1)

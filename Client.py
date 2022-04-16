@@ -1,4 +1,5 @@
 from tkinter import *
+import sys
 from tkinter import ttk
 import tkinter.messagebox as tkMessageBox
 import tkinter.font as font
@@ -6,10 +7,11 @@ from turtle import color
 from PIL import Image, ImageTk
 from tkinter import PhotoImage
 import threading
-import paho.mqtt.client as mqtt
+from Adafruit_IO import MQTTClient
 import time
-import json
-import geocoder
+from pandas import DataFrame
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class Client:
 
@@ -50,43 +52,41 @@ class Client:
             self.page3.pack_forget()
             
     def update(self):
-        THINGSBOARD_HOST = "demo.thingsboard.io"
-        ACCESS_TOKEN = 'LyoSMl8n9Yoki1fBpJoj'   
-        request = {"method": "gettelemetry", "params": {}}
+        AIO_USERNAME = "Airforce"
+        AIO_KEY = "aio_QkXE28JPekrFO6aZHyys6cFYTi4I"
 
-# MQTT on_connect callback function
-        def on_connect(client, userdata, flags, rc):
-            print("rc code:", rc)
-            self.switch(1)
-            client.subscribe('v1/devices/me/rpc/response/+')
-            
-        def check(a):
-            if a == 1:
-                return "on"
-            return "off" 
-
-# MQTT on_message caallback function
-        def on_message(client, userdata, msg):
-            value = json.loads(msg.payload.decode("utf-8"))
-            print(value)
-            self.canvas2.itemconfig(self.box["temp"], text=str(json.loads(value["temperature"])["value"])+"oC")
-            self.canvas2.itemconfig(self.box["humid"], text=str(json.loads(value["humidity"])["value"])+"%")
-            self.canvas2.itemconfig(self.box["pump"], text= check(json.loads(value["PUMP"])["value"]))
-            self.canvas2.itemconfig(self.box["led"], text=  check(json.loads(value["LED"])["value"]))
-            print(json.loads(value["temperature"])["value"])
+        def connected ( client ) :
+            print ("Ket noi thanh cong ...")
+            client.subscribe("Heat")
+            client.subscribe("Humd")
+            client.subscribe("Earth")
+            client.subscribe("Watering")
+        def subscribe ( client , userdata , mid , granted_qos ):
+            print (" Subcribe thanh cong ...")
+        def disconnected ( client ) :
+            print (" Ngat ket noi ...")
+            sys . exit (1)
+        def message ( client , feed_id , payload ):
+            print (" Nhan du lieu : " + payload )
+            if feed_id=="Heat":
+                self.canvas2.itemconfig(self.box["temp"], text=str(payload)+"oC")
+            if feed_id=="Humd":
+                self.canvas2.itemconfig(self.box["humid"], text=str(payload)+"%")
+            if feed_id=="Earth":
+                self.canvas2.itemconfig(self.box["earth"], text= str(payload)+"%")
+            if feed_id=="Watering":
+                self.canvas2.itemconfig(self.box["led"], text= "on" if payload == 1 else "off")
         while(self.trI==0):
             pass
-        client = mqtt.Client()
-
-        client.loop_start()
-        client.on_connect = on_connect
-        client.on_message = on_message
-
-        client.username_pw_set(ACCESS_TOKEN)
-        client.connect(THINGSBOARD_HOST, 1883,60)
+        client = MQTTClient ( AIO_USERNAME , AIO_KEY )
+        client . on_connect = connected
+        client . on_disconnect = disconnected
+        client . on_message = message
+        client . on_subscribe = subscribe
+        client . connect ()
+        client . loop_background ()
         while True:
-            client.publish('v1/devices/me/rpc/request/1',json.dumps(request), 1)
-            time.sleep(5)
+            time . sleep (30)
       
     def round_rectangle(self,canvas,x1, y1, x2, y2, radius=25, **kwargs):      
         points = [x1+radius, y1,
@@ -141,7 +141,7 @@ class Client:
         
         x["humid"]=self.canvas2.create_text(195,250, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         x["temp"]=self.canvas2.create_text(340,250, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        x["pump"]=self.canvas2.create_text(475,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["earth"]=self.canvas2.create_text(475,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         x["led"]=self.canvas2.create_text(600,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
         self.round_rectangle(self.canvas2,110,10, 300, 50,fill="green")
@@ -161,10 +161,10 @@ class Client:
         def switchBack():
             self.switch(1)
         def connect():
+            self.switch(1)
             self.username = inputtxt.get(1.0, "end-1c")
             self.pw = inputPW.get(1.0, "end-1c")
             self.trI = 1
-            # print(self.username)
         def handleInputString(input, length):
             o1 = ''
             o2 = ''
@@ -206,22 +206,22 @@ class Client:
         def handleAutoWatering():
             self.temperature = inputTemperature.get(1.0, "end-1c")
             self.humidity = inputDoamKK.get(1.0, "end-1c")
-            self.PUMP = inputDoamdat.get(1.0, "end-1c")
+            self.earth = inputDoamdat.get(1.0, "end-1c")
             self.LED = inputAnhsang.get(1.0, "end-1c")
             (self.temperature1,self.temperature2) = handleInputString(self.temperature, len(self.temperature))
             
             (self.humidity1, self.humidity2) = handleInputString(self.humidity, len(self.humidity))
             
-            (self.PUMP1,self.PUMP2) = handleInputString(self.PUMP, len(self.PUMP))
+            (self.earth1,self.earth2) = handleInputString(self.earth, len(self.earth))
             
             (self.LED1, self.LED2) = handleInputString(self.LED, len(self.LED))
             realtime_temperature =  15 # json.loads(value["temperature"])["value"]
             realtime_humidity = 15 # json.loads(value["humidity"])["value"]
-            realtime_pump = 15 # json.loads(value["PUMP"])["value"]
+            realtime_earth = 15 # json.loads(value["earth"])["value"]
             realtime_LED = 15 # json.loads(value["LED"])["value"]
             checkInput(int(self.temperature1),int(self.temperature2), realtime_temperature)
             checkInput(int(self.humidity1),int(self.humidity2), realtime_humidity)
-            checkInput(int(self.PUMP1),int(self.PUMP2), realtime_pump)
+            checkInput(int(self.earth1),int(self.earth2), realtime_earth)
             checkInput(int(self.LED1),int(self.LED2), realtime_LED)
             
         def timeWatering():
@@ -281,21 +281,32 @@ class Client:
         self.prep = self.canvas.create_text(625,300, text="0.5 cm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
 
         # Page 2
+        data1 = {'Country': ['US','CA','GER','UK','FR'],
+         'GDP_Per_Capita': [45000,42000,52000,49000,47000]
+        }
         self.canvasP2= Canvas(self.page2, bg='black', highlightthickness=0)
         self.canvasP2.pack(fill='both', expand=True) 
-        self.img = Image.open("image/Greenhouse1.png") 
-        self.img = ImageTk.PhotoImage(self.img.resize((1200,450), Image.ANTIALIAS))
-        self.canvasP2.create_image(180,10, anchor=NW, image=self.img)    
-        self.canvasP2.image = self.img   
+        df1 = DataFrame(data1,columns=['Country','GDP_Per_Capita'])
+        figure1 = plt.Figure(figsize=(6,5), dpi=100)
+        ax1 = figure1.add_subplot(111)
+        bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
+        bar1.get_tk_widget().place(x=180,y=10)
+        df1 = df1[['Country','GDP_Per_Capita']].groupby('Country').sum()
+        df1.plot(kind='bar', legend=True, ax=ax1)
+        ax1.set_title('Country Vs. GDP Per Capita')
+        # self.img = Image.open("image/Greenhouse1.png") 
+        # self.img = ImageTk.PhotoImage(self.img.resize((1200,450), Image.ANTIALIAS))
+        # self.canvasP2.create_image(180,10, anchor=NW, image=self.img)    
+        # self.canvasP2.image = self.img   
         self.round_rectangle(self.canvasP2,240,500, 440, 700,fill="white")
         self.round_rectangle(self.canvasP2,540,500, 740, 700,fill="white")
         self.round_rectangle(self.canvasP2,840,500, 1040, 700,fill="white")
         self.round_rectangle(self.canvasP2,1140,500, 1340, 700,fill="white")
-        self.back = Image.open("image/Back.png") 
-        self.back = ImageTk.PhotoImage(self.back.resize((100,100), Image.ANTIALIAS)) 
-        self.master.bbk = self.back 
+        # self.back = Image.open("image/Back.png") 
+        # self.back = ImageTk.PhotoImage(self.back.resize((100,100), Image.ANTIALIAS)) 
+        # self.master.bbk = self.back 
         
-        Button(self.canvasP2,width = 100, height = 100,command = switchBack,image = self.back).place(x=25,y=25)
+        # Button(self.canvasP2,width = 100, height = 100,command = switchBack,image = self.back).place(x=25,y=25)
         
         self.canvasP2.create_text(268,600, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(568,600, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
@@ -342,7 +353,7 @@ class Client:
         inputAnhsang.place(x=800,y=250)
         
         self.save = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=handleAutoWatering)
-        self.save.place(x=650, y=400)
+        self.save.place(x=650, y=350)
         
         self.canvasP4.create_text(50,500, text="Cài đặt giờ tự động tưới nước (Vui lòng nhập theo dạng hh:mm)", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP4.create_text(50,550, text="Giờ tưới lần thứ 1:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
@@ -355,7 +366,7 @@ class Client:
         inputHour2.place(x=800,y=600)
         
         self.save1 = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=timeWatering)
-        self.save1.place(x=650, y=700)
+        self.save1.place(x=650, y=650)
         
         
         self.canvasP3= Canvas(self.page3, bg='black', highlightthickness=0)
@@ -391,28 +402,40 @@ class Client:
         self.master.image2 = self.buttq    
 
         self.home = Button(self.page2, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black")
-        self.home.place(x=500, y=750)
+                            activebackground="black",command=switchHome)
+        self.home.place(x=100, y=750)
 
         self.option = Button(self.page2, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black")
-        self.option.place(x=700, y=750)
+                            activebackground="black",command=switchSetting)
+        self.option.place(x=300, y=750)
         
         self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
-        self.user.place(x=900, y=750)
+        self.user.place(x=500, y=750)
         
         self.home = Button(self.page1, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=switchHome)
-        self.home.place(x=500, y=750)
+        self.home.place(x=100, y=750)
 
         self.option = Button(self.page1, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=switchSetting)
-        self.option.place(x=700, y=750)
+        self.option.place(x=300, y=750)
         
         self.user = Button(self.page1, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
-        self.user.place(x=900, y=750)
+        self.user.place(x=500, y=750)
+        
+        self.home = Button(self.page4, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchHome)
+        self.home.place(x=100, y=750)
+
+        self.option = Button(self.page4, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchSetting)
+        self.option.place(x=300, y=750)
+        
+        self.user = Button(self.page4, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black")
+        self.user.place(x=500, y=750)
         
         self.quit = Button(self.master, width=100, height = 100,image =self.buttq,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=exit)

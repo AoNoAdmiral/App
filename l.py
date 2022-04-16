@@ -1,13 +1,44 @@
+import datetime
 import sys
+import pyrebase
 import time
-import random
 from Adafruit_IO import MQTTClient
 import serial.tools.list_ports
 import serial
-import json
+import threading
 AIO_FEED_ID = "Watering"
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_Qmkq90BKruJ2NFxaiehyybaxirPu"
+AIO_KEY = "aio_QkXE28JPekrFO6aZHyys6cFYTi4I"
+
+config = {
+  "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+  "authDomain": "chill-2ddd1.firebaseapp.com",
+  "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+  "projectId": "chill-2ddd1",
+  "storageBucket": "chill-2ddd1.appspot.com",
+  "messagingSenderId": "62414238957",
+  "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+  "measurementId": "G-ZG9Z0XL8MW"
+}
+def update():
+    while True:
+        time.sleep(100)
+        mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
+        data= {"Heat":Heat, "Humd": Humd, "Earth": Earth}
+        db.push(data)
+        db.child("Minute").child(mark).set(data)
+        time.sleep(60)
+        
+def update2():
+    while True:
+        time.sleep(100)
+        mark = str(datetime.now().date())
+        data= {"Heat":Heat, "Humd": Humd, "Earth": Earth}
+        db.push(data)
+        db.child("Day").child(mark).set(data)
+        time.sleep(3600*24)
+        
+
 
 def processData(data):
     data = data.replace("!", "")
@@ -22,7 +53,7 @@ def processData(data):
         if splitData[1] < ConditionalHumd:
             ser.write(("B#").encode()) 
     if splitData[0]==3: 
-        client.publish("Earth",splitData[1])   
+        client.publish("Earth",splitData[1])  
         if splitData[1] < ConditionalEarth:
             ser.write(("B#").encode())  
 
@@ -42,7 +73,11 @@ def readSerial():
 
 def connected ( client ) :
     print ("Ket noi thanh cong ...")
-    client.subscribe(AIO_FEED_ID)
+    client.subscribe("mark1")
+    client.subscribe("mark2")
+    client.subscribe("ConditionHeat")
+    client.subscribe("ConditionalHumd")
+    client.subscribe("ConditionalEarth")
 
 def subscribe ( client , userdata , mid , granted_qos ):
     print (" Subcribe thanh cong ...")
@@ -52,18 +87,23 @@ def disconnected ( client ) :
     sys . exit (1)
 
 def message ( client , feed_id , payload ):
+    global ConditionalHeat
+    global ConditionalHumd
+    global ConditionalEarth
+    global Time1
+    global Time2 
+
     print (" Nhan du lieu : " + payload )
-    msg = payload.split("#")
-    if len(bbc_port) > 0:
-        if msg[0]=="1":
-            ser.write(("A#").encode()) 
-        data = json.loads (msg[1])
-        global ConditionalHeat
-        global ConditionalHumd
-        global ConditionalEarth
-        ConditionalHeat = data["ConditionHeat"]
-        ConditionalHumd = data["ConditionalHumd"]
-        ConditionalEarth = data["ConditionalEarth"]
+    if feed_id=="mark1":
+        Time1 = payload
+    if feed_id=="mark2":
+        Time2 = payload
+    if feed_id=="ConditionHeat":
+        ConditionalHeat = payload
+    if feed_id=="ConditionalHumd":
+        ConditionalHumd = payload
+    if feed_id=="ConditionalEarth":
+        ConditionalEarth = payload
 
 client = MQTTClient ( AIO_USERNAME , AIO_KEY )
 client . on_connect = connected
@@ -78,7 +118,37 @@ if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
 ConditionalHeat = 80 
 ConditionalHumd = 80    
-ConditionalEarth = 80       
+ConditionalEarth = 80   
+Time1 = "nan"
+Time2 = "nan"      
+Heat = 30
+Humd = 30
+Earth =30   
+firebase = pyrebase.initialize_app(config)
+
+db = firebase.database()
+threading.Thread(target=update).start()
+threading.Thread(target=update2).start()
 while True :
     readSerial()
     time . sleep (30)
+    if Heat>ConditionalHeat:
+        ser.write(("A#").encode()) 
+        client.publish("Watering",1) 
+    elif Heat<ConditionalHeat-5:
+        ser.write(("B#").encode()) 
+        client.publish("Watering",1) 
+    elif Humd<ConditionalHumd:
+        ser.write(("A#").encode())
+        client.publish("Watering",1)  
+    elif Earth<ConditionalEarth:
+        ser.write(("A#").encode()) 
+        client.publish("Watering",1) 
+    elif Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+        ser.write(("A#").encode()) 
+        client.publish("Watering",1) 
+    elif Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+        ser.write(("A#").encode()) 
+        client.publish("Watering",1)  
+    else:
+        client.publish("Watering",0)  
