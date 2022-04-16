@@ -53,7 +53,7 @@ class Client:
             
     def update(self):
         AIO_USERNAME = "Airforce"
-        AIO_KEY = "aio_QkXE28JPekrFO6aZHyys6cFYTi4I"
+        AIO_KEY = "aio_Qcan99Ot2yY7cMOLDjlyHeNhbm1t"
 
         def connected ( client ) :
             print ("Ket noi thanh cong ...")
@@ -281,44 +281,36 @@ class Client:
         self.prep = self.canvas.create_text(625,300, text="0.5 cm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
 
         # Page 2
-        data1 = {'Country': ['US','CA','GER','UK','FR'],
-         'GDP_Per_Capita': [45000,42000,52000,49000,47000]
+        data1 = {'Country': ['US','CA','GER','UK','FR','US1','CA1','GER1','UK1','FR1','US2','CA2','GER2','UK2','FR2'],
+         'GDP_Per_Capita': [45000,42000,52000,49000,47000,45000,42000,52000,49000,47000,45000,42000,52000,49000,47000]
         }
         self.canvasP2= Canvas(self.page2, bg='black', highlightthickness=0)
         self.canvasP2.pack(fill='both', expand=True) 
         df1 = DataFrame(data1,columns=['Country','GDP_Per_Capita'])
-        figure1 = plt.Figure(figsize=(6,5), dpi=100)
+        figure1 = plt.Figure(figsize=(8,6), dpi=100)
         ax1 = figure1.add_subplot(111)
         bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
-        bar1.get_tk_widget().place(x=180,y=10)
+        bar1.get_tk_widget().place(x=400,y=10)
         df1 = df1[['Country','GDP_Per_Capita']].groupby('Country').sum()
-        df1.plot(kind='bar', legend=True, ax=ax1)
+        df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
         ax1.set_title('Country Vs. GDP Per Capita')
-        # self.img = Image.open("image/Greenhouse1.png") 
-        # self.img = ImageTk.PhotoImage(self.img.resize((1200,450), Image.ANTIALIAS))
-        # self.canvasP2.create_image(180,10, anchor=NW, image=self.img)    
-        # self.canvasP2.image = self.img   
-        self.round_rectangle(self.canvasP2,240,500, 440, 700,fill="white")
+
+        self.round_rectangle(self.canvasP2,40,100, 240, 300,fill="white")
         self.round_rectangle(self.canvasP2,540,500, 740, 700,fill="white")
         self.round_rectangle(self.canvasP2,840,500, 1040, 700,fill="white")
         self.round_rectangle(self.canvasP2,1140,500, 1340, 700,fill="white")
-        # self.back = Image.open("image/Back.png") 
-        # self.back = ImageTk.PhotoImage(self.back.resize((100,100), Image.ANTIALIAS)) 
-        # self.master.bbk = self.back 
         
-        # Button(self.canvasP2,width = 100, height = 100,command = switchBack,image = self.back).place(x=25,y=25)
-        
-        self.canvasP2.create_text(268,600, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(68,200, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(568,600, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(868,600, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,600, text="CO2", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
-        self.canvasP2.create_text(268,650, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(68,250, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(568,650, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(868,650, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,650, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
   
-        self.canvasP2.create_image(268,520, anchor=NW, image=self.gh1)    
+        self.canvasP2.create_image(68,120, anchor=NW, image=self.gh1)    
         self.canvasP2.imageG2 = self.gh1
 
         self.canvasP2.create_image(568,520, anchor=NW, image=self.gh2)    

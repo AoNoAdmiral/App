@@ -8,7 +8,7 @@ import serial
 import threading
 AIO_FEED_ID = "Watering"
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_QkXE28JPekrFO6aZHyys6cFYTi4I"
+AIO_KEY = "aio_Qcan99Ot2yY7cMOLDjlyHeNhbm1t"
 
 config = {
   "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
