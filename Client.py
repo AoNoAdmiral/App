@@ -32,7 +32,7 @@ class Client:
         self.page3 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.page4 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.switch(3)
-        self.canvas = Canvas(self.page1, bg='black', highlightthickness=0)
+        self.canvas = Canvas(self.page1, bg='#2B2B2B', highlightthickness=0)
         self.canvas.pack(fill='both', expand=True)
         self.initOption()
         threading.Thread(target=self.update).start()
