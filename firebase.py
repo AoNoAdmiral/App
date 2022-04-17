@@ -19,18 +19,23 @@ firebase = pyrebase.initialize_app(config)
 
 db = firebase.database()
 
-data = {"Heta":67, "Name": "Nhat", "Staff": True}
+# data = {"Heta":67, "Name": "Nhat", "Staff": True}
 
 #----------------------------------------
 #create data
 
-mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
-mark2 = str(datetime.now().date())
-db.push(data)
-db.child("User").child(mark).set(data)
+# mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
+# mark2 = str(datetime.now().date())
+# db.push(data)
+# db.child("User").child(mark).set(data)
 
 
 DuLieu = db.child("User").get()
 for x, y in DuLieu.val().items():
   print(x, y)
 
+# data = {"Heat":67, "Humd": 70, "Earth": 38}
+# db.push(data)
+# db.child("Minute").child("2022-04-17-8-1").set(data)
+
+# db.child("Day").child("2022-04-18").set(data)

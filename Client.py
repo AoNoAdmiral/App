@@ -12,6 +12,7 @@ import time
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import pyrebase
 
 class Client:
 
@@ -20,6 +21,11 @@ class Client:
         self.master = master
         self.counter = 0
         self.trI = 0
+        self.listTime=[]
+        self.listHeat=[]
+        self.listEarth=[]
+        self.listHumd=[]
+        self.master.geometry('2000x1000')
         self.master.attributes('-fullscreen', True)
         self.page1 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.page2 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
@@ -30,7 +36,68 @@ class Client:
         self.canvas.pack(fill='both', expand=True)
         self.initOption()
         threading.Thread(target=self.update).start()
+    
+    def updateGraph(self):
+        # config = {
+        #     "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+        #     "authDomain": "chill-2ddd1.firebaseapp.com",
+        #     "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+        #     "projectId": "chill-2ddd1",
+        #     "storageBucket": "chill-2ddd1.appspot.com",
+        #     "messagingSenderId": "62414238957",
+        #     "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+        #     "measurementId": "G-ZG9Z0XL8MW"
+        # }       
+        # firebase = pyrebase.initialize_app(config)
+
+        # db = firebase.database()
+        # DuLieu = db.child("User").get()
+        # for x, y in DuLieu.val().items():
+        #     self.listTime.insert(0,x)
+        #     self.listHeat.insert(0,y['Temp'])
+        #     self.listHumd.insert(0,y['Humid'])
+        #     self.listEarth.insert(0,y['Ground'])
+        # data1 = {'Time':self.listTime,'Heat':self.listHeat}
+        # data2 = {'Time':self.listTime,'Humd':self.listHeat}
+        # data3 = {'Time':self.listTime,'Earth':self.listHeat}
+        data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+         'Heat': [31,33,31,32,31,33,35,35,32,31,36,33,34,31,32]
+        }
+        data2 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+         'Humd': [80,85,83,81,84,89,86,87,81,80,82,82,85,80,83]
+        }
+        data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+         'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
+        }
+        df1 = DataFrame(data1,columns=['Time','Heat'])
+        figure1 = plt.Figure(figsize=(6,5), dpi=100)
+        ax1 = figure1.add_subplot(111)
+        self.bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
+        self.bar1.get_tk_widget().place(x=400,y=10)
+        df1 = df1[['Time','Heat']].groupby('Time').sum()
+        df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
+        ax1.set_title('Recorded temperature')
+        # bar1.get_tk_widget().place(x=-1000,y=-1000)
+        df2 = DataFrame(data2,columns=['Time','Humd'])
+        figure2 = plt.Figure(figsize=(6,5), dpi=100)
+        ax2 = figure2.add_subplot(111)
+        self.bar2 = FigureCanvasTkAgg(figure2, self.canvasP2)
+        self.bar2.get_tk_widget().place(x=400,y=10)
+        df2 = df2[['Time','Humd']].groupby('Time').sum()
+        df2.plot(kind='line', legend=True, ax=ax2, color='r',marker='o', fontsize=10)
+        ax2.set_title('Recorded air humidity')
+        self.bar2.get_tk_widget().place(x=-1000,y=-1000)
+        df3 = DataFrame(data3,columns=['Time','Earth'])
+        figure3 = plt.Figure(figsize=(6,5), dpi=100)
+        ax3 = figure3.add_subplot(111)
+        self.bar3 = FigureCanvasTkAgg(figure3, self.canvasP2)
+        self.bar3.get_tk_widget().place(x=400,y=10)
+        df3 = df3[['Time','Earth']].groupby('Time').sum()
+        df3.plot(kind='line', legend=True, ax=ax3, color='r',marker='o', fontsize=10)
+        ax3.set_title('Recorded earth humidity')
+        self.bar3.get_tk_widget().place(x=-1000,y=-1000)
         
+
     def switch(self,a):
         for frame in (self.page1, self.page2,self.page3,self.page4):
             frame.pack(fill='both', expand=True)
@@ -239,6 +306,18 @@ class Client:
             self.switch(1)
         def exit():
             self.master.destroy()
+        def switchGraph1():
+            self.bar3.get_tk_widget().place(x=-1000,y=-1000)
+            self.bar2.get_tk_widget().place(x=-1000,y=-1000)
+            self.bar1.get_tk_widget().place(x=400,y=10)
+        def switchGraph2():
+            self.bar3.get_tk_widget().place(x=-1000,y=-1000)
+            self.bar1.get_tk_widget().place(x=-1000,y=-1000)
+            self.bar2.get_tk_widget().place(x=400,y=10)
+        def switchGraph3():
+            self.bar2.get_tk_widget().place(x=-1000,y=-1000)
+            self.bar1.get_tk_widget().place(x=-1000,y=-1000)
+            self.bar3.get_tk_widget().place(x=400,y=10)
 
         # Page 1
         
@@ -281,45 +360,47 @@ class Client:
         self.prep = self.canvas.create_text(625,300, text="0.5 cm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
 
         # Page 2
-        data1 = {'Country': ['US','CA','GER','UK','FR','US1','CA1','GER1','UK1','FR1','US2','CA2','GER2','UK2','FR2'],
-         'GDP_Per_Capita': [45000,42000,52000,49000,47000,45000,42000,52000,49000,47000,45000,42000,52000,49000,47000]
-        }
+        # data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+        #  'Heat': [45000,42000,52000,49000,47000,45000,42000,52000,49000,47000,45000,42000,52000,49000,47000]
+        # }
         self.canvasP2= Canvas(self.page2, bg='black', highlightthickness=0)
         self.canvasP2.pack(fill='both', expand=True) 
-        df1 = DataFrame(data1,columns=['Country','GDP_Per_Capita'])
-        figure1 = plt.Figure(figsize=(8,6), dpi=100)
-        ax1 = figure1.add_subplot(111)
-        bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
-        bar1.get_tk_widget().place(x=400,y=10)
-        df1 = df1[['Country','GDP_Per_Capita']].groupby('Country').sum()
-        df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
-        ax1.set_title('Country Vs. GDP Per Capita')
+        threading.Thread(target=self.updateGraph).start()
+        # df1 = DataFrame(data1,columns=['Time','Heat'])
+        # figure1 = plt.Figure(figsize=(6,5), dpi=100)
+        # ax1 = figure1.add_subplot(111)
+        # bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
+        # bar1.get_tk_widget().place(x=400,y=10)
+        # df1 = df1[['Time','Heat']].groupby('Time').sum()
+        # df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
+        # ax1.set_title('Country Vs. GDP Per Capita')
+        # bar1.get_tk_widget().place(x=-1000,y=-1000)
 
         self.round_rectangle(self.canvasP2,40,100, 240, 300,fill="white")
-        self.round_rectangle(self.canvasP2,540,500, 740, 700,fill="white")
-        self.round_rectangle(self.canvasP2,840,500, 1040, 700,fill="white")
-        self.round_rectangle(self.canvasP2,1140,500, 1340, 700,fill="white")
+        self.round_rectangle(self.canvasP2,40,400, 240, 600,fill="white")
+        self.round_rectangle(self.canvasP2,1140,100, 1340, 300,fill="white")
+        self.round_rectangle(self.canvasP2,1140,400, 1340, 600,fill="white")
         
         self.canvasP2.create_text(68,200, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(568,600, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(868,600, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(1168,600, text="CO2", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(68,500, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(1168,200, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(1168,500, text="CO2", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
         self.canvasP2.create_text(68,250, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(568,650, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(868,650, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(1168,650, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(68,550, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(1168,250, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(1168,550, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
   
         self.canvasP2.create_image(68,120, anchor=NW, image=self.gh1)    
         self.canvasP2.imageG2 = self.gh1
 
-        self.canvasP2.create_image(568,520, anchor=NW, image=self.gh2)    
+        self.canvasP2.create_image(68,420, anchor=NW, image=self.gh2)    
         self.canvasP2.imageG3 = self.gh2
 
-        self.canvasP2.create_image(868,520, anchor=NW, image=self.gh3)    
+        self.canvasP2.create_image(1168,120, anchor=NW, image=self.gh3)    
         self.canvasP2.imageG4 = self.gh3
 
-        self.canvasP2.create_image(1168,520, anchor=NW, image=self.gh4)    
+        self.canvasP2.create_image(1168,420, anchor=NW, image=self.gh4)    
         self.canvasP2.imageG4 = self.gh4
         
         # Login
@@ -366,15 +447,15 @@ class Client:
         self.canvasP3.create_text(450,400, text="Username", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP3.create_text(450,500, text="Password", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         self.login = Image.open("image/276156773_395766165713386_5796930991960104386_n.png") 
-        self.login = ImageTk.PhotoImage(self.login.resize((200,100), Image.ANTIALIAS)) 
+        self.login = ImageTk.PhotoImage(self.login.resize((250,100), Image.ANTIALIAS)) 
         self.master.imageL = self.login 
         inputtxt = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
         inputtxt.place(x=600,y=400)
         inputPW = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
         inputPW.place(x=600,y=500)
-        self.login = Button(self.page3, width=200, height = 100,image =self.login,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+        self.login = Button(self.page3, width=250, height = 100,image =self.login,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",text="LOGIN",command=connect)
-        self.login.place(x=650, y=600)
+        self.login.place(x=600, y=600)
         # Bottom bar
         
         self.Button1 = Image.open("image/Home.png") 
@@ -404,6 +485,20 @@ class Client:
         self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black")
         self.user.place(x=500, y=750)
+        
+        self.option = Button(self.page2, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchGraph1)
+        self.option.place(x=700, y=750)
+        
+        self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchGraph2)
+        self.user.place(x=900, y=750)
+        
+        self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchGraph3)
+        self.user.place(x=1100, y=750)
+        
+        
         
         self.home = Button(self.page1, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=switchHome)
