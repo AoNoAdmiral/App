@@ -18,6 +18,6 @@ bar1.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
 df1 = df1[['Time','Heat']].groupby('Time').sum()
 df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=8)
 ax1.set_title('Country Vs. GDP Per Capita')
-bar1.get_tk_widget().pack_forget()
+# bar1.get_tk_widget().pack_forget()
 
 root.mainloop()

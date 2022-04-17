@@ -23,10 +23,10 @@ config = {
 def update():
     while True:
         time.sleep(100)
-        mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
+        mark = str(datetime.now().hour)+":"+str(datetime.now().minute)
         data= {"Heat":Heat, "Humd": Humd, "Earth": Earth}
         db.push(data)
-        db.child("Minute").child(mark).set(data)
+        db.child("Minute").child(str(datetime.now().date())).child(mark).set(data)
         time.sleep(60)
         
 def update2():
