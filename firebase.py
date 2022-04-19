@@ -3,7 +3,7 @@ import pyrebase
 import time
 from datetime import datetime
 
-import data_upload_db
+# import data_upload_db
 
 config = {
   "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
@@ -20,16 +20,12 @@ firebase = pyrebase.initialize_app(config)
 
 db = firebase.database()
 
-# data = {"Heta":67, "Name": "Nhat", "Staff": True}
+
 
 #----------------------------------------
 #create data
 
-mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
-# mark2 = str(datetime.now().date())
-# db.push(data)
-# db.child("User").child(mark).set(data)
-# counter_5_minute = 0
+# counter_5_minute = 0;
 # counter_1_day = 0
 
 # def upload_db():
@@ -48,17 +44,16 @@ mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.
 #             db.push(data_upload_db.data[showdata])
 #             db.child("User").child(mark2).set(data_upload_db.data[showdata])
 
-#         counter_5_minute = (counter_5_minute + 1) % 5
-#         counter_1_day = (counter_1_day + 1) % 1440
+#         counter_5_minute = (counter_5_minute + 1) % 5;
+#         counter_1_day = (counter_1_day + 1) % 1440;
 #         time.sleep(60)
 
 # upload_db()
 
-
-# data = {"Heat":67, "Humd": 70, "Earth": 38}
-# db.child("Minute").child('2022-04-17-10-56').set(data)
+data = {"Heat":74, "Humd": 60, "Earth": 40}
+db.child("Minute").child('2022-04-16-6-45').set(data)
+# db.push(data)
 
 DuLieu = db.child("Minute").get()
 for x, y in DuLieu.val().items():
-  print(x, y)
-# db.child("Day").child("2022-04-18").set(data)
+   print(x, y)
