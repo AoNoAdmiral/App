@@ -54,6 +54,6 @@ data = {"Heat":74, "Humd": 60, "Earth": 40}
 db.child("Minute").child('2022-04-16-6-45').set(data)
 # db.push(data)
 
-DuLieu = db.child("Minute").get()
+DuLieu = db.get()
 for x, y in DuLieu.val().items():
    print(x, y)

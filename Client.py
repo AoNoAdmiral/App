@@ -27,12 +27,12 @@ class Client:
         self.listHumd=[]
         self.master.geometry('2000x1000')
         self.master.attributes('-fullscreen', True)
-        self.page1 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
-        self.page2 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
-        self.page3 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
-        self.page4 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
+        self.page1 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.page2 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.page3 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.page4 = Frame(master,bg='black',width = 3000,height = 1000)
         self.switch(3)
-        self.canvas = Canvas(self.page1, bg='#2B2B2B', highlightthickness=0)
+        self.canvas = Canvas(self.page1, bg='black', highlightthickness=0)
         self.canvas.pack(fill='both', expand=True)
         self.initOption()
         threading.Thread(target=self.update).start()
@@ -75,7 +75,7 @@ class Client:
         figure1 = plt.Figure(figsize=(6,5), dpi=100)
         ax1 = figure1.add_subplot(111)
         self.bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
-        self.bar1.get_tk_widget().place(x=400,y=10)
+        self.bar1.get_tk_widget().place(x=450,y=10)
         df1 = df1[['Time','Heat']].groupby('Time').sum()
         df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
         ax1.set_title('Recorded temperature')
@@ -84,7 +84,7 @@ class Client:
         figure2 = plt.Figure(figsize=(6,5), dpi=100)
         ax2 = figure2.add_subplot(111)
         self.bar2 = FigureCanvasTkAgg(figure2, self.canvasP2)
-        self.bar2.get_tk_widget().place(x=400,y=10)
+        self.bar2.get_tk_widget().place(x=450,y=10)
         df2 = df2[['Time','Humd']].groupby('Time').sum()
         df2.plot(kind='line', legend=True, ax=ax2, color='r',marker='o', fontsize=10)
         ax2.set_title('Recorded air humidity')
@@ -93,7 +93,7 @@ class Client:
         figure3 = plt.Figure(figsize=(6,5), dpi=100)
         ax3 = figure3.add_subplot(111)
         self.bar3 = FigureCanvasTkAgg(figure3, self.canvasP2)
-        self.bar3.get_tk_widget().place(x=400,y=10)
+        self.bar3.get_tk_widget().place(x=450,y=10)
         df3 = df3[['Time','Earth']].groupby('Time').sum()
         df3.plot(kind='line', legend=True, ax=ax3, color='r',marker='o', fontsize=10)
         ax3.set_title('Recorded earth humidity')
@@ -345,7 +345,7 @@ class Client:
         
         self.canvas2.create_window((0,0),window=self.frame2,anchor="nw")
         for i in range(0,5):
-            Button(self.canvas3,text=i,width = 1,bg='#2B2B2B',highlightthickness = 0,borderwidth = 0).pack()
+            Button(self.canvas3,text=i,width = 1,bg='black',highlightthickness = 0,borderwidth = 0).pack()
         self.box = self.createBox()
         
         self.canvas.create_text(150,400, text="GLASSHOUSE:", fill="white", font=('Helvetica 20 bold'))
@@ -378,25 +378,25 @@ class Client:
         # ax1.set_title('Country Vs. GDP Per Capita')
         # bar1.get_tk_widget().place(x=-1000,y=-1000)
 
-        self.round_rectangle(self.canvasP2,40,100, 240, 300,fill="white")
-        self.round_rectangle(self.canvasP2,40,400, 240, 600,fill="white")
+        self.round_rectangle(self.canvasP2,140,100, 340, 300,fill="white")
+        self.round_rectangle(self.canvasP2,140,400, 340, 600,fill="white")
         self.round_rectangle(self.canvasP2,1140,100, 1340, 300,fill="white")
         self.round_rectangle(self.canvasP2,1140,400, 1340, 600,fill="white")
         
-        self.canvasP2.create_text(68,200, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(68,500, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,200, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,500, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,200, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,500, text="CO2", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
-        self.canvasP2.create_text(68,250, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(68,550, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,250, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,550, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,250, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,550, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
   
-        self.canvasP2.create_image(68,120, anchor=NW, image=self.gh1)    
+        self.canvasP2.create_image(168,120, anchor=NW, image=self.gh1)    
         self.canvasP2.imageG2 = self.gh1
 
-        self.canvasP2.create_image(68,420, anchor=NW, image=self.gh2)    
+        self.canvasP2.create_image(168,420, anchor=NW, image=self.gh2)    
         self.canvasP2.imageG3 = self.gh2
 
         self.canvasP2.create_image(1168,120, anchor=NW, image=self.gh3)    
@@ -456,9 +456,12 @@ class Client:
         inputPW = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
         inputPW.place(x=600,y=500)
         self.login = Button(self.page3, width=250, height = 100,image =self.login,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",text="LOGIN",command=connect)
+                            activebackground="black",text="LOGIN",command=connect,borderwidth=0)
         self.login.place(x=600, y=600)
         # Bottom bar
+        self.den = Image.open("image/Den.png") 
+        self.den = ImageTk.PhotoImage(self.den.resize((800,200), Image.ANTIALIAS))
+        self.master.den = self.den
         
         self.Button1 = Image.open("image/Home.png") 
         self.Button1 = ImageTk.PhotoImage(self.Button1.resize((80,100), Image.ANTIALIAS)) 
@@ -476,58 +479,62 @@ class Client:
         self.buttq = ImageTk.PhotoImage(self.buttq.resize((80,100), Image.ANTIALIAS)) 
         self.master.image2 = self.buttq    
 
+        self.canvasP2.create_image(350,750, anchor=NW, image=self.den)   
+        self.canvas.create_image(350,750, anchor=NW, image=self.den)    
+        self.canvasP4.create_image(350,750, anchor=NW, image=self.den)     
+
         self.home = Button(self.page2, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchHome)
-        self.home.place(x=100, y=750)
+                            activebackground="black",command=switchHome,borderwidth=0)
+        self.home.place(x=500, y=770)
 
         self.option = Button(self.page2, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchSetting)
-        self.option.place(x=300, y=750)
+                            activebackground="black",command=switchSetting,borderwidth=0)
+        self.option.place(x=700, y=770)
         
         self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black")
-        self.user.place(x=500, y=750)
+                            activebackground="black",borderwidth=0)
+        self.user.place(x=900, y=770)
         
         self.option = Button(self.page2, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchGraph1)
-        self.option.place(x=700, y=750)
+                            activebackground="black",command=switchGraph1,borderwidth=0)
+        self.option.place(x=500, y=600)
         
         self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchGraph2)
-        self.user.place(x=900, y=750)
+                            activebackground="black",command=switchGraph2,borderwidth=0)
+        self.user.place(x=700, y=600)
         
         self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchGraph3)
-        self.user.place(x=1100, y=750)
+                            activebackground="black",command=switchGraph3,borderwidth=0)
+        self.user.place(x=900, y=600)
         
         
         
         self.home = Button(self.page1, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchHome)
-        self.home.place(x=100, y=750)
+                            activebackground="black",command=switchHome,borderwidth=0)
+        self.home.place(x=500, y=770)
 
         self.option = Button(self.page1, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchSetting)
-        self.option.place(x=300, y=750)
+                            activebackground="black",command=switchSetting,borderwidth=0)
+        self.option.place(x=700, y=770)
         
         self.user = Button(self.page1, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black")
-        self.user.place(x=500, y=750)
+                            activebackground="black",borderwidth=0)
+        self.user.place(x=900, y=770)
         
         self.home = Button(self.page4, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchHome)
-        self.home.place(x=100, y=750)
+                            activebackground="black",command=switchHome,borderwidth=0)
+        self.home.place(x=500, y=770)
 
         self.option = Button(self.page4, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=switchSetting)
-        self.option.place(x=300, y=750)
+                            activebackground="black",command=switchSetting,borderwidth=0)
+        self.option.place(x=700, y=770)
         
         self.user = Button(self.page4, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black")
-        self.user.place(x=500, y=750)
+                            activebackground="black",borderwidth=0)
+        self.user.place(x=900, y=770)
         
         self.quit = Button(self.master, width=100, height = 100,image =self.buttq,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",command=exit)
+                            activebackground="black",command=exit,borderwidth=0)
         self.quit.place(x=1400, y=50)
 
 
