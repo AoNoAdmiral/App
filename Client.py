@@ -28,12 +28,22 @@ class Client:
         self.listHumd=[]
         self.master.geometry('2000x1000')
         self.master.attributes('-fullscreen', True)
+<<<<<<< Updated upstream
         self.page1 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.page2 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.page3 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.page4 = Frame(master,bg='#2B2B2B',width = 3000,height = 1000)
         self.switch(3)
         self.canvas = Canvas(self.page1, bg='#2B2B2B', highlightthickness=0)
+=======
+        self.page1 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.page2 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.page3 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.page4 = Frame(master,bg='black',width = 3000,height = 1000)
+        self.pageUser = Frame(master,bg='black',width = 3000,height = 1000)
+        self.switch(3)
+        self.canvas = Canvas(self.page1, bg='#2b2b2b', highlightthickness=0)
+>>>>>>> Stashed changes
         self.canvas.pack(fill='both', expand=True)
         self.initOption()
         threading.Thread(target=self.update).start()
@@ -52,6 +62,7 @@ class Client:
         # firebase = pyrebase.initialize_app(config)
 
         # db = firebase.database()
+<<<<<<< Updated upstream
         # DuLieu = db.child("User").get()
         # for x, y in DuLieu.val().items():
         #     self.listTime.insert(0,x)
@@ -61,6 +72,20 @@ class Client:
         # data1 = {'Time':self.listTime,'Heat':self.listHeat}
         # data2 = {'Time':self.listTime,'Humd':self.listHeat}
         # data3 = {'Time':self.listTime,'Earth':self.listHeat}
+=======
+        # DuLieu = db.child("2022-04-16").get()
+        # for x, y in DuLieu.val().items():
+        #     self.listTime.insert(0,x)
+        #     print(y)
+        #     self.listHeat.insert(0,y['Heat'])
+        #     self.listHumd.insert(0,y['Humd'])
+        #     self.listEarth.insert(0,y['Earth'])
+        # data1 = {'Time':self.listTime,'Heat':self.listHeat}
+        # data2 = {'Time':self.listTime,'Humd':self.listHumd}
+        # data3 = {'Time':self.listTime,'Earth':self.listEarth}
+        
+        # TEST
+>>>>>>> Stashed changes
         data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
          'Heat': [31,33,31,32,31,33,35,35,32,31,36,33,34,31,32]
         }
@@ -70,6 +95,10 @@ class Client:
         data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
          'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
         }
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
         df1 = DataFrame(data1,columns=['Time','Heat'])
         figure1 = plt.Figure(figsize=(6,5), dpi=100)
         ax1 = figure1.add_subplot(111)
@@ -100,24 +129,33 @@ class Client:
         
 
     def switch(self,a):
-        for frame in (self.page1, self.page2,self.page3,self.page4):
+        for frame in (self.page1, self.page2,self.page3,self.page4, self.pageUser):
             frame.pack(fill='both', expand=True)
         if a == 1:
             self.page2.pack_forget()
             self.page3.pack_forget()
             self.page4.pack_forget()
+            self.pageUser.pack_forget()
         elif a==2: 
             self.page1.pack_forget()
             self.page3.pack_forget()
             self.page4.pack_forget()
+            self.pageUser.pack_forget()
         elif a==3:
             self.page1.pack_forget()
             self.page2.pack_forget()
             self.page4.pack_forget()
+            self.pageUser.pack_forget()
+        elif a==4:
+            self.page1.pack_forget()
+            self.page2.pack_forget()
+            self.page3.pack_forget()
+            self.pageUser.pack_forget()
         else:
             self.page1.pack_forget()
             self.page2.pack_forget()
             self.page3.pack_forget()
+            self.page4.pack_forget()
             
     def update(self):
         AIO_USERNAME = "Airforce"
@@ -216,6 +254,43 @@ class Client:
         self.canvas2.create_text(120,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         return x
     
+    def createBox2(self):
+        x = {}
+        self.counter =self.counter+1
+        self.round_rectangle(self.canvasPageUser,100,0, 700, 300,fill="white")
+        self.gh = Image.open("image/Greenhouse1.png") 
+        self.gh = ImageTk.PhotoImage(self.gh.resize((690-110,170), Image.ANTIALIAS))
+        self.canvasPageUser.create_image(110,10, anchor=NW, image=self.gh)    
+        self.canvasPageUser.imageG = self.gh 
+        self.gh1 = Image.open("image/Drop.jpg")       
+        self.gh3 = Image.open("image/Sun.png") 
+        self.gh1 = ImageTk.PhotoImage(self.gh1.resize((50,50), Image.ANTIALIAS))
+        self.canvasPageUser.create_image(195,200, anchor=NW, image=self.gh1)    
+        self.canvasPageUser.imageG2 = self.gh1
+        
+        self.gh2 = Image.open("image/Temp.jpg") 
+        self.gh2 = ImageTk.PhotoImage(self.gh2.resize((50,50), Image.ANTIALIAS))
+        self.canvasPageUser.create_image(340,200, anchor=NW, image=self.gh2)    
+        self.canvasPageUser.imageG3 = self.gh2
+        
+        self.gh3 = ImageTk.PhotoImage(self.gh3.resize((50,50), Image.ANTIALIAS))
+        self.canvasPageUser.create_image(475,200, anchor=NW, image=self.gh3)    
+        self.canvasPageUser.imageG4 = self.gh3
+        
+        self.gh4 = Image.open("image/Wind.png") 
+        self.gh4 = ImageTk.PhotoImage(self.gh4.resize((50,50), Image.ANTIALIAS))
+        self.canvasPageUser.create_image(600,200, anchor=NW, image=self.gh4)    
+        self.canvasPageUser.imageG4 = self.gh4
+        
+        x["humid"]=self.canvasPageUser.create_text(195,250, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["temp"]=self.canvasPageUser.create_text(340,250, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["earth"]=self.canvasPageUser.create_text(475,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["led"]=self.canvasPageUser.create_text(600,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.round_rectangle(self.canvasPageUser,110,10, 300, 50,fill="green")
+        self.canvasPageUser.create_text(120,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        return x
+    
     def _on_mousewheel(self, event):
         self.canvas2.yview_scroll(int(-1*(event.delta/120)), "units")
 
@@ -233,7 +308,10 @@ class Client:
             self.username = inputtxt.get(1.0, "end-1c")
             self.pw = inputPW.get(1.0, "end-1c")
             self.trI = 1
+<<<<<<< Updated upstream
         
+=======
+>>>>>>> Stashed changes
         def checkInput(input1, input2, input):
             if input <= input2 and input >= input1: return 
             aver_input = (input1 + input2)/2
@@ -316,6 +394,8 @@ class Client:
             self.switch(4)
         def switchHome():
             self.switch(1)
+        def switchUser():
+            self.switch(5)
         def exit():
             self.master.destroy()
         def switchGraph1():
@@ -363,19 +443,19 @@ class Client:
         self.label2 = self.canvas.create_text(500,70, text="Thứ 3, Ngày 14 Tháng 2 Năm 2022", fill="white", font=('Helvetica 20 bold'))
         self.label21 = self.canvas.create_text(390,130, text="SUNNY", fill="white", font=('Helvetica 50 bold'))
     
-        self.round_rectangle(self.canvas,200, 190, 800, 350,fill="white")
-        self.label31 = self.canvas.create_text(225,230, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.label32 = self.canvas.create_text(410,230, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.label33 = self.canvas.create_text(605,230, text="Precipitation", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.humidity = self.canvas.create_text(245,300, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.temp = self.canvas.create_text(440,300, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.prep = self.canvas.create_text(625,300, text="0.5 cm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.round_rectangle(self.canvas, 300, 190, 800, 350,fill="white")
+        self.label31 = self.canvas.create_text(305,230, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.label32 = self.canvas.create_text(440,230, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.label33 = self.canvas.create_text(620,230, text="Precipitation", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.humidity = self.canvas.create_text(325,300, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.temp = self.canvas.create_text(500,300, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.prep = self.canvas.create_text(670,300, text="0.5 cm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
 
         # Page 2
         # data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
         #  'Heat': [45000,42000,52000,49000,47000,45000,42000,52000,49000,47000,45000,42000,52000,49000,47000]
         # }
-        self.canvasP2= Canvas(self.page2, bg='black', highlightthickness=0)
+        self.canvasP2= Canvas(self.page2, bg='#2b2b2b', highlightthickness=0)
         self.canvasP2.pack(fill='both', expand=True) 
         threading.Thread(target=self.updateGraph).start()
         # df1 = DataFrame(data1,columns=['Time','Heat'])
@@ -452,9 +532,61 @@ class Client:
         
         self.save1 = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=timeWatering)
         self.save1.place(x=650, y=600)
+<<<<<<< Updated upstream
         
        
         
+=======
+        
+        # Layout User
+        self.canvasPageUser= Canvas(self.pageUser, bg='#2b2b2b', highlightthickness=0)
+        self.canvasPageUser.pack(fill='both', expand=True) 
+        self.canvasPageUser.create_text(500,50, text="Cài đặt", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.canvasPageUser.create_text(70,150, text="Họ và tên: ", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.canvasPageUser.create_text(70,200, text="Dob: ", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.canvasPageUser.create_text(70,250, text="Giới tính: ", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.canvasPageUser.create_text(70,300, text="Địa chỉ: ", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasPageUser.create_text(70,350, text="Số điện thoại:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasPageUser.create_text(70,400, text="Gmail:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasPageUser.create_text(70,450, text="Username:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasPageUser.create_text(70,500, text="Password:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        inputFullName = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputFullName.place(x=350,y=150)
+        
+        inputDob = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputDob.place(x=350,y=200)
+        
+        inputSex = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputSex.place(x=350,y=250)
+        
+        inputAddress = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputAddress.place(x=350,y=300)
+        
+        inputPhone = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputPhone.place(x=350,y=350)
+        
+        inputGmail = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputGmail.place(x=350,y=400)
+        
+        inputusername = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputusername.place(x=350,y=450)
+        
+        inputPassword = Text(self.pageUser,height = 1,width = 20,font=('Helvetica 20 bold'))
+        inputPassword.place(x=350,y=500)
+        
+        self.save1 = Button(self.pageUser, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'))
+        self.save1.place(x=450, y=600)
+        
+        self.canvasPageUser.create_text(500,300, text="GLASSHOUSE:", fill="white", font=('Helvetica 20 bold'))
+        
+        self.box = self.createBox2()
+        # Layout Login
+>>>>>>> Stashed changes
         self.canvasP3= Canvas(self.page3, bg='#2b2b2b', highlightthickness=0)
         self.canvasP3.pack(fill='both', expand=True) 
         self.canvasP3.create_text(450,400, text="Username", fill="white", font=('Helvetica 20 bold'),anchor=NW)
@@ -462,6 +594,12 @@ class Client:
         self.login = Image.open("image/276156773_395766165713386_5796930991960104386_n.png") 
         self.login = ImageTk.PhotoImage(self.login.resize((250,100), Image.ANTIALIAS)) 
         self.master.imageL = self.login 
+        
+        self.logo = Image.open("image/277903344_390134799629988_4975759241260497395_n.png") 
+        self.logo = ImageTk.PhotoImage(self.logo.resize((450,300), Image.ANTIALIAS)) 
+        self.canvasP3.create_image(500,50, anchor=NW, image=self.logo) 
+        self.master.logo = self.logo 
+        
         inputtxt = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
         inputtxt.place(x=600,y=400)
         inputPW = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
@@ -489,6 +627,14 @@ class Client:
         self.buttq = ImageTk.PhotoImage(self.buttq.resize((80,100), Image.ANTIALIAS)) 
         self.master.image2 = self.buttq    
 
+<<<<<<< Updated upstream
+=======
+        self.canvasP2.create_image(350,750, anchor=NW, image=self.den)   
+        self.canvas.create_image(350,750, anchor=NW, image=self.den)    
+        self.canvasP4.create_image(350,750, anchor=NW, image=self.den)     
+        self.canvasPageUser.create_image(350,750, anchor=NW, image=self.den)     
+
+>>>>>>> Stashed changes
         self.home = Button(self.page2, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=switchHome)
         self.home.place(x=100, y=750)
@@ -498,6 +644,7 @@ class Client:
         self.option.place(x=300, y=750)
         
         self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+<<<<<<< Updated upstream
                             activebackground="black")
         self.user.place(x=500, y=750)
         
@@ -512,6 +659,40 @@ class Client:
         self.user = Button(self.page2, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=switchGraph3)
         self.user.place(x=1100, y=750)
+=======
+                            activebackground="black",borderwidth=0, command=switchUser)
+        self.user.place(x=900, y=770)
+        
+        self.imgTemp = Image.open("image/Temp.jpg") 
+        self.imgTemp = ImageTk.PhotoImage(self.imgTemp.resize((100,100), Image.ANTIALIAS)) 
+        self.master.imgTemp = self.imgTemp 
+        
+        self.canvasP2.create_text(500,700, text="Nhiệt độ", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.option = Button(self.page2, width=100, height = 100,image =self.imgTemp,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchGraph1,borderwidth=0)
+        self.option.place(x=500, y=600)
+        
+        self.imgHumd = Image.open("image/Drop.jpg") 
+        self.imgHumd = ImageTk.PhotoImage(self.imgHumd.resize((100,100), Image.ANTIALIAS)) 
+        self.master.imgHumd = self.imgHumd 
+        
+        self.canvasP2.create_text(640,700, text="Độ ẩm không khí", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.user = Button(self.page2, width=100, height = 100,image =self.imgHumd,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchGraph2,borderwidth=0)
+        self.user.place(x=700, y=600)
+        
+        self.canvasP2.create_text(880,700, text="Độ ẩm của đất", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        
+        self.imgEarth = Image.open("image/Wind.png") 
+        self.imgEarth = ImageTk.PhotoImage(self.imgEarth.resize((100,100), Image.ANTIALIAS)) 
+        self.master.imgEarth = self.imgEarth 
+        
+        self.user = Button(self.page2, width=100, height = 100,image =self.imgEarth,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchGraph3,borderwidth=0)
+        self.user.place(x=900, y=600)
+>>>>>>> Stashed changes
         
         
         
@@ -524,8 +705,25 @@ class Client:
         self.option.place(x=650, y=750)
         
         self.user = Button(self.page1, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+<<<<<<< Updated upstream
                             activebackground="black")
         self.user.place(x=850, y=750)
+=======
+                            activebackground="black",borderwidth=0, command=switchUser)
+        self.user.place(x=900, y=770)
+        
+        self.home = Button(self.pageUser, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchHome,borderwidth=0)
+        self.home.place(x=500, y=770)
+
+        self.option = Button(self.pageUser, width=100, height = 100,image =self.Button2,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchSetting,borderwidth=0)
+        self.option.place(x=700, y=770)
+        
+        self.user = Button(self.pageUser, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",borderwidth=0, command=switchUser)
+        self.user.place(x=900, y=770)
+>>>>>>> Stashed changes
         
         self.home = Button(self.page4, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=switchHome)
@@ -536,8 +734,13 @@ class Client:
         self.option.place(x=650, y=750)
         
         self.user = Button(self.page4, width=100, height = 100,image =self.Button3,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+<<<<<<< Updated upstream
                             activebackground="black")
         self.user.place(x=850, y=750)
+=======
+                            activebackground="black",borderwidth=0, command=switchUser)
+        self.user.place(x=900, y=770)
+>>>>>>> Stashed changes
         
         self.quit = Button(self.master, width=100, height = 100,image =self.buttq,highlightthickness=0,bg='black', fg='black', activeforeground="black",
                             activebackground="black",command=exit)
