@@ -236,38 +236,38 @@ class Client:
     def createBox2(self):
         x = {}
         self.counter =self.counter+1
-        self.round_rectangle(self.canvasPageUser,100,0, 700, 300,fill="white")
+        self.round_rectangle(self.canvasPageUser,700,0, 1300, 300,fill="white")
         self.gh = Image.open("image/Greenhouse1.png") 
         self.gh = ImageTk.PhotoImage(self.gh.resize((690-110,170), Image.ANTIALIAS))
-        self.canvasPageUser.create_image(110,10, anchor=NW, image=self.gh)    
+        self.canvasPageUser.create_image(710,10, anchor=NW, image=self.gh)    
         self.canvasPageUser.imageG = self.gh 
         self.gh1 = Image.open("image/Drop.jpg")       
         self.gh3 = Image.open("image/Sun.png") 
         self.gh1 = ImageTk.PhotoImage(self.gh1.resize((50,50), Image.ANTIALIAS))
-        self.canvasPageUser.create_image(195,200, anchor=NW, image=self.gh1)    
+        self.canvasPageUser.create_image(795,200, anchor=NW, image=self.gh1)    
         self.canvasPageUser.imageG2 = self.gh1
         
         self.gh2 = Image.open("image/Temp.jpg") 
         self.gh2 = ImageTk.PhotoImage(self.gh2.resize((50,50), Image.ANTIALIAS))
-        self.canvasPageUser.create_image(340,200, anchor=NW, image=self.gh2)    
+        self.canvasPageUser.create_image(940,200, anchor=NW, image=self.gh2)    
         self.canvasPageUser.imageG3 = self.gh2
         
         self.gh3 = ImageTk.PhotoImage(self.gh3.resize((50,50), Image.ANTIALIAS))
-        self.canvasPageUser.create_image(475,200, anchor=NW, image=self.gh3)    
+        self.canvasPageUser.create_image(1075,200, anchor=NW, image=self.gh3)    
         self.canvasPageUser.imageG4 = self.gh3
         
         self.gh4 = Image.open("image/Wind.png") 
         self.gh4 = ImageTk.PhotoImage(self.gh4.resize((50,50), Image.ANTIALIAS))
-        self.canvasPageUser.create_image(600,200, anchor=NW, image=self.gh4)    
+        self.canvasPageUser.create_image(1200,200, anchor=NW, image=self.gh4)    
         self.canvasPageUser.imageG4 = self.gh4
         
-        x["humid"]=self.canvasPageUser.create_text(195,250, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        x["temp"]=self.canvasPageUser.create_text(340,250, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        x["earth"]=self.canvasPageUser.create_text(475,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        x["led"]=self.canvasPageUser.create_text(600,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["humid"]=self.canvasPageUser.create_text(795,250, text="59%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["temp"]=self.canvasPageUser.create_text(940,250, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["earth"]=self.canvasPageUser.create_text(1075,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        x["led"]=self.canvasPageUser.create_text(1200,250, text="off", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
-        self.round_rectangle(self.canvasPageUser,110,10, 300, 50,fill="green")
-        self.canvasPageUser.create_text(120,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.round_rectangle(self.canvasPageUser,710,10, 900, 50,fill="green")
+        self.canvasPageUser.create_text(720,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         return x
     
     def handleAutoWatering(self):
@@ -513,7 +513,7 @@ class Client:
         # Layout User
         self.canvasPageUser= Canvas(self.pageUser, bg='black', highlightthickness=0)
         self.canvasPageUser.pack(fill='both', expand=True) 
-        self.canvasPageUser.create_text(500,50, text="Cài đặt", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasPageUser.create_text(400,50, text="Cài đặt", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         
         self.canvasPageUser.create_text(70,150, text="Họ và tên: ", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         
@@ -554,7 +554,7 @@ class Client:
         self.save1 = Button(self.pageUser, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'))
         self.save1.place(x=450, y=600)
         
-        self.canvasPageUser.create_text(500,300, text="GLASSHOUSE:", fill="white", font=('Helvetica 20 bold'))
+        # self.canvasPageUser.create_text(1000,300, text="GLASSHOUSE:", fill="white", font=('Helvetica 20 bold'))
         
         self.box = self.createBox2()
         # Layout Login
