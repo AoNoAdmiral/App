@@ -1,4 +1,3 @@
-from http import client
 from tkinter import *
 import sys
 from tkinter import ttk
@@ -8,12 +7,12 @@ from turtle import color
 from PIL import Image, ImageTk
 from tkinter import PhotoImage
 import threading
-# from Adafruit_IO import MQTTClient
+from Adafruit_IO import MQTTClient
 import time
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-# import pyrebase
+import pyrebase
 
 class Client:
 
@@ -40,55 +39,47 @@ class Client:
         threading.Thread(target=self.update).start()
     
     def updateGraph(self):
-        # config = {
-        #     "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
-        #     "authDomain": "chill-2ddd1.firebaseapp.com",
-        #     "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
-        #     "projectId": "chill-2ddd1",
-        #     "storageBucket": "chill-2ddd1.appspot.com",
-        #     "messagingSenderId": "62414238957",
-        #     "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
-        #     "measurementId": "G-ZG9Z0XL8MW"
-        # }       
-        # firebase = pyrebase.initialize_app(config)
+        config = {
+            "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+            "authDomain": "chill-2ddd1.firebaseapp.com",
+            "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+            "projectId": "chill-2ddd1",
+            "storageBucket": "chill-2ddd1.appspot.com",
+            "messagingSenderId": "62414238957",
+            "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+            "measurementId": "G-ZG9Z0XL8MW"
+        }       
+        firebase = pyrebase.initialize_app(config)
 
-        # db = firebase.database()
-        # DuLieu = db.child("User").get()
-        # for x, y in DuLieu.val().items():
-        #     self.listTime.insert(0,x)
-        #     self.listHeat.insert(0,y['Temp'])
-        #     self.listHumd.insert(0,y['Humid'])
-        #     self.listEarth.insert(0,y['Ground'])
-        # data1 = {'Time':self.listTime,'Heat':self.listHeat}
-        # data2 = {'Time':self.listTime,'Humd':self.listHeat}
-        # data3 = {'Time':self.listTime,'Earth':self.listHeat}
-        # DuLieu = db.child("2022-04-16").get()
-        # for x, y in DuLieu.val().items():
-        #     self.listTime.insert(0,x)
-        #     print(y)
-        #     self.listHeat.insert(0,y['Heat'])
-        #     self.listHumd.insert(0,y['Humd'])
-        #     self.listEarth.insert(0,y['Earth'])
-        # data1 = {'Time':self.listTime,'Heat':self.listHeat}
-        # data2 = {'Time':self.listTime,'Humd':self.listHumd}
-        # data3 = {'Time':self.listTime,'Earth':self.listEarth}
+        db = firebase.database()
+        DuLieu = db.child("2022-04-16").get()
+        for x, y in DuLieu.val().items():
+            self.listTime.insert(0,x)
+            print(y)
+            self.listHeat.insert(0,y['Heat'])
+            self.listHumd.insert(0,y['Humd'])
+            self.listEarth.insert(0,y['Earth'])
+        data1 = {'Time':self.listTime,'Heat':self.listHeat}
+        data2 = {'Time':self.listTime,'Humd':self.listHumd}
+        data3 = {'Time':self.listTime,'Earth':self.listEarth}
         
         # TEST
-        data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-         'Heat': [31,33,31,32,31,33,35,35,32,31,36,33,34,31,32]
-        }
-        data2 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-         'Humd': [80,85,83,81,84,89,86,87,81,80,82,82,85,80,83]
-        }
-        data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-         'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
-        }
+        # data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+        #  'Heat': [31,33,31,32,31,33,35,35,32,31,36,33,34,31,32]
+        # }
+        # data2 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+        #  'Humd': [80,85,83,81,84,89,86,87,81,80,82,82,85,80,83]
+        # }
+        # data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+        #  'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
+        # }
         
         df1 = DataFrame(data1,columns=['Time','Heat'])
         figure1 = plt.Figure(figsize=(6,5), dpi=100)
         ax1 = figure1.add_subplot(111)
+        ax1.set_ylim(10,60)
         self.bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
-        self.bar1.get_tk_widget().place(x=400,y=10)
+        self.bar1.get_tk_widget().place(x=450,y=10)
         df1 = df1[['Time','Heat']].groupby('Time').sum()
         df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
         ax1.set_title('Recorded temperature')
@@ -96,17 +87,20 @@ class Client:
         df2 = DataFrame(data2,columns=['Time','Humd'])
         figure2 = plt.Figure(figsize=(6,5), dpi=100)
         ax2 = figure2.add_subplot(111)
+        ax2.set_ylim(30,80)
         self.bar2 = FigureCanvasTkAgg(figure2, self.canvasP2)
-        self.bar2.get_tk_widget().place(x=400,y=10)
+        self.bar2.get_tk_widget().place(x=450,y=10)
         df2 = df2[['Time','Humd']].groupby('Time').sum()
         df2.plot(kind='line', legend=True, ax=ax2, color='r',marker='o', fontsize=10)
+        
         ax2.set_title('Recorded air humidity')
         self.bar2.get_tk_widget().place(x=-1000,y=-1000)
         df3 = DataFrame(data3,columns=['Time','Earth'])
         figure3 = plt.Figure(figsize=(6,5), dpi=100)
         ax3 = figure3.add_subplot(111)
+        ax3.set_ylim(20,70)
         self.bar3 = FigureCanvasTkAgg(figure3, self.canvasP2)
-        self.bar3.get_tk_widget().place(x=400,y=10)
+        self.bar3.get_tk_widget().place(x=450,y=10)
         df3 = df3[['Time','Earth']].groupby('Time').sum()
         df3.plot(kind='line', legend=True, ax=ax3, color='r',marker='o', fontsize=10)
         ax3.set_title('Recorded earth humidity')
@@ -356,27 +350,23 @@ class Client:
             if input <= input2 and input >= input1: return 
             aver_input = (input1 + input2)/2
             if (abs(aver_input - input) > 2):
-                client.publish("Watering",1)
+                print("Tuoi nuoc trong vong 5ph")
             elif (abs(aver_input - input) > 5):
-                client.publish("Watering",1)
+                print("Tuoi nuoc trong vong 10ph")
             else:
-                client.publish("Watering",1)
+                print("Canh bao den nguoi dung!!!")
             
         
             
         def timeWatering():
             self.time1 = inputHour1.get(1.0, "end-1c")
             self.time2 = inputHour2.get(1.0, "end-1c")
-            h1 = self.time1[0]
-            m1 = self.time1[1]
-            
-            h2 = self.time2[0]
-            m2 = self.time2[1]
-            
+            (h1, m1) = handleInputTime(self.time1, len(self.time1))
+            (h2, m2) = handleInputTime(self.time2, len(self.time2))
             hour_realtime = 6
             minus_realtime = 0
             if (hour_realtime == int(h1) and minus_realtime == int(m1)) or (hour_realtime == int(h2) and minus_realtime == int(m2)):
-                client.publish("Watering",1)
+                print("Tuoi nuoc")
         def switchSetting():
             self.switch(4)
         def switchHome():
@@ -455,25 +445,25 @@ class Client:
         # ax1.set_title('Country Vs. GDP Per Capita')
         # bar1.get_tk_widget().place(x=-1000,y=-1000)
 
-        self.round_rectangle(self.canvasP2,40,100, 240, 300,fill="white")
-        self.round_rectangle(self.canvasP2,40,400, 240, 600,fill="white")
+        self.round_rectangle(self.canvasP2,140,100, 340, 300,fill="white")
+        self.round_rectangle(self.canvasP2,140,400, 340, 600,fill="white")
         self.round_rectangle(self.canvasP2,1140,100, 1340, 300,fill="white")
         self.round_rectangle(self.canvasP2,1140,400, 1340, 600,fill="white")
         
-        self.canvasP2.create_text(68,200, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(68,500, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,200, text="Humidity", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,500, text="Temperature", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,200, text="Lightning", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,500, text="CO2", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         
-        self.canvasP2.create_text(68,250, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP2.create_text(68,550, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,250, text="50%", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP2.create_text(168,550, text="30oC", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,250, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP2.create_text(1168,550, text="on", fill="black", font=('Helvetica 20 bold'),anchor=NW)
   
-        self.canvasP2.create_image(68,120, anchor=NW, image=self.gh1)    
+        self.canvasP2.create_image(168,120, anchor=NW, image=self.gh1)    
         self.canvasP2.imageG2 = self.gh1
 
-        self.canvasP2.create_image(68,420, anchor=NW, image=self.gh2)    
+        self.canvasP2.create_image(168,420, anchor=NW, image=self.gh2)    
         self.canvasP2.imageG3 = self.gh2
 
         self.canvasP2.create_image(1168,120, anchor=NW, image=self.gh3)    
@@ -507,18 +497,18 @@ class Client:
         self.save = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=self.handleAutoWatering)
         self.save.place(x=650, y=300)
         
-        self.canvasP4.create_text(300,430, text="Cài đặt giờ tự động tưới nước (Vui lòng nhập theo dạng hh:mm)", fill="white", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP4.create_text(150,500, text="Giờ tưới lần thứ 1:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP4.create_text(150,550, text="Giờ tưới lần thứ 2:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP4.create_text(50,500, text="Cài đặt giờ tự động tưới nước (Vui lòng nhập theo dạng hh:mm)", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP4.create_text(50,550, text="Giờ tưới lần thứ 1:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP4.create_text(50,600, text="Giờ tưới lần thứ 2:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         
         inputHour1 = Text(self.page4,height = 1,width = 20,font=('Helvetica 20 bold'))
-        inputHour1.place(x=550,y=500)
+        inputHour1.place(x=800,y=550)
         
         inputHour2 = Text(self.page4,height = 1,width = 20,font=('Helvetica 20 bold'))
-        inputHour2.place(x=550,y=550)
+        inputHour2.place(x=800,y=600)
         
         self.save1 = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=timeWatering)
-        self.save1.place(x=650, y=600)
+        self.save1.place(x=650, y=650)
         
         # Layout User
         self.canvasPageUser= Canvas(self.pageUser, bg='black', highlightthickness=0)
@@ -586,10 +576,8 @@ class Client:
         inputPW = Text(self.page3,height = 1,width = 20,font=('Helvetica 20 bold'))
         inputPW.place(x=600,y=500)
         self.login = Button(self.page3, width=250, height = 100,image =self.login,highlightthickness=0,bg='black', fg='black', activeforeground="black",
-                            activebackground="black",text="LOGIN",command=connect)
+                            activebackground="black",text="LOGIN",command=connect,borderwidth=0)
         self.login.place(x=600, y=600)
-        
-        
         # Bottom bar
         self.den = Image.open("image/Den.png") 
         self.den = ImageTk.PhotoImage(self.den.resize((800,200), Image.ANTIALIAS))
@@ -701,4 +689,4 @@ class Client:
                             activebackground="black",command=exit,borderwidth=0)
         self.quit.place(x=1400, y=50)
 
-        
+
