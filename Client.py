@@ -7,12 +7,12 @@ from turtle import color
 from PIL import Image, ImageTk
 from tkinter import PhotoImage
 import threading
-from Adafruit_IO import MQTTClient
+# from Adafruit_IO import MQTTClient
 import time
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import pyrebase
+# import pyrebase
 
 class Client:
 
@@ -38,40 +38,40 @@ class Client:
         threading.Thread(target=self.update).start()
     
     def updateGraph(self):
-        config = {
-            "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
-            "authDomain": "chill-2ddd1.firebaseapp.com",
-            "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
-            "projectId": "chill-2ddd1",
-            "storageBucket": "chill-2ddd1.appspot.com",
-            "messagingSenderId": "62414238957",
-            "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
-            "measurementId": "G-ZG9Z0XL8MW"
-        }       
-        firebase = pyrebase.initialize_app(config)
+        # config = {
+        #     "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+        #     "authDomain": "chill-2ddd1.firebaseapp.com",
+        #     "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+        #     "projectId": "chill-2ddd1",
+        #     "storageBucket": "chill-2ddd1.appspot.com",
+        #     "messagingSenderId": "62414238957",
+        #     "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+        #     "measurementId": "G-ZG9Z0XL8MW"
+        # }       
+        # firebase = pyrebase.initialize_app(config)
 
-        db = firebase.database()
-        DuLieu = db.child("2022-04-17").get()
-        for x, y in DuLieu.val().items():
-            self.listTime.insert(0,x)
-            print(y)
-            self.listHeat.insert(0,y['Heat'])
-            self.listHumd.insert(0,y['Humd'])
-            self.listEarth.insert(0,y['Earth'])
-        data1 = {'Time':self.listTime,'Heat':self.listHeat}
-        data2 = {'Time':self.listTime,'Humd':self.listHumd}
-        data3 = {'Time':self.listTime,'Earth':self.listEarth}
+        # db = firebase.database()
+        # DuLieu = db.child("2022-04-17").get()
+        # for x, y in DuLieu.val().items():
+        #     self.listTime.insert(0,x)
+        #     print(y)
+        #     self.listHeat.insert(0,y['Heat'])
+        #     self.listHumd.insert(0,y['Humd'])
+        #     self.listEarth.insert(0,y['Earth'])
+        # data1 = {'Time':self.listTime,'Heat':self.listHeat}
+        # data2 = {'Time':self.listTime,'Humd':self.listHumd}
+        # data3 = {'Time':self.listTime,'Earth':self.listEarth}
         
         # TEST
-        # data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-        #  'Heat': [31,33,31,32,31,33,35,35,32,31,36,33,34,31,32]
-        # }
-        # data2 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-        #  'Humd': [80,85,83,81,84,89,86,87,81,80,82,82,85,80,83]
-        # }
-        # data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-        #  'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
-        # }
+        data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+         'Heat': [31,33,31,32,31,33,35,35,32,31,36,33,34,31,32]
+        }
+        data2 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+         'Humd': [80,85,83,81,84,89,86,87,81,80,82,82,85,80,83]
+        }
+        data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
+         'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
+        }
         
         df1 = DataFrame(data1,columns=['Time','Heat'])
         figure1 = plt.Figure(figsize=(6,5), dpi=100)
