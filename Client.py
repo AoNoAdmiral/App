@@ -443,6 +443,14 @@ class Client:
         self.save1 = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=timeWatering)
         self.save1.place(x=650, y=650)
         
+        self.Button1 = Image.open("image/Home.png") 
+        self.Button1 = ImageTk.PhotoImage(self.Button1.resize((80,100), Image.ANTIALIAS)) 
+        self.master.image = self.Button1 
+        
+        self.home1 = Button(self.page4, width=100, height = 100,image =self.Button1,highlightthickness=0,bg='black', fg='black', activeforeground="black",
+                            activebackground="black",command=switchHome)
+        self.home1.place(x=300, y=700)
+        
         
         self.canvasP3= Canvas(self.page3, bg='black', highlightthickness=0)
         self.canvasP3.pack(fill='both', expand=True) 
@@ -463,9 +471,8 @@ class Client:
         self.den = ImageTk.PhotoImage(self.den.resize((800,200), Image.ANTIALIAS))
         self.master.den = self.den
         
-        self.Button1 = Image.open("image/Home.png") 
-        self.Button1 = ImageTk.PhotoImage(self.Button1.resize((80,100), Image.ANTIALIAS)) 
-        self.master.image = self.Button1 
+        
+        
         
         self.Button2 = Image.open("image/Setting.png") 
         self.Button2 = ImageTk.PhotoImage(self.Button2.resize((80,100), Image.ANTIALIAS)) 
