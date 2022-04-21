@@ -162,7 +162,6 @@ class Client:
         client . loop_background ()
         while True:
             time . sleep (30)
-            client.pp
       
     def round_rectangle(self,canvas,x1, y1, x2, y2, radius=25, **kwargs):      
         points = [x1+radius, y1,
