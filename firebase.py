@@ -50,8 +50,8 @@ db = firebase.database()
 
 # upload_db()
 
-data = {"Heat":31, "Humd": 55, "Earth": 45}
-db.child("2022-04-16").child('7-00').set(data)
+data = {"Heat":33, "Humd": 52, "Earth": 46}
+db.child("2022-04-16").child('9-00').set(data)
 db.push(data)
 
 DuLieu = db.child("2022-04-16").get()
