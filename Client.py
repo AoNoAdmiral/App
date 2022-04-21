@@ -51,15 +51,16 @@ class Client:
         firebase = pyrebase.initialize_app(config)
 
         db = firebase.database()
-        DuLieu = db.child("Minute").get()
+        DuLieu = db.child("2022-04-17").get()
         for x, y in DuLieu.val().items():
             self.listTime.insert(0,x)
+            print(y)
             self.listHeat.insert(0,y['Heat'])
             self.listHumd.insert(0,y['Humd'])
             self.listEarth.insert(0,y['Earth'])
         data1 = {'Time':self.listTime,'Heat':self.listHeat}
-        data2 = {'Time':self.listTime,'Humd':self.listHeat}
-        data3 = {'Time':self.listTime,'Earth':self.listHeat}
+        data2 = {'Time':self.listTime,'Humd':self.listHumd}
+        data3 = {'Time':self.listTime,'Earth':self.listEarth}
         
         # TEST
         # data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
@@ -71,9 +72,11 @@ class Client:
         # data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
         #  'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
         # }
+        
         df1 = DataFrame(data1,columns=['Time','Heat'])
         figure1 = plt.Figure(figsize=(6,5), dpi=100)
         ax1 = figure1.add_subplot(111)
+        ax1.set_ylim(20,80)
         self.bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
         self.bar1.get_tk_widget().place(x=450,y=10)
         df1 = df1[['Time','Heat']].groupby('Time').sum()
@@ -83,15 +86,18 @@ class Client:
         df2 = DataFrame(data2,columns=['Time','Humd'])
         figure2 = plt.Figure(figsize=(6,5), dpi=100)
         ax2 = figure2.add_subplot(111)
+        ax2.set_ylim(20,80)
         self.bar2 = FigureCanvasTkAgg(figure2, self.canvasP2)
         self.bar2.get_tk_widget().place(x=450,y=10)
         df2 = df2[['Time','Humd']].groupby('Time').sum()
         df2.plot(kind='line', legend=True, ax=ax2, color='r',marker='o', fontsize=10)
+        
         ax2.set_title('Recorded air humidity')
         self.bar2.get_tk_widget().place(x=-1000,y=-1000)
         df3 = DataFrame(data3,columns=['Time','Earth'])
         figure3 = plt.Figure(figsize=(6,5), dpi=100)
         ax3 = figure3.add_subplot(111)
+        ax3.set_ylim(20,80)
         self.bar3 = FigureCanvasTkAgg(figure3, self.canvasP2)
         self.bar3.get_tk_widget().place(x=450,y=10)
         df3 = df3[['Time','Earth']].groupby('Time').sum()
@@ -156,6 +162,7 @@ class Client:
         client . loop_background ()
         while True:
             time . sleep (30)
+            client.pp
       
     def round_rectangle(self,canvas,x1, y1, x2, y2, radius=25, **kwargs):      
         points = [x1+radius, y1,

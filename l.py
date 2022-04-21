@@ -104,6 +104,9 @@ def message ( client , feed_id , payload ):
         ConditionalHumd = payload
     if feed_id=="ConditionalEarth":
         ConditionalEarth = payload
+    if feed_id=="Watering":
+        if payload == 1:
+           ser.write(("A#").encode()) 
 
 client = MQTTClient ( AIO_USERNAME , AIO_KEY )
 client . on_connect = connected
