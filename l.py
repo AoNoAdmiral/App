@@ -23,10 +23,10 @@ config = {
 def update():
     while True:
         time.sleep(100)
-        mark = str(datetime.now().hour)+":"+str(datetime.now().minute)
+        mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
         data= {"Heat":Heat, "Humd": Humd, "Earth": Earth}
         db.push(data)
-        db.child("Minute").child(str(datetime.now().date())).child(mark).set(data)
+        db.child("Minute").child(mark).set(data)
         time.sleep(60)
         
 def update2():
@@ -104,6 +104,13 @@ def message ( client , feed_id , payload ):
         ConditionalHumd = payload
     if feed_id=="ConditionalEarth":
         ConditionalEarth = payload
+    if feed_id == "Watering":
+        if payload == 1:
+            ser.write(("A#").encode()) 
+            client.publish("Watering",1) 
+        if payload == 2:
+            ser.write(("B#").encode()) 
+            client.publish("Watering",1)
 
 client = MQTTClient ( AIO_USERNAME , AIO_KEY )
 client . on_connect = connected
@@ -133,19 +140,15 @@ while True :
     readSerial()
     time . sleep (30)
     if Heat>ConditionalHeat:
-        ser.write(("A#").encode()) 
         client.publish("Watering",1) 
     elif Heat<ConditionalHeat-5:
         ser.write(("B#").encode()) 
         client.publish("Watering",1) 
     elif Humd<ConditionalHumd:
-        ser.write(("A#").encode())
         client.publish("Watering",1)  
     elif Earth<ConditionalEarth:
-        ser.write(("A#").encode()) 
         client.publish("Watering",1) 
     elif Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
-        ser.write(("A#").encode()) 
         client.publish("Watering",1) 
     elif Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
         ser.write(("A#").encode()) 
