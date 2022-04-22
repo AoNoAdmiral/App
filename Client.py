@@ -7,7 +7,7 @@ from turtle import color
 from PIL import Image, ImageTk
 from tkinter import PhotoImage
 import threading
-from Adafruit_IO import MQTTclient
+from Adafruit_IO import MQTTClient
 import time
 from pandas import DataFrame
 import matplotlib.pyplot as plt
