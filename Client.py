@@ -7,12 +7,14 @@ from turtle import color
 from PIL import Image, ImageTk
 from tkinter import PhotoImage
 import threading
-from Adafruit_IO import MQTTClient
+# from Adafruit_IO import MQTTClient
 import time
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import pyrebase
+# import pyrebase
+from datetime import datetime
+import re
 
 class Client:
 
@@ -242,7 +244,7 @@ class Client:
         self.canvasPageUser.create_image(110,10, anchor=NW, image=self.gh)    
         self.canvasPageUser.imageG = self.gh 
         self.gh1 = Image.open("image/Drop.jpg")       
-        self.gh3 = Image.open("image/Sun.png") 
+        self.gh32 = Image.open("image/Sun.png") 
         self.gh1 = ImageTk.PhotoImage(self.gh1.resize((50,50), Image.ANTIALIAS))
         self.canvasPageUser.create_image(195,200, anchor=NW, image=self.gh1)    
         self.canvasPageUser.imageG2 = self.gh1
@@ -252,9 +254,15 @@ class Client:
         self.canvasPageUser.create_image(340,200, anchor=NW, image=self.gh2)    
         self.canvasPageUser.imageG3 = self.gh2
         
+<<<<<<< Updated upstream
         self.gh3 = ImageTk.PhotoImage(self.gh3.resize((50,50), Image.ANTIALIAS))
         self.canvasPageUser.create_image(475,200, anchor=NW, image=self.gh3)    
         self.canvasPageUser.imageG4 = self.gh3
+=======
+        self.gh32 = ImageTk.PhotoImage(self.gh32.resize((50,50), Image.ANTIALIAS))
+        self.canvasPageUser.create_image(1075,200, anchor=NW, image=self.gh32)    
+        self.canvasPageUser.imageG4 = self.gh32
+>>>>>>> Stashed changes
         
         self.gh4 = Image.open("image/Wind.png") 
         self.gh4 = ImageTk.PhotoImage(self.gh4.resize((50,50), Image.ANTIALIAS))
@@ -270,64 +278,7 @@ class Client:
         self.canvasPageUser.create_text(120,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         return x
     
-    def handleAutoWatering(self):
-            self.txtTemp = self.canvasP4.create_text(900,150,text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-            self.txtHumd = self.canvasP4.create_text(900,200, text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-            self.txtEarth = self.canvasP4.create_text(900,250, text="Vui lòng nhập thông tin độ ẩm của đất", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-            self.temperature = self.inputTemperature.get(1.0, "end-1c")
-            self.humidity = self.inputDoamKK.get(1.0, "end-1c")
-            self.earth = self.inputDoamdat.get(1.0, "end-1c")
-            if self.temperature:
-                self.canvasP4.itemconfig(self.txtTemp ,fill="black")
-            else:
-                self.canvasP4.itemconfig(self.txtTemp ,fill="#8b0000")
-                
-            if self.humidity:
-                self.canvasP4.itemconfig(self.txtHumd ,fill="black")
-            else:
-                self.canvasP4.itemconfig(self.txtHumd ,fill="#8b0000")
-                
-                
-            if self.earth:
-                self.canvasP4.itemconfig(self.txtEarth ,fill="black")
-            else:
-                self.canvasP4.itemconfig(self.txtEarth ,fill="#8b0000")
-                
-                
-            # if (len(self.humidity) != 0 and len(self.earth) != 0 and len(self.temperature) != 0):
-            #     temperature = self.temperature.split('-')
-            #     temperature1 = temperature[0]
-            #     temperature2 = temperature[1]
-                
-            #     humidity = self.humidity.split('-')
-            #     humidity1 = humidity[0]
-            #     humidity2 = humidity[1]
-            #     earth = self.earth.split('-')
-            #     earth1 = earth[0]
-            #     earth2 = earth[1]
-                
-            #     config = {
-            #         "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
-            #         "authDomain": "chill-2ddd1.firebaseapp.com",
-            #         "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
-            #         "projectId": "chill-2ddd1",
-            #         "storageBucket": "chill-2ddd1.appspot.com",
-            #         "messagingSenderId": "62414238957",
-            #         "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
-            #         "measurementId": "G-ZG9Z0XL8MW"
-            #     }       
-            #     firebase = pyrebase.initialize_app(config)
-
-            #     db = firebase.database()
-            #     DuLieu = db.child("User").get()
-                
-            #     realtime_temperature =  DuLieu['Temp'][-1]
-            #     realtime_humidity = DuLieu['Humid'][-1]
-            #     realtime_earth = DuLieu['Ground'][-1]
-                
-            #     checkInput(int(temperature1),int(temperature2), realtime_temperature)
-            #     checkInput(int(humidity1),int(humidity2), realtime_humidity)
-            #     checkInput(int(earth1),int(earth2), realtime_earth)
+    
     
     def _on_mousewheel(self, event):
         self.canvas2.yview_scroll(int(-1*(event.delta/120)), "units")
@@ -346,27 +297,136 @@ class Client:
             self.username = inputtxt.get(1.0, "end-1c")
             self.pw = inputPW.get(1.0, "end-1c")
             self.trI = 1
+            
         def checkInput(input1, input2, input):
             if input <= input2 and input >= input1: return 
             aver_input = (input1 + input2)/2
             if (abs(aver_input - input) > 2):
-                print("Tuoi nuoc trong vong 5ph")
-            elif (abs(aver_input - input) > 5):
-                print("Tuoi nuoc trong vong 10ph")
+                client.publish("Watering",1) 
             else:
-                print("Canh bao den nguoi dung!!!")
-            
-        
-            
+                client.publish("Watering",2) 
+                
+        def checkFormatInput(test):
+            pat = re.compile(r"[0-9]+")
+  
+            # Checks whether the whole string matches the re.pattern or not
+            if not re.fullmatch(pat, test):
+                return False
+            return True
+                
         def timeWatering():
+            self.txtTime1 = self.canvasP4.create_text(900,550,text="Vui lòng nhập giờ tự động tưới", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+            self.txtTime2 = self.canvasP4.create_text(900,600,text="Vui lòng nhập giờ tự động tưới", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+            
             self.time1 = inputHour1.get(1.0, "end-1c")
             self.time2 = inputHour2.get(1.0, "end-1c")
-            (h1, m1) = handleInputTime(self.time1, len(self.time1))
-            (h2, m2) = handleInputTime(self.time2, len(self.time2))
-            hour_realtime = 6
-            minus_realtime = 0
-            if (hour_realtime == int(h1) and minus_realtime == int(m1)) or (hour_realtime == int(h2) and minus_realtime == int(m2)):
-                print("Tuoi nuoc")
+            if self.time1:
+                self.canvasP4.itemconfig(self.txtTime1 ,fill="black")
+            else:
+                self.canvasP4.itemconfig(self.txtTime1 ,fill="#8b0000")
+            if self.time2:
+                self.canvasP4.itemconfig(self.txtTime2 ,fill="black")
+            else:
+                self.canvasP4.itemconfig(self.txtTime2 ,fill="#8b0000")
+            
+            if self.time1 and self.time2:
+                h1 = self.time1.split(':')[0]
+                m1 = self.time1.split(':')[1]
+                h2 = self.time2.split(':')[0]
+                m2 = self.time2.split(':')[1]
+                if checkFormatInput(h1) and checkFormatInput(m1):
+                    self.canvasP4.itemconfig(self.txtTime1 ,fill="black")
+                else:
+                    self.canvasP4.itemconfig(self.txtTime1, text="Vui lòng nhập đúng định dạng")
+                    self.canvasP4.itemconfig(self.txtTime1 ,fill="#8b0000")
+                    
+                if checkFormatInput(h2) and checkFormatInput(m2):
+                    self.canvasP4.itemconfig(self.txtTime2 ,fill="black")
+                else:
+                    self.canvasP4.itemconfig(self.txtTime2, text="Vui lòng nhập đúng định dạng")
+                    self.canvasP4.itemconfig(self.txtTime2 ,fill="#8b0000")
+                    
+                now = datetime.now()
+                if (now.hour == int(h1) and now.minute == int(m1)) or (now.hour == int(h2) and now.minute == int(m2)):
+                    print("Tuoi nuoc")
+                    client.publish("Watering",1) 
+                    
+        def handleAutoWatering():
+            self.txtTemp = self.canvasP4.create_text(900,150,text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+            self.txtHumd = self.canvasP4.create_text(900,200, text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+            self.txtEarth = self.canvasP4.create_text(900,250, text="Vui lòng nhập thông tin độ ẩm của đất", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+            self.temperature = self.inputTemperature.get(1.0, "end-1c")
+            self.humidity = self.inputDoamKK.get(1.0, "end-1c")
+            self.earth = self.inputDoamdat.get(1.0, "end-1c")
+            if self.temperature:
+                self.canvasP4.itemconfig(self.txtTemp ,fill="black")
+            else:
+                self.canvasP4.itemconfig(self.txtTemp ,fill="#8b0000")
+                
+            if self.humidity:
+                self.canvasP4.itemconfig(self.txtHumd ,fill="black")
+            else:
+                self.canvasP4.itemconfig(self.txtHumd ,fill="#8b0000")
+                
+            if self.earth:
+                self.canvasP4.itemconfig(self.txtEarth ,fill="black")
+            else:
+                self.canvasP4.itemconfig(self.txtEarth ,fill="#8b0000")
+                
+            if (len(self.humidity) != 0 and len(self.earth) != 0 and len(self.temperature) != 0):
+                temperature = self.temperature.split('-')
+                temperature1 = temperature[0]
+                temperature2 = temperature[1]
+                
+                if checkFormatInput(temperature1) and checkFormatInput(temperature2):
+                    self.canvasP4.itemconfig(self.txtTemp ,fill="black")
+                else:
+                    self.canvasP4.itemconfig(self.txtTemp, text="Vui lòng nhập đúng định dạng")
+                    self.canvasP4.itemconfig(self.txtTemp ,fill="#8b0000")
+                
+                humidity = self.humidity.split('-')
+                humidity1 = humidity[0]
+                humidity2 = humidity[1]
+                
+                if checkFormatInput(humidity1) and checkFormatInput(humidity2):
+                    self.canvasP4.itemconfig(self.txtHumd ,fill="black")
+                else:
+                    self.canvasP4.itemconfig(self.txtHumd, text="Vui lòng nhập đúng định dạng")
+                    self.canvasP4.itemconfig(self.txtHumd ,fill="#8b0000")
+                    
+                earth = self.earth.split('-')
+                earth1 = earth[0]
+                earth2 = earth[1]
+                
+                if checkFormatInput(earth1) and checkFormatInput(earth2):
+                    self.canvasP4.itemconfig(self.txtEarth ,fill="black")
+                else:
+                    self.canvasP4.itemconfig(self.txtEarth, text="Vui lòng nhập đúng định dạng")
+                    self.canvasP4.itemconfig(self.txtEarth ,fill="#8b0000")
+                
+                config = {
+                    "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+                    "authDomain": "chill-2ddd1.firebaseapp.com",
+                    "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+                    "projectId": "chill-2ddd1",
+                    "storageBucket": "chill-2ddd1.appspot.com",
+                    "messagingSenderId": "62414238957",
+                    "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+                    "measurementId": "G-ZG9Z0XL8MW"
+                }       
+                firebase = pyrebase.initialize_app(config)
+
+                db = firebase.database()
+                DuLieu = db.child("User").get()
+                
+                realtime_temperature =  DuLieu['Temp'][-1]
+                realtime_humidity = DuLieu['Humid'][-1]
+                realtime_earth = DuLieu['Ground'][-1]
+                
+                checkInput(int(temperature1),int(temperature2), realtime_temperature)
+                checkInput(int(humidity1),int(humidity2), realtime_humidity)
+                checkInput(int(earth1),int(earth2), realtime_earth)
+                    
         def switchSetting():
             self.switch(4)
         def switchHome():
@@ -494,18 +554,18 @@ class Client:
         self.inputDoamdat = Text(self.page4,height = 1,width = 20,font=('Helvetica 20 bold'))
         self.inputDoamdat.place(x=550,y=250)
         
-        self.save = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=self.handleAutoWatering)
+        self.save = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=handleAutoWatering)
         self.save.place(x=650, y=300)
         
-        self.canvasP4.create_text(50,500, text="Cài đặt giờ tự động tưới nước (Vui lòng nhập theo dạng hh:mm)", fill="white", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP4.create_text(50,550, text="Giờ tưới lần thứ 1:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
-        self.canvasP4.create_text(50,600, text="Giờ tưới lần thứ 2:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP4.create_text(300,500, text="Cài đặt giờ tự động tưới nước (Vui lòng nhập theo dạng hh:mm)", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP4.create_text(150,550, text="Giờ tưới lần thứ 1:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
+        self.canvasP4.create_text(150,600, text="Giờ tưới lần thứ 2:", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         
         inputHour1 = Text(self.page4,height = 1,width = 20,font=('Helvetica 20 bold'))
-        inputHour1.place(x=800,y=550)
+        inputHour1.place(x=550,y=550)
         
         inputHour2 = Text(self.page4,height = 1,width = 20,font=('Helvetica 20 bold'))
-        inputHour2.place(x=800,y=600)
+        inputHour2.place(x=550,y=600)
         
         self.save1 = Button(self.page4, width=5, height = 2,text="Lưu",font=('Helvetica 20 bold'), command=timeWatering)
         self.save1.place(x=650, y=650)
