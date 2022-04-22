@@ -476,14 +476,17 @@ class client:
 
                 db = firebase.database()
                 DuLieu = db.child("User").get()
+                db = firebase.database()
+                db.child("User").child("ConditionHeat").set(self.temperature)
+                db.child("User").child("ConditionHumd").set(self.humidity)
+                db.child("User").child("ConditionEarth").set(self.earth)
+                self.client.publish("ConditionHeat",self.temperature)
+                self.client.publish("ConditionHumd",self.humidity)
+                self.client.publish("ConditionEarth",self.earth)
                 
-                realtime_temperature =  DuLieu['Temp'][-1]
-                realtime_humidity = DuLieu['Humid'][-1]
-                realtime_earth = DuLieu['Ground'][-1]
-                
-                checkInput(int(temperature1),int(temperature2), realtime_temperature)
-                checkInput(int(humidity1),int(humidity2), realtime_humidity)
-                checkInput(int(earth1),int(earth2), realtime_earth)
+                checkInput(int(self.temperature1),int(self.temperature2), self.realtime_temperature)
+                checkInput(int(self.humidity1),int(self.humidity2), self.realtime_humidity)
+                checkInput(int(self.earth1),int(self.earth2), self.realtime_earth)
                     
         def switchSetting():
             self.switch(4)
