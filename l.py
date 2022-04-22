@@ -99,11 +99,14 @@ def message ( client , feed_id , payload ):
     if feed_id=="mark2":
         Time2 = payload
     if feed_id=="ConditionHeat":
-        ConditionalHeat = payload
+        ConditionalHeat0 = payload.split("-")[0]
+        ConditionalHeat1 = payload.split("-")[1]
     if feed_id=="ConditionalHumd":
-        ConditionalHumd = payload
+        ConditionalHumd0 = payload.split("-")[0]
+        ConditionalHumd1 = payload.split("-")[1]
     if feed_id=="ConditionalEarth":
-        ConditionalEarth = payload
+        ConditionalEarth0 = payload.split("-")[0]
+        ConditionalEarth1 = payload.split("-")[1]
     if feed_id == "Watering":
         if payload == 1:
             ser.write(("A#").encode()) 
@@ -119,13 +122,29 @@ client . on_message = message
 client . on_subscribe = subscribe
 client . connect ()
 client . loop_background ()
+ config = {
+                    "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+                    "authDomain": "chill-2ddd1.firebaseapp.com",
+                    "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+                    "projectId": "chill-2ddd1",
+                    "storageBucket": "chill-2ddd1.appspot.com",
+                    "messagingSenderId": "62414238957",
+                    "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+                    "measurementId": "G-ZG9Z0XL8MW"
+                }       
+firebase = pyrebase.initialize_app(config)
+
+db = firebase.database()
 mess = ""
 bbc_port = ""
 if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
-ConditionalHeat = 80 
-ConditionalHumd = 80    
-ConditionalEarth = 80   
+ConditionalHeat0 = db.child("User").child("ConditionHeat").get().val().split("-")[0]
+ConditionalHumd0 = db.child("User").child("ConditionHeat").get().val().split("-")[1]
+ConditionalEarth0 = db.child("User").child("ConditionHumd").get().val().split("-")[0]
+ConditionalHeat1 = db.child("User").child("ConditionHumd").get().val().split("-")[1]
+ConditionalHumd1 = db.child("User").child("ConditionEarth").get().val().split("-")[0]
+ConditionalEarth1 = db.child("User").child("ConditionEarth").get().val().split("-")[1]
 Time1 = "nan"
 Time2 = "nan"      
 Heat = 30

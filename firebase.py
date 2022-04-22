@@ -51,10 +51,6 @@ db = firebase.database()
 # upload_db()
 
 data = {"Heat":33, "Humd": 52, "Earth": 46}
-db.child("2022-04-16").child('9-00').set(data)
-db.push(data)
+db.child("User").child("ConditionHeat").set("20-24")
 
-DuLieu = db.child("2022-04-16").get()
-for x, y in DuLieu.val().items():
-   print(x, y)
- 
+print(db.child("User").child("ConditionHeat").get().val().split("-")[0])

@@ -153,12 +153,16 @@ class Client:
             sys . exit (1)
         def message ( client , feed_id , payload ):
             print (" Nhan du lieu : " + payload )
+
             if feed_id=="Heat":
                 self.canvas2.itemconfig(self.box["temp"], text=str(payload)+"oC")
+                self.realtime_temperature =  int(str(payload))
             if feed_id=="Humd":
                 self.canvas2.itemconfig(self.box["humid"], text=str(payload)+"%")
+                self.realtime_humidity = int(str(payload))
             if feed_id=="Earth":
                 self.canvas2.itemconfig(self.box["earth"], text= str(payload)+"%")
+                self.realtime_earth = int(str(payload))
             if feed_id=="Watering":
                 self.canvas2.itemconfig(self.box["led"], text= "on" if payload == 1 else "off")
         while(self.trI==0):
@@ -271,6 +275,15 @@ class Client:
         return x
     
     def handleAutoWatering(self):
+            def checkInput(input1, input2, input):
+                if input <= input2 and input >= input1: return 
+                aver_input = (input1 + input2)/2
+                if (abs(aver_input - input) > 2):
+                    print("Tuoi nuoc trong vong 5ph")
+                elif (abs(aver_input - input) > 5):
+                    print("Tuoi nuoc trong vong 10ph")
+                else:
+                    print("Canh bao den nguoi dung!!!")
             self.txtTemp = self.canvasP4.create_text(900,150,text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
             self.txtHumd = self.canvasP4.create_text(900,200, text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
             self.txtEarth = self.canvasP4.create_text(900,250, text="Vui lòng nhập thông tin độ ẩm của đất", fill="black", font=('Helvetica 20 bold'),anchor=NW)
@@ -294,40 +307,34 @@ class Client:
                 self.canvasP4.itemconfig(self.txtEarth ,fill="#8b0000")
                 
                 
-            # if (len(self.humidity) != 0 and len(self.earth) != 0 and len(self.temperature) != 0):
-            #     temperature = self.temperature.split('-')
-            #     temperature1 = temperature[0]
-            #     temperature2 = temperature[1]
+            if self.humidity and self.humidity and self.earth:
                 
-            #     humidity = self.humidity.split('-')
-            #     humidity1 = humidity[0]
-            #     humidity2 = humidity[1]
-            #     earth = self.earth.split('-')
-            #     earth1 = earth[0]
-            #     earth2 = earth[1]
-                
-            #     config = {
-            #         "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
-            #         "authDomain": "chill-2ddd1.firebaseapp.com",
-            #         "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
-            #         "projectId": "chill-2ddd1",
-            #         "storageBucket": "chill-2ddd1.appspot.com",
-            #         "messagingSenderId": "62414238957",
-            #         "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
-            #         "measurementId": "G-ZG9Z0XL8MW"
-            #     }       
-            #     firebase = pyrebase.initialize_app(config)
+                config = {
+                    "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+                    "authDomain": "chill-2ddd1.firebaseapp.com",
+                    "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+                    "projectId": "chill-2ddd1",
+                    "storageBucket": "chill-2ddd1.appspot.com",
+                    "messagingSenderId": "62414238957",
+                    "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+                    "measurementId": "G-ZG9Z0XL8MW"
+                }       
+                firebase = pyrebase.initialize_app(config)
 
-            #     db = firebase.database()
-            #     DuLieu = db.child("User").get()
+                db = firebase.database()
+                db.child("User").child("ConditionHeat").set(self.temperature)
+                db.child("User").child("ConditionHumd").set(self.humidity)
+                db.child("User").child("ConditionEarth").set(self.earth)
+                client.publish("ConditionHeat",self.temperature)
+                client.publish("ConditionHumd",self.humidity)
+                client.publish("ConditionEarth",self.earth)
+                # realtime_temperature =  DuLieu['Temp'][-1]
+                # realtime_humidity = DuLieu['Humid'][-1]
+                # realtime_earth = DuLieu['Ground'][-1]
                 
-            #     realtime_temperature =  DuLieu['Temp'][-1]
-            #     realtime_humidity = DuLieu['Humid'][-1]
-            #     realtime_earth = DuLieu['Ground'][-1]
-                
-            #     checkInput(int(temperature1),int(temperature2), realtime_temperature)
-            #     checkInput(int(humidity1),int(humidity2), realtime_humidity)
-            #     checkInput(int(earth1),int(earth2), realtime_earth)
+                checkInput(int(temperature1),int(temperature2), self.realtime_temperature)
+                checkInput(int(humidity1),int(humidity2), self.realtime_humidity)
+                checkInput(int(earth1),int(earth2), self.realtime_earth)
     
     def _on_mousewheel(self, event):
         self.canvas2.yview_scroll(int(-1*(event.delta/120)), "units")
@@ -346,15 +353,6 @@ class Client:
             self.username = inputtxt.get(1.0, "end-1c")
             self.pw = inputPW.get(1.0, "end-1c")
             self.trI = 1
-        def checkInput(input1, input2, input):
-            if input <= input2 and input >= input1: return 
-            aver_input = (input1 + input2)/2
-            if (abs(aver_input - input) > 2):
-                print("Tuoi nuoc trong vong 5ph")
-            elif (abs(aver_input - input) > 5):
-                print("Tuoi nuoc trong vong 10ph")
-            else:
-                print("Canh bao den nguoi dung!!!")
             
         
             
