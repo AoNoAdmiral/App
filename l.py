@@ -158,19 +158,19 @@ threading.Thread(target=update2).start()
 while True :
     readSerial()
     time . sleep (30)
-    if Heat>ConditionalHeat:
-        client.publish("Watering",1) 
-    elif Heat<ConditionalHeat-5:
-        ser.write(("B#").encode()) 
-        client.publish("Watering",1) 
-    elif Humd<ConditionalHumd:
-        client.publish("Watering",1)  
-    elif Earth<ConditionalEarth:
-        client.publish("Watering",1) 
-    elif Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
-        client.publish("Watering",1) 
-    elif Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
-        ser.write(("A#").encode()) 
-        client.publish("Watering",1)  
-    else:
-        client.publish("Watering",0)  
+    # if Heat>ConditionalHeat:
+    #     client.publish("Watering",1) 
+    # elif Heat<ConditionalHeat-5:
+    #     ser.write(("B#").encode()) 
+    #     client.publish("Watering",1) 
+    # elif Humd<ConditionalHumd:
+    #     client.publish("Watering",1)  
+    # elif Earth<ConditionalEarth:
+    #     client.publish("Watering",1) 
+    # elif Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+    #     client.publish("Watering",1) 
+    # elif Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+    #     ser.write(("A#").encode()) 
+    #     client.publish("Watering",1)  
+    # else:
+    #     client.publish("Watering",0)  

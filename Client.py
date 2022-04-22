@@ -12,11 +12,11 @@ import time
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-# import pyrebase
+import pyrebase
 from datetime import datetime
 import re
 
-class client:
+class Client:
 
     def __init__(self,master):
         self.myFont = font.Font(family='Courier', weight='bold')
@@ -169,7 +169,7 @@ class client:
                 self.canvas2.itemconfig(self.box["led"], text= "on" if payload == 1 else "off")
         while(self.trI==0):
             pass
-        self.client = MQTTclient ( AIO_USERNAME , AIO_KEY )
+        self.client = MQTTClient ( AIO_USERNAME , AIO_KEY )
         self.client . on_connect = connected
         self.client . on_disconnect = disconnected
         self.client . on_message = message
@@ -276,68 +276,6 @@ class client:
         self.canvasPageUser.create_text(720,15, text="Glasshouse 1", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         return x
     
-    def handleAutoWatering(self):
-            def checkInput(input1, input2, input):
-                if input <= input2 and input >= input1: return 
-                aver_input = (input1 + input2)/2
-                if (abs(aver_input - input) > 2):
-                    print("Tuoi nuoc trong vong 5ph")
-                elif (abs(aver_input - input) > 5):
-                    print("Tuoi nuoc trong vong 10ph")
-                else:
-                    print("Canh bao den nguoi dung!!!")
-            self.txtTemp = self.canvasP4.create_text(900,150,text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-            self.txtHumd = self.canvasP4.create_text(900,200, text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-            self.txtEarth = self.canvasP4.create_text(900,250, text="Vui lòng nhập thông tin độ ẩm của đất", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-            self.temperature = self.inputTemperature.get(1.0, "end-1c")
-            self.humidity = self.inputDoamKK.get(1.0, "end-1c")
-            self.earth = self.inputDoamdat.get(1.0, "end-1c")
-            if self.temperature:
-                self.canvasP4.itemconfig(self.txtTemp ,fill="black")
-            else:
-                self.canvasP4.itemconfig(self.txtTemp ,fill="#8b0000")
-                
-            if self.humidity:
-                self.canvasP4.itemconfig(self.txtHumd ,fill="black")
-            else:
-                self.canvasP4.itemconfig(self.txtHumd ,fill="#8b0000")
-                
-                
-            if self.earth:
-                self.canvasP4.itemconfig(self.txtEarth ,fill="black")
-            else:
-                self.canvasP4.itemconfig(self.txtEarth ,fill="#8b0000")
-                
-                
-            if self.humidity and self.humidity and self.earth:
-                
-                config = {
-                    "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
-                    "authDomain": "chill-2ddd1.firebaseapp.com",
-                    "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
-                    "projectId": "chill-2ddd1",
-                    "storageBucket": "chill-2ddd1.appspot.com",
-                    "messagingSenderId": "62414238957",
-                    "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
-                    "measurementId": "G-ZG9Z0XL8MW"
-                }       
-                firebase = pyrebase.initialize_app(config)
-
-                db = firebase.database()
-                db.child("User").child("ConditionHeat").set(self.temperature)
-                db.child("User").child("ConditionHumd").set(self.humidity)
-                db.child("User").child("ConditionEarth").set(self.earth)
-                self.client.publish("ConditionHeat",self.temperature)
-                self.client.publish("ConditionHumd",self.humidity)
-                self.client.publish("ConditionEarth",self.earth)
-                # realtime_temperature =  DuLieu['Temp'][-1]
-                # realtime_humidity = DuLieu['Humid'][-1]
-                # realtime_earth = DuLieu['Ground'][-1]
-                
-                checkInput(int(self.temperature1),int(self.temperature2), self.realtime_temperature)
-                checkInput(int(self.humidity1),int(self.humidity2), self.realtime_humidity)
-                checkInput(int(self.earth1),int(self.earth2), self.realtime_earth)
-    
     def _on_mousewheel(self, event):
         self.canvas2.yview_scroll(int(-1*(event.delta/120)), "units")
 
@@ -360,9 +298,9 @@ class client:
             if input <= input2 and input >= input1: return 
             aver_input = (input1 + input2)/2
             if (abs(aver_input - input) > 2):
-                client.publish("Watering",1) 
+                self.client.publish("Watering",1) 
             else:
-                client.publish("Watering",2) 
+                self.client.publish("Watering",2) 
                 
         def checkFormatInput(test):
             pat = re.compile(r"[0-9]+")
@@ -373,17 +311,19 @@ class client:
             return True
                 
         def timeWatering():
+            self.canvasP4.delete(self.txtTime1)
+            self.canvasP4.delete(self.txtTime2)
             self.txtTime1 = self.canvasP4.create_text(900,550,text="Vui lòng nhập giờ tự động tưới", fill="black", font=('Helvetica 20 bold'),anchor=NW)
             self.txtTime2 = self.canvasP4.create_text(900,600,text="Vui lòng nhập giờ tự động tưới", fill="black", font=('Helvetica 20 bold'),anchor=NW)
             
             self.time1 = inputHour1.get(1.0, "end-1c")
             self.time2 = inputHour2.get(1.0, "end-1c")
             if self.time1:
-                self.canvasP4.itemconfig(self.txtTime1 ,fill="black")
+                pass
             else:
                 self.canvasP4.itemconfig(self.txtTime1 ,fill="#8b0000")
             if self.time2:
-                self.canvasP4.itemconfig(self.txtTime2 ,fill="black")
+                pass
             else:
                 self.canvasP4.itemconfig(self.txtTime2 ,fill="#8b0000")
             
@@ -393,13 +333,13 @@ class client:
                 h2 = self.time2.split(':')[0]
                 m2 = self.time2.split(':')[1]
                 if checkFormatInput(h1) and checkFormatInput(m1):
-                    self.canvasP4.itemconfig(self.txtTime1 ,fill="black")
+                    pass
                 else:
                     self.canvasP4.itemconfig(self.txtTime1, text="Vui lòng nhập đúng định dạng")
                     self.canvasP4.itemconfig(self.txtTime1 ,fill="#8b0000")
                     
                 if checkFormatInput(h2) and checkFormatInput(m2):
-                    self.canvasP4.itemconfig(self.txtTime2 ,fill="black")
+                    pass
                 else:
                     self.canvasP4.itemconfig(self.txtTime2, text="Vui lòng nhập đúng định dạng")
                     self.canvasP4.itemconfig(self.txtTime2 ,fill="#8b0000")
@@ -407,28 +347,28 @@ class client:
                 now = datetime.now()
                 if (now.hour == int(h1) and now.minute == int(m1)) or (now.hour == int(h2) and now.minute == int(m2)):
                     print("Tuoi nuoc")
-                    client.publish("Watering",1) 
+                    self.client.publish("Watering",1) 
                     
         def handleAutoWatering():
+            self.canvasP4.delete(self.txtTemp)
+            self.canvasP4.delete(self.txtHumd)
+            self.canvasP4.delete(self.txtEarth)
             self.txtTemp = self.canvasP4.create_text(900,150,text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
-            self.txtHumd = self.canvasP4.create_text(900,200, text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+            self.txtHumd = self.canvasP4.create_text(900,200, text="Vui lòng nhập thông tin độ ẩm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
             self.txtEarth = self.canvasP4.create_text(900,250, text="Vui lòng nhập thông tin độ ẩm của đất", fill="black", font=('Helvetica 20 bold'),anchor=NW)
             self.temperature = self.inputTemperature.get(1.0, "end-1c")
             self.humidity = self.inputDoamKK.get(1.0, "end-1c")
             self.earth = self.inputDoamdat.get(1.0, "end-1c")
-            if self.temperature:
-                self.canvasP4.itemconfig(self.txtTemp ,fill="black")
-            else:
+            if len(self.temperature) == 0:
+                self.canvasP4.itemconfig(self.txtTemp, text="Vui lòng nhập thông tin nhiệt độ")
                 self.canvasP4.itemconfig(self.txtTemp ,fill="#8b0000")
                 
-            if self.humidity:
-                self.canvasP4.itemconfig(self.txtHumd ,fill="black")
-            else:
+            if len(self.humidity) == 0:
+                self.canvasP4.itemconfig(self.txtHumd, text="Vui lòng nhập thông tin độ ẩm")
                 self.canvasP4.itemconfig(self.txtHumd ,fill="#8b0000")
                 
-            if self.earth:
-                self.canvasP4.itemconfig(self.txtEarth ,fill="black")
-            else:
+            if len(self.earth) == 0:
+                self.canvasP4.itemconfig(self.txtEarth, text="Vui lòng nhập thông tin độ ẩm của đất")
                 self.canvasP4.itemconfig(self.txtEarth ,fill="#8b0000")
                 
             if (len(self.humidity) != 0 and len(self.earth) != 0 and len(self.temperature) != 0):
@@ -437,7 +377,7 @@ class client:
                 temperature2 = temperature[1]
                 
                 if checkFormatInput(temperature1) and checkFormatInput(temperature2):
-                    self.canvasP4.itemconfig(self.txtTemp ,fill="black")
+                    pass
                 else:
                     self.canvasP4.itemconfig(self.txtTemp, text="Vui lòng nhập đúng định dạng")
                     self.canvasP4.itemconfig(self.txtTemp ,fill="#8b0000")
@@ -447,7 +387,7 @@ class client:
                 humidity2 = humidity[1]
                 
                 if checkFormatInput(humidity1) and checkFormatInput(humidity2):
-                    self.canvasP4.itemconfig(self.txtHumd ,fill="black")
+                    pass
                 else:
                     self.canvasP4.itemconfig(self.txtHumd, text="Vui lòng nhập đúng định dạng")
                     self.canvasP4.itemconfig(self.txtHumd ,fill="#8b0000")
@@ -457,7 +397,7 @@ class client:
                 earth2 = earth[1]
                 
                 if checkFormatInput(earth1) and checkFormatInput(earth2):
-                    self.canvasP4.itemconfig(self.txtEarth ,fill="black")
+                    pass
                 else:
                     self.canvasP4.itemconfig(self.txtEarth, text="Vui lòng nhập đúng định dạng")
                     self.canvasP4.itemconfig(self.txtEarth ,fill="#8b0000")
@@ -484,9 +424,9 @@ class client:
                 self.client.publish("ConditionHumd",self.humidity)
                 self.client.publish("ConditionEarth",self.earth)
                 
-                checkInput(int(self.temperature1),int(self.temperature2), self.realtime_temperature)
-                checkInput(int(self.humidity1),int(self.humidity2), self.realtime_humidity)
-                checkInput(int(self.earth1),int(self.earth2), self.realtime_earth)
+                # checkInput(int(self.temperature1),int(self.temperature2), self.realtime_temperature)
+                # checkInput(int(self.humidity1),int(self.humidity2), self.realtime_humidity)
+                # checkInput(int(self.earth1),int(self.earth2), self.realtime_earth)
                     
         def switchSetting():
             self.switch(4)
@@ -598,6 +538,11 @@ class client:
         # Layout Setting
         self.canvasP4= Canvas(self.page4, bg='black', highlightthickness=0)
         self.canvasP4.pack(fill='both', expand=True) 
+        self.txtTemp = self.canvasP4.create_text(900,150,text="Vui lòng nhập thông tin nhiệt độ", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.txtHumd = self.canvasP4.create_text(900,200, text="Vui lòng nhập thông tin độ ẩm", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.txtEarth = self.canvasP4.create_text(900,250, text="Vui lòng nhập thông tin độ ẩm của đất", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.txtTime1 = self.canvasP4.create_text(900,550,text="Vui lòng nhập giờ tự động tưới", fill="black", font=('Helvetica 20 bold'),anchor=NW)
+        self.txtTime2 = self.canvasP4.create_text(900,600,text="Vui lòng nhập giờ tự động tưới", fill="black", font=('Helvetica 20 bold'),anchor=NW)
         self.canvasP4.create_text(300,50, text="Thiết lập chế độ tự động tưới nước (Vui lòng nhập theo dạng aa-bb)", fill="white", font=('Helvetica 20 bold'),anchor=NW)
         
         self.canvasP4.create_text(150,150, text="Nhiệt độ: ", fill="white", font=('Helvetica 20 bold'),anchor=NW)
