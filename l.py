@@ -122,7 +122,7 @@ client . on_message = message
 client . on_subscribe = subscribe
 client . connect ()
 client . loop_background ()
- config = {
+config = {
                     "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
                     "authDomain": "chill-2ddd1.firebaseapp.com",
                     "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",

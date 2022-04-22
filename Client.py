@@ -7,14 +7,14 @@ from turtle import color
 from PIL import Image, ImageTk
 from tkinter import PhotoImage
 import threading
-from Adafruit_IO import MQTTClient
+from Adafruit_IO import MQTTclient
 import time
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pyrebase
 
-class Client:
+class client:
 
     def __init__(self,master):
         self.myFont = font.Font(family='Courier', weight='bold')
@@ -140,18 +140,18 @@ class Client:
         AIO_USERNAME = "Airforce"
         AIO_KEY = "aio_Qcan99Ot2yY7cMOLDjlyHeNhbm1t"
 
-        def connected ( client ) :
+        def connected (client ) :
             print ("Ket noi thanh cong ...")
-            client.subscribe("Heat")
-            client.subscribe("Humd")
-            client.subscribe("Earth")
-            client.subscribe("Watering")
+            self.client.subscribe("Heat")
+            self.client.subscribe("Humd")
+            self.client.subscribe("Earth")
+            self.client.subscribe("Watering")
         def subscribe ( client , userdata , mid , granted_qos ):
             print (" Subcribe thanh cong ...")
-        def disconnected ( client ) :
+        def disconnected (client ) :
             print (" Ngat ket noi ...")
             sys . exit (1)
-        def message ( client , feed_id , payload ):
+        def message (client , feed_id , payload ):
             print (" Nhan du lieu : " + payload )
 
             if feed_id=="Heat":
@@ -167,13 +167,13 @@ class Client:
                 self.canvas2.itemconfig(self.box["led"], text= "on" if payload == 1 else "off")
         while(self.trI==0):
             pass
-        client = MQTTClient ( AIO_USERNAME , AIO_KEY )
-        client . on_connect = connected
-        client . on_disconnect = disconnected
-        client . on_message = message
-        client . on_subscribe = subscribe
-        client . connect ()
-        client . loop_background ()
+        self.client = MQTTclient ( AIO_USERNAME , AIO_KEY )
+        self.client . on_connect = connected
+        self.client . on_disconnect = disconnected
+        self.client . on_message = message
+        self.client . on_subscribe = subscribe
+        self.client . connect ()
+        self.client . loop_background ()
         while True:
             time . sleep (30)
       
@@ -325,16 +325,16 @@ class Client:
                 db.child("User").child("ConditionHeat").set(self.temperature)
                 db.child("User").child("ConditionHumd").set(self.humidity)
                 db.child("User").child("ConditionEarth").set(self.earth)
-                client.publish("ConditionHeat",self.temperature)
-                client.publish("ConditionHumd",self.humidity)
-                client.publish("ConditionEarth",self.earth)
+                self.client.publish("ConditionHeat",self.temperature)
+                self.client.publish("ConditionHumd",self.humidity)
+                self.client.publish("ConditionEarth",self.earth)
                 # realtime_temperature =  DuLieu['Temp'][-1]
                 # realtime_humidity = DuLieu['Humid'][-1]
                 # realtime_earth = DuLieu['Ground'][-1]
                 
-                checkInput(int(temperature1),int(temperature2), self.realtime_temperature)
-                checkInput(int(humidity1),int(humidity2), self.realtime_humidity)
-                checkInput(int(earth1),int(earth2), self.realtime_earth)
+                checkInput(int(self.temperature1),int(self.temperature2), self.realtime_temperature)
+                checkInput(int(self.humidity1),int(self.humidity2), self.realtime_humidity)
+                checkInput(int(self.earth1),int(self.earth2), self.realtime_earth)
     
     def _on_mousewheel(self, event):
         self.canvas2.yview_scroll(int(-1*(event.delta/120)), "units")
