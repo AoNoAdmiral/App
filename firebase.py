@@ -49,8 +49,5 @@ db = firebase.database()
 #         time.sleep(60)
 
 # upload_db()
-
-data = {"Heat":33, "Humd": 52, "Earth": 46}
-db.child("User").child("ConditionHeat").set("20-24")
-
-print(db.child("User").child("ConditionHeat").get().val().split("-")[0])
+for x, y in db.get().val().items():
+  print (x,y)

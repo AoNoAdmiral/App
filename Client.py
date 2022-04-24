@@ -21,12 +21,12 @@ class Client:
     def __init__(self,master):
         self.myFont = font.Font(family='Courier', weight='bold')
         self.master = master
-        self.counter = 0
+        self.counter = 1
+        self.current = 1
+        self.listGraphHeat=["",""]
+        self.listGraphHumd=["",""]
+        self.listGraphEarth=["",""]
         self.trI = 0
-        self.listTime=[]
-        self.listHeat=[]
-        self.listEarth=[]
-        self.listHumd=[]
         self.master.geometry('2000x1000')
         self.master.attributes('-fullscreen', True)
         self.page1 = Frame(master,bg='black',width = 3000,height = 1000)
@@ -40,6 +40,67 @@ class Client:
         self.initOption()
         threading.Thread(target=self.update).start()
     
+    def updateS(self,n,i):
+        print(i)
+        config = {
+            "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
+            "authDomain": "chill-2ddd1.firebaseapp.com",
+            "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
+            "projectId": "chill-2ddd1",
+            "storageBucket": "chill-2ddd1.appspot.com",
+            "messagingSenderId": "62414238957",
+            "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
+            "measurementId": "G-ZG9Z0XL8MW"
+        }       
+        listTime=[]
+        listHeat=[]
+        listEarth=[]
+        listHumd=[]
+        firebase = pyrebase.initialize_app(config)
+        db = firebase.database()
+        while True:
+            DuLieu = db.child(n).get()
+            for x, y in DuLieu.val().items():
+                listTime.insert(0,x)
+                listHeat.insert(0,y['Heat'])
+                listHumd.insert(0,y['Humd'])
+                listEarth.insert(0,y['Earth'])
+            data1 = {'Time':listTime,'Heat':listHeat}
+            data2 = {'Time':listTime,'Humd':listHumd}
+            data3 = {'Time':listTime,'Earth':listEarth}
+            df1 = DataFrame(data1,columns=['Time','Heat'])
+            figure1 = plt.Figure(figsize=(6,5), dpi=100)
+            ax1 = figure1.add_subplot(111)
+            ax1.set_ylim(10,80)
+            self.listGraphHeat[i] = FigureCanvasTkAgg(figure1, self.canvasP2)
+            self.listGraphHeat[i].get_tk_widget().place(x=450,y=10)
+            df1 = df1[['Time','Heat']].groupby('Time').sum()
+            df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
+            ax1.set_title('Recorded temperature '+n)
+            # bar1.get_tk_widget().place(x=-1000,y=-1000)
+            df2 = DataFrame(data2,columns=['Time','Humd'])
+            figure2 = plt.Figure(figsize=(6,5), dpi=100)
+            ax2 = figure2.add_subplot(111)
+            ax2.set_ylim(30,80)
+            self.listGraphHumd[i] = FigureCanvasTkAgg(figure2, self.canvasP2)
+            self.listGraphHumd[i].get_tk_widget().place(x=450,y=10)
+            df2 = df2[['Time','Humd']].groupby('Time').sum()
+            df2.plot(kind='line', legend=True, ax=ax2, color='r',marker='o', fontsize=10)
+            
+            ax2.set_title('Recorded air humidity '+n)
+            self.listGraphHumd[i].get_tk_widget().place(x=-1000,y=-1000)
+            df3 = DataFrame(data3,columns=['Time','Earth'])
+            figure3 = plt.Figure(figsize=(6,5), dpi=100)
+            ax3 = figure3.add_subplot(111)
+            ax3.set_ylim(20,70)
+            self.listGraphEarth[i] = FigureCanvasTkAgg(figure3, self.canvasP2)
+            self.listGraphEarth[i].get_tk_widget().place(x=450,y=10)
+            df3 = df3[['Time','Earth']].groupby('Time').sum()
+            df3.plot(kind='line', legend=True, ax=ax3, color='r',marker='o', fontsize=10)
+            ax3.set_title('Recorded earth humidity '+n)
+            self.listGraphEarth[i].get_tk_widget().place(x=-1000,y=-1000)
+            time.sleep(60)
+    
     def updateGraph(self):
         config = {
             "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
@@ -52,61 +113,13 @@ class Client:
             "measurementId": "G-ZG9Z0XL8MW"
         }       
         firebase = pyrebase.initialize_app(config)
-
         db = firebase.database()
-        DuLieu = db.child("2022-04-16").get()
-        for x, y in DuLieu.val().items():
-            self.listTime.insert(0,x)
-            print(y)
-            self.listHeat.insert(0,y['Heat'])
-            self.listHumd.insert(0,y['Humd'])
-            self.listEarth.insert(0,y['Earth'])
-        data1 = {'Time':self.listTime,'Heat':self.listHeat}
-        data2 = {'Time':self.listTime,'Humd':self.listHumd}
-        data3 = {'Time':self.listTime,'Earth':self.listEarth}
-        
-        # TEST
-        # data1 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-        #  'Heat': [31,33,31,32,31,33,35,35,32,31,36,33,34,31,32]
-        # }
-        # data2 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-        #  'Humd': [80,85,83,81,84,89,86,87,81,80,82,82,85,80,83]
-        # }
-        # data3 = {'Time': ['8:15','8:20','8:25','8:30','8:35','8:40','8:45','8:50','8:55','8:60','9:05','9:10','9:15','9:20','9:25'],
-        #  'Earth': [54,53,52,51,50,52,54,53,56,53,54,54,51,51,54]
-        # }
-        
-        df1 = DataFrame(data1,columns=['Time','Heat'])
-        figure1 = plt.Figure(figsize=(6,5), dpi=100)
-        ax1 = figure1.add_subplot(111)
-        ax1.set_ylim(10,60)
-        self.bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
-        self.bar1.get_tk_widget().place(x=450,y=10)
-        df1 = df1[['Time','Heat']].groupby('Time').sum()
-        df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
-        ax1.set_title('Recorded temperature')
-        # bar1.get_tk_widget().place(x=-1000,y=-1000)
-        df2 = DataFrame(data2,columns=['Time','Humd'])
-        figure2 = plt.Figure(figsize=(6,5), dpi=100)
-        ax2 = figure2.add_subplot(111)
-        ax2.set_ylim(30,80)
-        self.bar2 = FigureCanvasTkAgg(figure2, self.canvasP2)
-        self.bar2.get_tk_widget().place(x=450,y=10)
-        df2 = df2[['Time','Humd']].groupby('Time').sum()
-        df2.plot(kind='line', legend=True, ax=ax2, color='r',marker='o', fontsize=10)
-        
-        ax2.set_title('Recorded air humidity')
-        self.bar2.get_tk_widget().place(x=-1000,y=-1000)
-        df3 = DataFrame(data3,columns=['Time','Earth'])
-        figure3 = plt.Figure(figsize=(6,5), dpi=100)
-        ax3 = figure3.add_subplot(111)
-        ax3.set_ylim(20,70)
-        self.bar3 = FigureCanvasTkAgg(figure3, self.canvasP2)
-        self.bar3.get_tk_widget().place(x=450,y=10)
-        df3 = df3[['Time','Earth']].groupby('Time').sum()
-        df3.plot(kind='line', legend=True, ax=ax3, color='r',marker='o', fontsize=10)
-        ax3.set_title('Recorded earth humidity')
-        self.bar3.get_tk_widget().place(x=-1000,y=-1000)
+        Date = ["2022-04-16","2022-04-17"]
+        i = 0
+        for x in Date:
+            threading.Thread(target=self.updateS,args =(x,i, )).start()
+            i = i + 1
+       
         
 
     def switch(self,a):
@@ -204,7 +217,6 @@ class Client:
 
     def createBox(self):
         x = {}
-        self.counter =self.counter+1
         self.round_rectangle(self.canvas2,100,0, 700, 300,fill="white")
         self.gh = Image.open("image/Greenhouse1.png") 
         self.gh = ImageTk.PhotoImage(self.gh.resize((690-110,170), Image.ANTIALIAS))
@@ -241,7 +253,6 @@ class Client:
     
     def createBox2(self):
         x = {}
-        self.counter =self.counter+1
         self.round_rectangle(self.canvasPageUser,700,0, 1300, 300,fill="white")
         self.gh = Image.open("image/Greenhouse1.png") 
         self.gh = ImageTk.PhotoImage(self.gh.resize((690-110,170), Image.ANTIALIAS))
@@ -436,18 +447,61 @@ class Client:
             self.switch(5)
         def exit():
             self.master.destroy()
+        def switchCounter1():
+            self.counter=0
+            for x in self.listGraphEarth:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHumd:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHeat:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            if self.current == 1:
+                self.listGraphHeat[self.counter].get_tk_widget().place(x=450,y=10)
+            elif self.current == 2:
+                self.listGraphHumd[self.counter].get_tk_widget().place(x=450,y=10)
+            else:
+                self.listGraphEarth[self.counter].get_tk_widget().place(x=450,y=10)
+        def switchCounter2():
+            self.counter=1
+            for x in self.listGraphEarth:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHumd:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHeat:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            if self.current == 1:
+                self.listGraphHeat[self.counter].get_tk_widget().place(x=450,y=10)
+            elif self.current == 2:
+                self.listGraphHumd[self.counter].get_tk_widget().place(x=450,y=10)
+            else:
+                self.listGraphEarth[self.counter].get_tk_widget().place(x=450,y=10)
         def switchGraph1():
-            self.bar3.get_tk_widget().place(x=-1000,y=-1000)
-            self.bar2.get_tk_widget().place(x=-1000,y=-1000)
-            self.bar1.get_tk_widget().place(x=400,y=10)
+            for x in self.listGraphEarth:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHumd:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHeat:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            self.listGraphHeat[self.counter].get_tk_widget().place(x=450,y=10)
+            self.current=1
         def switchGraph2():
-            self.bar3.get_tk_widget().place(x=-1000,y=-1000)
-            self.bar1.get_tk_widget().place(x=-1000,y=-1000)
-            self.bar2.get_tk_widget().place(x=400,y=10)
+            for x in self.listGraphEarth:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHumd:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHeat:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            self.listGraphHumd[self.counter].get_tk_widget().place(x=450,y=10)
+            self.current=2
         def switchGraph3():
-            self.bar2.get_tk_widget().place(x=-1000,y=-1000)
-            self.bar1.get_tk_widget().place(x=-1000,y=-1000)
-            self.bar3.get_tk_widget().place(x=400,y=10)
+            for x in self.listGraphEarth:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHumd:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            for x in self.listGraphHeat:
+                x.get_tk_widget().place(x=-1000,y=-1000)
+            self.listGraphEarth[self.counter].get_tk_widget().place(x=450,y=10)
+            self.current=3
 
         # Page 1
         
@@ -496,15 +550,7 @@ class Client:
         self.canvasP2= Canvas(self.page2, bg='black', highlightthickness=0)
         self.canvasP2.pack(fill='both', expand=True) 
         threading.Thread(target=self.updateGraph).start()
-        # df1 = DataFrame(data1,columns=['Time','Heat'])
-        # figure1 = plt.Figure(figsize=(6,5), dpi=100)
-        # ax1 = figure1.add_subplot(111)
-        # bar1 = FigureCanvasTkAgg(figure1, self.canvasP2)
-        # bar1.get_tk_widget().place(x=400,y=10)
-        # df1 = df1[['Time','Heat']].groupby('Time').sum()
-        # df1.plot(kind='line', legend=True, ax=ax1, color='r',marker='o', fontsize=10)
-        # ax1.set_title('Country Vs. GDP Per Capita')
-        # bar1.get_tk_widget().place(x=-1000,y=-1000)
+
 
         self.round_rectangle(self.canvasP2,140,100, 340, 300,fill="white")
         self.round_rectangle(self.canvasP2,140,400, 340, 600,fill="white")
@@ -532,6 +578,13 @@ class Client:
 
         self.canvasP2.create_image(1168,420, anchor=NW, image=self.gh4)    
         self.canvasP2.imageG4 = self.gh4
+        
+        self.nextDay = Button(self.page2, width=10, height = 5,text = "Next",command=switchCounter2)
+        self.nextDay.place(x=1025, y=600)
+        
+        self.prevDay = Button(self.page2, width=10, height = 5,text = "Prev",command=switchCounter1)
+        self.prevDay.place(x=400, y=600)
+        
         
         # Login
         
