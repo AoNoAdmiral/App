@@ -28,7 +28,7 @@ class Client:
         self.listGraphEarth=["",""]
         self.trI = 0
         self.master.geometry('2000x1000')
-        self.master.attributes('-fullscreen', True)
+        # self.master.attributes('-fullscreen', True)
         self.page1 = Frame(master,bg='black',width = 3000,height = 1000)
         self.page2 = Frame(master,bg='black',width = 3000,height = 1000)
         self.page3 = Frame(master,bg='black',width = 3000,height = 1000)
