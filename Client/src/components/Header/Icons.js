@@ -48,7 +48,6 @@ function Icons() {
         <div id="menu-btn" className="fas fa-bars"></div>
         <div id="search-btn" className="fas fa-search" onClick={()=>test()}></div>
         <a id="login-btn" href="/login" className="fas fa-user"></a>
-
     </div>
 
     </div>
