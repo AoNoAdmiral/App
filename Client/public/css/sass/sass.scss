@@ -71,9 +71,9 @@ $box-shadow : 0 .5rem 1rem rgba(0,0,0,.1);
       margin-bottom: 2.5rem;
     }
     .sale-user-detail{
-      font-size: 1.3rem;
+      font-size: 1.8rem;
       line-height: 1.4;
-      opacity: 40%;
+      opacity: 60%;
     }
     .sale-user-after{
       color: #fff;
@@ -97,5 +97,20 @@ $box-shadow : 0 .5rem 1rem rgba(0,0,0,.1);
     }
   }
   margin-bottom: 4rem;
+
+  .btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: .9rem 3rem;
+    border-radius: 2rem;
+    background: #eb4d4b;
+    color: #fff;
+    font-size: 1.7rem;
+    cursor: pointer;
   }
+  }
+
+.properties{
+    font-size: 2rem;
+}
   
