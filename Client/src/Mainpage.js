@@ -64,7 +64,7 @@ const Mainpage = () =>{
         <Header/>
         <Home/>
         <Banner/>
-        <Product/>
+        {/* <Product/> */}
         <Deal/>
         <Feature/>
         <Review/>

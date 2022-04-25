@@ -47,28 +47,8 @@ function Icons() {
     <div className="icons" id="here">
         <div id="menu-btn" className="fas fa-bars"></div>
         <div id="search-btn" className="fas fa-search" onClick={()=>test()}></div>
-        <div id="cart-btn" className="fas fa-shopping-cart"></div>
         <a id="login-btn" href="/login" className="fas fa-user"></a>
-        <div className="shopping-card">
-                  <div class="scroll-object-cart">
-            {count.map((item)=>{
-              let props=JSON.parse(item);
-                return (
-          <div className="box">
-            <i className="fa fa-times" onClick={()=>removeItem(props)}></i>
-            <div className="content">
-              <h3>{props[1]}</h3>
-              <img src={props[2]} className="Payimage" alt=""/>
-              <span className="quantity">{props[4]}</span>
-              <span className="multiply">X</span>
-              <span className="price">{props[3].toLocaleString()} VND</span>
-            </div>
-          </div>
-            )})}
-                                    </div>
-          <h3 className="total"> TOTAL : <span>{total.toLocaleString()} VND</span></h3>
-          <a onClick={()=>switchPay()} style={styleObj} className="header__menu-link btn btn--border btn--rounded buttom"> Checkout Card</a>
-        </div>
+
     </div>
 
     </div>
