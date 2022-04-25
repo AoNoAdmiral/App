@@ -2,8 +2,9 @@ const express = require('express');
 const admin = require('firebase-admin');
 const bcrypt = require('bcrypt');
 const path = require('path');
-
 //firebase admin setup
+const fetch = require('node-fetch');
+
 
 let serviceAccount = require("./btlmtdt-firebase-adminsdk-yv68p-fe100e5c45.json");
 
@@ -319,12 +320,30 @@ app.post('/addbill',(req, res)=>{
 //     res.sendFile(path.join(staticPath, "404.html"));
 // })
 
+async function getUser() {
+    const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data", {
+        method: 'POST',
+            headers: {
+                  'Content-Type': 'application/json',
+                  'Host': 'io.adafruit.com',
+                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
+            },
+            body: JSON.stringify({
+                "datum":{
+                    "value":10
+                }
+            }),
+      });
+      const movies = await response.json();
+      console.log(movies);
+}
 
 
 app.use((req,res)=>{
     console.log("Caught one");
 })
 
-app.listen(3000, ()=>{
+app.listen(3005, ()=>{
     console.log('listening on port 3000 .........');
+    getUser();
 })

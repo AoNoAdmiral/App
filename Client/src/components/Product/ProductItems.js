@@ -87,7 +87,6 @@ function ProductItems() {
           pick(0);
         };
       });
-      
     return (
         <div className="box-container">
         {
