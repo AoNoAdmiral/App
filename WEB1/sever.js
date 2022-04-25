@@ -57,7 +57,8 @@ async function generateUrl(){
 
 //intializing express.js
 const app = express();
-var cors = require('cors')
+var cors = require('cors');
+const { time } = require('console');
 
 app.use(cors())
 //middlewares
@@ -142,129 +143,67 @@ app.post('/signup',(req,res)=>{
     })
 })
 
+async function getUser() {
+    // const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data", {
+    //     method: 'POST',
+    //         headers: {
+    //               'Content-Type': 'application/json',
+    //               'Host': 'io.adafruit.com',
+    //               'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
+    //         },
+    //         body: JSON.stringify({
+    //             "datum":{
+    //                 "value":10
+    //             }
+    //         }),
+    //   });
+    const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
+        method: 'GET',
+            headers: {
+                  'Content-Type': 'application/json',
+                  'Host': 'io.adafruit.com',
+                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
+            }
+      });
+      const movies = await response.json();
+    return movies[0]['value']
+}
+
+async function getUser2() {
+    const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data", {
+        method: 'GET',
+            headers: {
+                  'Content-Type': 'application/json',
+                  'Host': 'io.adafruit.com',
+                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
+            }
+      });
+    const movies = await response.json();
+    const response2 = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/earthhumd/data", {
+        method: 'GET',
+            headers: {
+                  'Content-Type': 'application/json',
+                  'Host': 'io.adafruit.com',
+                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
+            }
+      });
+    const movies2 = await response2.json();
+    const response3 = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data", {
+        method: 'GET',
+            headers: {
+                  'Content-Type': 'application/json',
+                  'Host': 'io.adafruit.com',
+                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
+            }
+      });
+    const movies3 = await response3.json();
+}
+
 //routers
 //router home
-// app.get("/", (req, res) =>{
-//     res.sendFile(path.join(staticPath, "index.html"));
-// })
-
-// //signup route
-// app.get('/signup',(req,res)=>{
-//     res.sendFile(path.join(staticPath,"signup.html"))
-// })
-
-// app.get('/test',(req,res)=>{
-//     return res.json({'alert': 'invalid number, please enter valid one'});
-// })
-
-//login router
-// app.get('/login', (req,res) => {
-//     res.sendFile(path.join(staticPath, "Login.html"));
-// })
-
-// app.post('/login', (req,res)=>{
-//     let{email,password} = req.body;
-
-//     if(!email.length || !password.length){
-//         return res.json({'alert' : 'fill your account'});
-//     }
-//     db.collection('users').doc(email).get()
-//     .then(user => {
-//         if(!user.exists){
-//             return res.json({'alert': 'log in email does not exists'})
-//         } else{
-//             bcrypt.compare(password, user.data().password, (err, result)=>{
-//                 if(result){
-//                     let data = user.data();
-//                     return res.json({
-//                         name: data.name,
-//                         email: data.email,
-//                         seller: data.seller,
-//                     })
-//                 } else{
-//                     return res.json({'alert': 'password in incorrect'});
-//                 }
-//             })
-//         }
-//     })
-// })
-
-// // seller route
-// app.get('/seller', (req,res) =>{
-//     res.sendFile(path.join(staticPath, "seller.html"));
-// })
-
-// app.post('/seller', (req,res)=>{
-//     let {name,about,address,number,email}= req.body;
-//     if(!name.length||!about.length||!address.length||number.length < 10|| !Number(number)){
-//         return res.json({'alert' : 'some info is invalid'});
-//     } else {
-//         //update user seller status
-//         db.collection('sellers').doc(email).set(req.body)
-//         .then(data => {
-//             db.collection('users').doc(email).update({
-//                 seller: true
-//             }) .then(data =>{
-//                 res.json(true);
-//             })
-//         })
-//     }
-// })
-
-// //add add-product
-// app.get('/add-product', (req,res) =>{
-//     res.sendFile(path.join(staticPath,"addProduct.html"));
-// })
-
-// app.get('/add-product/:id', (req,res) =>{
-//     res.sendFile(path.join(staticPath,"addProduct.html"));
-// })
-
-// //add product
-// app.get('/product', (req,res) =>{
-//     res.sendFile(path.join(staticPath,"product.html"));
-// })
-
-
-// //get the upload link
-// app.get('/s3url',(req,res)=>{
-//     generateUrl().then(url => res.json(url));
-// })
-
-// // add product
-// app.post('/add-product', (req,res)=>{
-//     let { name, shortDes,des,images, actualPrice, discount, sellPrice, stock, tags, email, draft , id} = req.body;
-
-//     // validation
-//     if(!draft){
-//         if(!name.length){
-//             return res.json({ 'alert':'enter product name'});
-//          } else if(shortDes.length>100 || shortDes.length <10){
-//             return res.json({ 'alert':'short description must be between 10 to 100 letters long'});
-//          } else if(!des.length){
-//             return res.json({ 'alert':'enter detail description about the product'});
-//          } else if (!images.length){
-//             return res.json({ 'alert':'upload at least one product image'});
-//          } else if (!actualPrice.length || !discount.length || !sellPrice.length){
-//             return res.json({ 'alert':'you must add pricings'}); 
-//          } else if (stock < 10){
-//             return res.json({ 'alert':'you should have at least 10kg in stock'});
-//          } else if (!tags.length){
-//             return res.json({ 'alert':'enter few tags to help ranking your product in search'});
-//          }
-//     }
-
-//      // add product
-//      let docName = id == undefined ? `${name.toLowerCase()}-${Math.floor(Math.random()*5000)}` : id;
-//      db.collection('products').doc(docName).set(req.body)
-//      .then(data =>{
-//          res.json({'product': name});
-//      })
-//      .catch(err =>{
-//          return res.json({'alert': 'some error occured. Try again'});
-//      })
-
-// })
+app.get("/current", (req, res) =>{
+    const x = getX();
+})
 
 //get products
 app.post('/get-products',(req, res)=>{
@@ -320,30 +259,10 @@ app.post('/addbill',(req, res)=>{
 //     res.sendFile(path.join(staticPath, "404.html"));
 // })
 
-async function getUser() {
-    const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data", {
-        method: 'POST',
-            headers: {
-                  'Content-Type': 'application/json',
-                  'Host': 'io.adafruit.com',
-                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
-            },
-            body: JSON.stringify({
-                "datum":{
-                    "value":10
-                }
-            }),
-      });
-      const movies = await response.json();
-      console.log(movies);
-}
-
-
 app.use((req,res)=>{
     console.log("Caught one");
 })
 
 app.listen(3005, ()=>{
     console.log('listening on port 3000 .........');
-    getUser();
 })

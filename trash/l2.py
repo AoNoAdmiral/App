@@ -7,7 +7,7 @@ import serial
 import json
 AIO_FEED_ID = "Watering"
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_QkXE28JPekrFO6aZHyys6cFYTi4I"
+AIO_KEY = "aio_Xhym94eulsCijNPlpzAbm3MkFOGz"
 
 
 
@@ -66,7 +66,6 @@ bbc_port = ""
 if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
 while True :
-    client.publish("Total","1#{\"ConditionHeat\":80,\"ConditionHumd\":80,\"ConditionEarth\":80}  ")
-    client.publish("Watering","1#{\"ConditionHeat\":80,\"ConditionHumd\":80,\"ConditionEarth\":80}  ")
+    client.publish("EarthHumd","80")
 
     time . sleep (1)
