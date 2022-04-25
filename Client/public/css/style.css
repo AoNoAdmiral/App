@@ -78,6 +78,16 @@ section {
   cursor: pointer;
 }
 
+.btn1 {
+  display: block;
+  margin-top: 1rem;
+  padding: .9rem 3rem;
+  background: #eb4d4b;
+  color: #fff;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+
 .btn:hover {
   background: #130f40;
 }
@@ -782,8 +792,23 @@ section {
           justify-content: space-between;
 }
 
+.contact .row form .centerH3 {
+  text-align: center;
+}
+
+.contact .row form .inputBox .labelSetting {
+  font-size: 2.2rem;
+  padding: 0.8rem;
+}
+
+.contact .row form .waringFormat {
+  color: red;
+  font-size: 1.5rem;
+  padding-left: 1rem;
+}
+
 .contact .row form .inputBox input {
-  width: 49%;
+  width: 35%;
 }
 
 .contact .row form .inputBox input,
@@ -1983,4 +2008,5 @@ button {
 .apply-form.hide{
   left:-1000px;
 }
+
 /*# sourceMappingURL=style.css.map */

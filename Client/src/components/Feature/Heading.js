@@ -2,7 +2,7 @@ import React from 'react'
 
 function Heading() {
     return (
-        <h1 className="heading"> <span>featured</span> products </h1>
+        <h1 className="heading"> <span>Setting</span> Config </h1>
     )
 }
 
