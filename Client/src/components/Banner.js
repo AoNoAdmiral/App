@@ -25,7 +25,7 @@ function Banner() {
               </div>
               <div class="sale-user-right">
                 <div class="banner__sale-buynow">
-                  <a href="#" class="header__menu-link btn btn--border btn--rounded">
+                  <a href="/payment" class="header__menu-link btn btn--border btn--rounded">
                   Visit Now
                 </a>
                 </div>

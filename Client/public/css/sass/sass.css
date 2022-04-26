@@ -21,6 +21,9 @@
   display: flex;
   margin-bottom: 4rem;
 }
+.sale i {
+  margin-left: 3rem;
+}
 .sale .sale1 {
   margin-right: 2rem;
 }
