@@ -4,8 +4,8 @@ function Brand() {
     return (
         <a href="#" className="logo">
             <div className="image">
-            <img className='piclogo' src="image/logo.png" alt=""/> 
-            <a>Chill House</a> 
+            <img href="\" className='piclogo' src="image/logo.png" alt=""/> 
+            <a href="\" className='name-logo'>Chill House</a> 
             </div>
         </a>
             
