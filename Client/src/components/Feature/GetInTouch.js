@@ -8,7 +8,8 @@ function check(text) {
 
 function checkFormat(formSettingConfig, formTime) {
     var formElement = document.querySelector(formSettingConfig)
-    var inputElement = formElement.querySelector('#temperature')
+    // var inputElement = formElement.querySelector('#temperature')
+    var inputElement = NaN
     if(inputElement){
         var waringFormat1 = formElement.querySelector('#warning1')
         inputElement.onblur = function (){
@@ -23,7 +24,8 @@ function checkFormat(formSettingConfig, formTime) {
             }
         }
     }
-    var inputElement2 = formElement.querySelector('#earth')
+    // var inputElement2 = formElement.querySelector('#earth')
+    var inputElement2 = NaN
     if(inputElement2){
         var waringFormat2 = formElement.querySelector('#warning3')
         inputElement2.onblur = function (){
@@ -38,7 +40,8 @@ function checkFormat(formSettingConfig, formTime) {
                 }
         }
     }
-    var inputElement3 = formElement.querySelector('#humd')
+    // var inputElement3 = formElement.querySelector('#humd')
+    var inputElement3 = NaN
     if(inputElement3){
         var waringFormat3 = formElement.querySelector('#warning2')
         inputElement3.onblur = function (){
@@ -54,7 +57,8 @@ function checkFormat(formSettingConfig, formTime) {
         }
     } 
     var formElement1 = document.querySelector(formTime)
-    var inputElement4 = formElement1.querySelector('#time1')
+    // var inputElement4 = formElement1.querySelector('#time1')
+    var inputElement4 = NaN
     if(inputElement4){
         var waringFormat4 = formElement1.querySelector('#warning4')
         inputElement4.onblur = function (){
@@ -71,7 +75,8 @@ function checkFormat(formSettingConfig, formTime) {
         }
     } 
 
-    var inputElement5 = formElement1.querySelector('#time2')
+    // var inputElement5 = formElement1.querySelector('#time2')
+    var inputElement5 = NaN
     if(inputElement5){
         var waringFormat5 = formElement1.querySelector('#warning5')
         inputElement5.onblur = function (){
