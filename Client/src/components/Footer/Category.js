@@ -3,12 +3,12 @@ import React from 'react'
 function Category() {
     return (
         <div className="box">
-        <h3>category</h3>
-        <a href="/#products" className="filterLink" data-filter="men"> <i className="fas fa-arrow-right"></i> Fruit </a>
-        <a href="/#products" className="filterLink" data-filter="female"> <i className="fas fa-arrow-right"></i> Vegetable </a>
-        <a href="/#products" className="filterLink" data-filter="featured"> <i className="fas fa-arrow-right"></i> Featured </a>
-        <a href="/#products" className="filterLink" data-filter="seller"> <i className="fas fa-arrow-right"></i> best seller </a>
-        <a href="/#products" className="filterLink" data-filter="arrivals"> <i className="fas fa-arrow-right"></i> new arrivals </a>
+        <h3>Garden House</h3>
+        <a href="/#products" className="filterLink" data-filter="Garden 1"> <i className="fas fa-arrow-right"></i> Garden 1 </a>
+        <a href="/#products" className="filterLink" data-filter="Garden 2"> <i className="fas fa-arrow-right"></i> Garden 2 </a>
+        <a href="/#products" className="filterLink" data-filter="Garden 3"> <i className="fas fa-arrow-right"></i> Garden 3 </a>
+        <a href="/#products" className="filterLink" data-filter="Garden 4"> <i className="fas fa-arrow-right"></i> Garden 4 </a>
+        <a href="/#products" className="filterLink" data-filter="Garden 5"> <i className="fas fa-arrow-right"></i> Garden 5 </a>
     </div>
     )
 }

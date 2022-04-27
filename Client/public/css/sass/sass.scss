@@ -1,9 +1,36 @@
 $red : #eb4d4b;
 $black : #130f40;
 $light-color : #666;
+$text-gray: #c6cad7;
 $light-bg : #f9f9f9;
 $border : .1rem solid rgba(0,0,0,.3);
 $box-shadow : 0 .5rem 1rem rgba(0,0,0,.1);
+
+
+@mixin flex(
+  $align: flex-start,
+  $justify: flex-start,
+  $wrap: nowrap,
+  $dir: row
+) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+  flex-direction: $dir;
+}
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+
+
+
+
+
+
 
 .header{
 
@@ -12,6 +39,9 @@ $box-shadow : 0 .5rem 1rem rgba(0,0,0,.1);
         font-size: 2.5rem;
         font-weight: bolder;
 
+        .name-logo{
+          color: #2a2a2a;
+        }
         .image{
             display: flex;
             align-items: center;
@@ -34,6 +64,9 @@ $box-shadow : 0 .5rem 1rem rgba(0,0,0,.1);
 
 .sale{
     display: flex;
+    i{
+      margin-left: 3rem;
+    }
     .sale1{
         margin-right: 2rem;
     }
@@ -71,9 +104,10 @@ $box-shadow : 0 .5rem 1rem rgba(0,0,0,.1);
       margin-bottom: 2.5rem;
     }
     .sale-user-detail{
-      font-size: 1.3rem;
+      font-size: 1.8rem;
       line-height: 1.4;
-      opacity: 40%;
+      opacity: 60%;
+      margin-bottom: 2rem;
     }
     .sale-user-after{
       color: #fff;
@@ -97,5 +131,93 @@ $box-shadow : 0 .5rem 1rem rgba(0,0,0,.1);
     }
   }
   margin-bottom: 4rem;
+
+  .btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: .9rem 3rem;
+    border-radius: 2rem;
+    background: #eb4d4b;
+    color: #fff;
+    font-size: 1.7rem;
+    cursor: pointer;
   }
+  }
+
+.properties{
+    font-size: 2rem;
+}
+
+.home{
+  .namẹhome{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 6rem;
+    z-index: 10;
+    font-weight: bolder;
+    color: #fff;
+    box-shadow: $box-shadow;
+    border: 0.5rem ;
+    text-shadow: 0.1em 0.1em 0.05em #333
+  }
+}
+
+
+.bestseller{
+  &__name {
+    margin: 0rem auto;
+    font-weight: bold;
+    .line__name{
+    border-bottom: 2px solid black  ; 
+    opacity: 50%;
+    margin: 2rem auto;
+    }
+  }
+  &__list {
+    @include flex(stretch, space-between, wrap);
+  }
+  &__item {
+    width: calc(25% - 22.5px);
+    padding: 2.5rem;
+    background-color: #fff ;
+    border:$border;
+    box-shadow: $box-shadow;
+    border-radius: 2rem;
+    @include flex(stretch, flex-start, nowrap, column);
+   
+  }
+  &__image {
+    background-color: #fff ;
+    border: .1rem solid rgba(0,0,0,.10);
+    box-shadow: $box-shadow;
+    border-radius: 2rem;
+    border-radius: inherit;
+    object-fit: cover;
+    margin-bottom: 2rem;
+    @include size(100%, 23rem);
+  }
+  &__name,
+  &__details {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__name {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  &__details {
+    font-size: 2.6rem;
+    color: black;
+    margin-top: auto;
+    margin: 0rem auto;
+    i {
+      margin-left: 1.5rem;
+    }
+  }
+  margin-bottom: 6rem;
+}
+
   

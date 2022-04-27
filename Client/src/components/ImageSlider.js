@@ -10,7 +10,7 @@ const ImageSlider = ({props}) => {
                 <div className="content">
                     <span>{props[3]}</span>
                     <h3>{props[1]}</h3>
-                    <a href="/#products" data-filter={props[4]} className="filterLink btn">shop now</a>
+                    {/* <a href="/#products" data-filter={props[4]} className="filterLink btn">shop now</a> */}
                 </div>
             </div>
             </div>

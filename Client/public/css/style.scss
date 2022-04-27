@@ -100,8 +100,21 @@ section{
         color:$black;
         font-weight: bolder;
 
+        .image{
+            display: flex;
+            align-items: center;
+        }
         i{
             color:$red;
+        }
+
+        a{
+            text-align: center
+        }
+        
+        .piclogo{
+            width: 6rem;
+            height: 6rem;
         }
     }
 
@@ -1237,3 +1250,4 @@ section{
     }
 
 }
+

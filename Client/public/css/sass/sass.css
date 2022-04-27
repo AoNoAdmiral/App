@@ -1,6 +1,10 @@
+@charset "UTF-8";
 .header .logo {
   font-size: 2.5rem;
   font-weight: bolder;
+}
+.header .logo .name-logo {
+  color: #2a2a2a;
 }
 .header .logo .image {
   display: flex;
@@ -20,6 +24,9 @@
 .sale {
   display: flex;
   margin-bottom: 4rem;
+}
+.sale i {
+  margin-left: 3rem;
 }
 .sale .sale1 {
   margin-right: 2rem;
@@ -59,9 +66,10 @@
   margin-bottom: 2.5rem;
 }
 .sale .card .sale-user-detail {
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   line-height: 1.4;
-  opacity: 40%;
+  opacity: 60%;
+  margin-bottom: 2rem;
 }
 .sale .card .sale-user-after {
   color: #fff;
@@ -82,6 +90,96 @@
 .sale .card .banner__sale-buynow {
   margin-top: 1.8rem;
   margin-bottom: 2.5rem;
+}
+.sale .btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.9rem 3rem;
+  border-radius: 2rem;
+  background: #eb4d4b;
+  color: #fff;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+
+.properties {
+  font-size: 2rem;
+}
+
+.home .namẹhome {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 6rem;
+  z-index: 10;
+  font-weight: bolder;
+  color: #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border: 0.5rem;
+  text-shadow: 0.1em 0.1em 0.05em #333;
+}
+
+.bestseller {
+  margin-bottom: 6rem;
+}
+.bestseller__name {
+  margin: 0rem auto;
+  font-weight: bold;
+}
+.bestseller__name .line__name {
+  border-bottom: 2px solid black;
+  opacity: 50%;
+  margin: 2rem auto;
+}
+.bestseller__list {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.bestseller__item {
+  width: calc(25% - 22.5px);
+  padding: 2.5rem;
+  background-color: #fff;
+  border: 0.1rem solid rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 2rem;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+.bestseller__image {
+  background-color: #fff;
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 2rem;
+  border-radius: inherit;
+  object-fit: cover;
+  margin-bottom: 2rem;
+  width: 100%;
+  height: 23rem;
+}
+.bestseller__name, .bestseller__details {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bestseller__name {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+.bestseller__details {
+  font-size: 2.6rem;
+  color: black;
+  margin-top: auto;
+  margin: 0rem auto;
+}
+.bestseller__details i {
+  margin-left: 1.5rem;
 }
 
 /*# sourceMappingURL=sass.css.map */

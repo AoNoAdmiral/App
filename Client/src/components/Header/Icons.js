@@ -21,12 +21,8 @@ function Icons() {
     <div>
     <div className="icons" id="here">
         <div id="menu-btn" className="fas fa-bars"></div>
-        <div id="search-btn" className="fas fa-search" ></div>
-        <div id="cart-btn" className="fas fa-user" onClick={()=>open}></div>
-        <div className="shopping-card">
-          <h3 className="total"> HELLO</h3>
-          <a onClick={()=>login()} style={styleObj} className="header__menu-link btn btn--border btn--rounded buttom"> LOGIN</a>
-        </div>
+        <div id="search-btn" className="fas fa-search" onClick={()=>test()}></div>
+        <a id="login-btn" href="/login" className="fas fa-user"></a>
     </div>
     <form action="" className="search-form">
         <input type="search" name="" placeholder="search here..." id="search-box"></input>

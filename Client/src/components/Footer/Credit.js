@@ -2,7 +2,7 @@ import React from 'react'
 
 function Credit() {
     return (
-        <div className="credit"> A Project By <span>Group 8</span> </div>
+        <div className="credit"> A Project By <span>Group Chill&Chill</span> </div>
     )
 }
 
