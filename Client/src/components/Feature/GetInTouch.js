@@ -8,8 +8,7 @@ function check(text) {
 
 function checkFormat(formSettingConfig, formTime) {
     var formElement = document.querySelector(formSettingConfig)
-    // var inputElement = formElement.querySelector('#temperature')
-    var inputElement = NaN
+    var inputElement = formElement.querySelector('#temperature')
     if(inputElement){
         var waringFormat1 = formElement.querySelector('#warning1')
         inputElement.onblur = function (){
@@ -24,8 +23,7 @@ function checkFormat(formSettingConfig, formTime) {
             }
         }
     }
-    // var inputElement2 = formElement.querySelector('#earth')
-    var inputElement2 = NaN
+    var inputElement2 = formElement.querySelector('#earth')
     if(inputElement2){
         var waringFormat2 = formElement.querySelector('#warning3')
         inputElement2.onblur = function (){
@@ -40,8 +38,7 @@ function checkFormat(formSettingConfig, formTime) {
                 }
         }
     }
-    // var inputElement3 = formElement.querySelector('#humd')
-    var inputElement3 = NaN
+    var inputElement3 = formElement.querySelector('#humd')
     if(inputElement3){
         var waringFormat3 = formElement.querySelector('#warning2')
         inputElement3.onblur = function (){
@@ -57,8 +54,7 @@ function checkFormat(formSettingConfig, formTime) {
         }
     } 
     var formElement1 = document.querySelector(formTime)
-    // var inputElement4 = formElement1.querySelector('#time1')
-    var inputElement4 = NaN
+    var inputElement4 = formElement1.querySelector('#time1')
     if(inputElement4){
         var waringFormat4 = formElement1.querySelector('#warning4')
         inputElement4.onblur = function (){
@@ -75,8 +71,7 @@ function checkFormat(formSettingConfig, formTime) {
         }
     } 
 
-    // var inputElement5 = formElement1.querySelector('#time2')
-    var inputElement5 = NaN
+    var inputElement5 = formElement1.querySelector('#time2')
     if(inputElement5){
         var waringFormat5 = formElement1.querySelector('#warning5')
         inputElement5.onblur = function (){
@@ -94,7 +89,6 @@ function checkFormat(formSettingConfig, formTime) {
 }
 
 function GetInTouch() {
-    checkFormat("#form1", "#formTime")
     return (
         <div className="row">
 
@@ -115,7 +109,7 @@ function GetInTouch() {
                 <input type="text" placeholder="Ex: 20-25" id="earth"></input>
             </div>
             <span className="waringFormat" id="warning3"></span>
-            <input type="submit" value="Lưu" className="btn"></input>
+            <input type="submit" value="Lưu" className="btn"  onClick={()=>checkFormat("#form1", "#formTime")}></input>
         </form>
 
         <form action="" id="formTime">
@@ -130,7 +124,7 @@ function GetInTouch() {
                 <input type="text" placeholder="Ex: 7:25" id="time2"></input>
             </div>
             <span className="waringFormat" id="warning5"></span>
-            <input type="submit" value="Lưu" className="btn"></input>
+            <input type="submit" value="Lưu" className="btn" onClick={()=>checkFormat("#form1", "#formTime")}></input>
         </form>
     </div>
     )
