@@ -10,8 +10,8 @@ function ContactUs() {
     <Heading/>
 
    <SellerInfo/>
-
     <GetInTouch/>
+    
 </section>
     )
 }

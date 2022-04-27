@@ -72,6 +72,20 @@ section {
   display: inline-block;
   margin-top: 1rem;
   padding: .9rem 3rem;
+<<<<<<< Updated upstream
+=======
+  border-radius: 2rem;
+>>>>>>> Stashed changes
+  background: #eb4d4b;
+  color: #fff;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+
+.btn1 {
+  display: block;
+  margin-top: 1rem;
+  padding: .9rem 3rem;
   background: #eb4d4b;
   color: #fff;
   font-size: 1.7rem;
@@ -710,7 +724,11 @@ section {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (minmax(25rem, 1fr))[auto-fit];
+<<<<<<< Updated upstream
       grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+=======
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+>>>>>>> Stashed changes
   gap: 1.5rem;
 }
 
@@ -782,8 +800,23 @@ section {
           justify-content: space-between;
 }
 
+.contact .row form .centerH3 {
+  text-align: center;
+}
+
+.contact .row form .inputBox .labelSetting {
+  font-size: 2.2rem;
+  padding: 0.8rem;
+}
+
+.contact .row form .waringFormat {
+  color: red;
+  font-size: 1.5rem;
+  padding-left: 1rem;
+}
+
 .contact .row form .inputBox input {
-  width: 49%;
+  width: 35%;
 }
 
 .contact .row form .inputBox input,
@@ -1004,6 +1037,7 @@ section {
   gap: 0.5rem;
   margin: 0.7rem 0;
   margin-bottom: 1.6rem;
+<<<<<<< Updated upstream
 }
 .header .login-form .remember label {
   font-size: 1.5rem;
@@ -1020,6 +1054,24 @@ section {
   padding-top: 0.7rem;
   font-size: 1.4rem;
 }
+=======
+}
+.header .login-form .remember label {
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+.header .login-form .btn--rounded {
+  margin-top: 1rem 0;
+  text-align: center;
+  width: 100%;
+}
+.header .login-form p {
+  color: black;
+  padding-top: 0.7rem;
+  font-size: 1.4rem;
+}
+>>>>>>> Stashed changes
 .header .login-form p a {
   margin-left: 0.7rem;
   font-size: 1.4rem;
@@ -1314,6 +1366,7 @@ section {
   justify-content: space-between;
   width: 100%;
   padding: 1rem 0;
+<<<<<<< Updated upstream
   border-bottom: 1px solid #383838;
   margin-bottom:10px;
 }
@@ -1327,6 +1380,21 @@ section {
   padding: 1rem 0;
   border-bottom: 1px solid #383838;
   margin-bottom:10px;
+=======
+  border-bottom: 1px solid #383838;
+  margin-bottom:10px;
+}
+.cart .cart_left .row {
+  font-size: 2rem;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 0;
+  border-bottom: 1px solid #383838;
+  margin-bottom:10px;
+>>>>>>> Stashed changes
 }
 .cart .cart_right .row span {
   font-weight: 500;
@@ -1983,4 +2051,5 @@ button {
 .apply-form.hide{
   left:-1000px;
 }
+
 /*# sourceMappingURL=style.css.map */
