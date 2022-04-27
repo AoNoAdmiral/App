@@ -32,8 +32,7 @@ const Mainpage = () =>{
       sessionStorage.setItem('email',"");
     }
     try {
-    sessionStorage.setItem('key',"aio_Xhym94eulsCijNPlpzAbm3MkFOGz")
-    const localData = [];
+    sessionStorage.setItem('key',"aio_Xhym94eulsCijNPlpzAbm3MkFOGz");
     // lay data chart
     axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?hours=24&resolution=15",{
     },{             
@@ -102,6 +101,20 @@ const Mainpage = () =>{
   .then(function (response) {
      
   })
+    const localData = [];
+    axios.post("http://localhost:3000/get-products", {
+
+      })
+      .then(function (response) {
+        console.log(response['data'])
+        for (let i = 0; i < response['data'].length; i++) {
+            localData.push(JSON.stringify(response['data'][i]))
+        }
+        sessionStorage.setItem('Data',JSON.stringify(localData))
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
       } catch (error) {
         console.log(error);
     }
@@ -116,7 +129,7 @@ const Mainpage = () =>{
       }
     })
     .then(function (response) {
-       
+      //  console.log(response)
     })
     }
     setInterval(() => {
