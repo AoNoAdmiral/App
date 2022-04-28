@@ -33,6 +33,7 @@ function Icons() {
         <label for="search-box" className="fas fa-search"></label>
     </form>
     </div>:
+
     <div>
     <div className="icons" id="here">
         <div id="menu-btn" className="fas fa-bars"></div>
