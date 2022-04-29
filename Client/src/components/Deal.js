@@ -9,10 +9,10 @@ function Deal() {
     </div>
 
     <div className="content">
-        <span>new season products!</span>
-        <h3>best summer fruit/vegetables</h3>
-        <p>sale get up to 50% off</p>
-        <a href="/#products" className="filterLink btn" data-filter="special">shop now</a>
+        <span>Have a good day!</span>
+        <h3>The weather is very nice today</h3>
+        <p>The seeds are growing very well</p>
+        <a href="/#products" className="filterLink btn" data-filter="special">Visit now</a>
     </div>
 
 </section>
