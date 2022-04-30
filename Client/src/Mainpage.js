@@ -31,7 +31,6 @@ const Mainpage = () =>{
     if(!sessionStorage.getItem('email')){
       sessionStorage.setItem('email',"");
     }
-    try {
     sessionStorage.setItem('key',"aio_Xhym94eulsCijNPlpzAbm3MkFOGz");
     // lay data chart
   //   axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?hours=24&resolution=15",{
