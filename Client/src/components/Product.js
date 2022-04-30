@@ -5,15 +5,7 @@ import ProductItems from './Product/ProductItems'
 
 function Product() {
     return (
-        <section className="products" id="products">
-
-    <Heading/>
-
-    <FilterButtons/>
-
-    <ProductItems/>
-
-</section>
+        <h1>Product</h1>
     )
 }
 
