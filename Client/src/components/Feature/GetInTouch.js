@@ -129,7 +129,17 @@ function GetInTouch() {
             setValueEarth(response.data[0]['value'])
         });
         }, []);
+    useEffect(() => {
+            axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/mark1/data?limit=1").then((response) => {
+                document.getElementById("time1").value = response.data[0]['value'];
+            });
+            }, []);
 
+    useEffect(() => {
+                axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/mark2/data?limit=1").then((response) => {
+                    document.getElementById("time2").value = response.data[0]['value'];
+                });
+                }, []);        
         return (
         <div className="row">
 
