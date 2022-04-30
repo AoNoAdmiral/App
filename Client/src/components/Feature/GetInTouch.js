@@ -108,37 +108,27 @@ function GetInTouch() {
     const [conditionalHumd, setConditionalHumd] = useState("");
     const [conditionHeat, setConditionHeat] = useState("");
     const [conditionalEarth, setConditionalEarth] = useState("");
-   
     // // lay data dk
     useEffect(() => {
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1").then((response) => {
             setConditionalHumd(response.data[0]['value']);
+            setValueHead(response.data[0]['value'])
         });
         }, []);
 
     useEffect(() => {
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionheat/data?limit=1").then((response) => {
             setConditionHeat(response.data[0]['value']);
+            setValueTemperature(response.data[0]['value'])
         });
         }, []);
 
     useEffect(() => {
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalearth/data?limit=1").then((response) => {
             setConditionalEarth(response.data[0]['value']);
+            setValueEarth(response.data[0]['value'])
         });
         }, []);
-
-    setTimeout(function () {
-        setValueTemperature(conditionHeat)
-    }, 1000)
-
-    setTimeout(function () {
-        setValueHead(conditionalHumd)
-    }, 1000)
-
-    setTimeout(function () {
-        setValueEarth(conditionalEarth)
-    }, 1000)
 
         return (
         <div className="row">
@@ -147,17 +137,17 @@ function GetInTouch() {
                 <h3 className="centerH3">Thông số nhà kính</h3>
                 <div className="inputBox">
                     <label className="labelSetting">Nhiệt độ (Đơn vị: 0c):</label>
-                    <input type="text" placeholder="Ex: 20-25" id="temperature" value=""></input>
+                    <input type="text" placeholder="Ex: 20-25" id="temperature"></input>
                 </div>
                 <span className="waringFormat" id="warning1"></span>
                 <div className="inputBox">
                     <label className="labelSetting">Độ ẩm không khí (Đơn vị: %):</label>
-                    <input type="text" placeholder="Ex: 20-25" id="humd" value=""></input>
+                    <input type="text" placeholder="Ex: 20-25" id="humd"></input>
                 </div>
                 <span className="waringFormat" id="warning2"></span>
                 <div className="inputBox">
                     <label className="labelSetting">Độ ẩm của đất (Đơn vị: %):</label>
-                    <input type="text" placeholder="Ex: 20-25" id="earth" value=""></input>
+                    <input type="text" placeholder="Ex: 20-25" id="earth"></input>
                 </div>
                 <span className="waringFormat" id="warning3"></span>
                 <input type="submit" value="Lưu" className="btn"></input>
