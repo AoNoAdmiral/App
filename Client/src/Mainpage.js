@@ -164,7 +164,6 @@ const Mainpage = () => {
       <Home />
       <Banner />
       <Deal />
-      {/* <Chart/> */}
       <Feature />
       <Review />
       <ContactUs />

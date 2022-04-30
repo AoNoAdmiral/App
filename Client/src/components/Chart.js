@@ -1,40 +1,15 @@
-import React from 'react'
-import LineChart from './Chart/LineChart'
-
+import React,{useRef} from 'react'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400},{name: 'Page C', uv: 200, pv: 2400, amt: 2400},{name: 'Page B', uv: 300, pv: 2400, amt: 2400}];
 function Chart() {
 
-    const data={
-        labels: [
-          "Africa",
-          "Asia",
-          "Europe",
-          "Latin America",
-          "North America"
-        ],
-        datasets: [
-          {
-            label: "Population (millions)",
-            backgroundColor: [
-              "#3e95cd",
-              "#8e5ea2",
-              "#3cba9f",
-              "#e8c3b9",
-              "#c45850"
-            ],
-            data: [2478, 5267, 734, 784, 433]
-          }
-        ]
-      }
-
-    const  options={
-        legend: { display: false },
-        title: {
-          display: true,
-          text: "Predicted world population (millions) in 2050"
-        }
-      }
     return (
-        <LineChart chartData={data}/>
+      <LineChart width={600} height={300} data={data}>
+      <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+      <CartesianGrid stroke="#ccc" />
+      <XAxis dataKey="name" />
+      <YAxis />
+     </LineChart>
         )
     }
     

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Line, Bar } from "react-chartjs-2";
 import axios from "axios";
 
-function LineChart({chartData}){
+function LineChart(chartData){
 
     // const [data, setData] = useState(0)
 
@@ -12,7 +12,6 @@ function LineChart({chartData}){
     //     });
     //     }, []);
     // console.log(data)
-
     return (
         <Bar data={chartData}/>
     )
