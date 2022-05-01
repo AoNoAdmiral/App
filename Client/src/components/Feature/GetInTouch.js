@@ -10,7 +10,7 @@ function check(text) {
 
 function checkFormat(formSettingConfig, formTime) {
     var formElement = document.querySelector(formSettingConfig)
-    var inputElement = formElement.querySelector('#temperature')
+    var inputElement = formElement.querySelector('#heat')
     if (inputElement) {
         var waringFormat1 = formElement.querySelector('#warning1')
         inputElement.onblur = function () {
@@ -90,14 +90,88 @@ function checkFormat(formSettingConfig, formTime) {
     }
 }
 
-function setValueTemperature(x){
-    document.getElementById("temperature").value = x;
+function handleInputConfigSetting(){
+    var heat = 0
+    var humd = 0
+    var earth = 0
+    if(document.getElementById("humd").value){
+        humd = document.getElementById("humd").value
+    }
+    if(document.getElementById("heat").value){
+        heat = document.getElementById("humd").value
+    }
+    if(document.getElementById("earth").value){
+        earth = document.getElementById("humd").value
+    }
+    // update Tuoi nuoc ( Doi watering qua conditionheat/humd/earth va value thanh gia tri tuong ung)
+    axios.post("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data",{
+           "datum":{
+               "value":humd
+               }
+    },{             
+    headers: {
+      'Content-Type': 'application/json',
+      'X-AIO-Key':sessionStorage.getItem('key')
+    }
+  })
+
+    axios.post("https://io.adafruit.com/api/v2/Airforce/feeds/conditionheat/data",{
+           "datum":{
+               "value":heat
+               }
+    },{             
+    headers: {
+      'Content-Type': 'application/json',
+      'X-AIO-Key':sessionStorage.getItem('key')
+    }
+  })
+
+    axios.post("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalearth/data",{
+           "datum":{
+               "value":earth
+               }
+    },{             
+    headers: {
+      'Content-Type': 'application/json',
+      'X-AIO-Key':sessionStorage.getItem('key')
+    }
+  })
+  
 }
-function setValueHead(x){
-    document.getElementById("humd").value = x;
-}
-function setValueEarth(x){
-    document.getElementById("earth").value = x;
+
+function handleInputWateringTime(){
+    var time1 = 0
+    var time2 = 0
+    if(document.getElementById("time1").value){
+        time1 = document.getElementById("time1").value
+    }
+    if(document.getElementById("time2").value){
+        time2 = document.getElementById("time2").value
+    }
+   
+    // update Tuoi nuoc ( Doi watering qua conditionheat/humd/earth va value thanh gia tri tuong ung)
+    axios.post("https://io.adafruit.com/api/v2/Airforce/feeds/mark1/data",{
+           "datum":{
+               "value":time1
+               }
+    },{             
+    headers: {
+      'Content-Type': 'application/json',
+      'X-AIO-Key':sessionStorage.getItem('key')
+    }
+  })
+
+    axios.post("https://io.adafruit.com/api/v2/Airforce/feeds/mark2/data",{
+           "datum":{
+               "value":time2
+               }
+    },{             
+    headers: {
+      'Content-Type': 'application/json',
+      'X-AIO-Key':sessionStorage.getItem('key')
+    }
+  })
+
 }
 
 function GetInTouch() {
@@ -160,7 +234,7 @@ function GetInTouch() {
                     <input type="text" placeholder="Ex: 20-25" id="earth"></input>
                 </div>
                 <span className="waringFormat" id="warning3"></span>
-                <input type="submit" value="Lưu" className="btn"></input>
+                <input type="button" value="Lưu" className="btn" onClick={() => handleInputConfigSetting()}></input>
             </form>
 
             <form action="" id="formTime">
@@ -175,7 +249,7 @@ function GetInTouch() {
                     <input type="text" placeholder="Ex: 7:25" id="time2"></input>
                 </div>
                 <span className="waringFormat" id="warning5"></span>
-                <input type="submit" value="Lưu" className="btn"></input>
+                <input type="button" value="Lưu" className="btn" onClick={() => handleInputWateringTime()}></input>
             </form>
         </div>
     )

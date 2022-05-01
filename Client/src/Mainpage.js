@@ -14,23 +14,29 @@ import { products } from './components/Product/Data';
 import Chart from './components/Chart';
 const Mainpage = () => {
   // update Tuoi nuoc ( Doi watering qua conditionheat/humd/earth va value thanh gia tri tuong ung)
-//          "datum":{
-//              "value":1
-//              }
-//   },{             
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Host': 'io.adafruit.com',
-//     'X-AIO-Key':sessionStorage.getItem('key')
-//   }
-// })
-// .then(function (response) {
-   
-// })
-    if(!sessionStorage.getItem('email')){
-      sessionStorage.setItem('email',"");
-    }
-    sessionStorage.setItem('key',"aio_Xhym94eulsCijNPlpzAbm3MkFOGz");
+  //   axios.post("https://io.adafruit.com/api/v2/Airforce/feeds/watering/data",{
+  //          "datum":{
+  //              "value":1
+  //              }
+  //   },{             
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Host': 'io.adafruit.com',
+  //     'X-AIO-Key':sessionStorage.getItem('key')
+  //   }
+  // })
+  // .then(function (response) {
+
+  // })
+  if (!sessionStorage.getItem('email')) {
+    sessionStorage.setItem('email', "");
+  }
+  try {
+    sessionStorage.setItem('key', "aio_Hncl31kfAQrNu1qyRmoTruGYqp6M");
+  }
+  catch {
+
+  }
     // lay data chart
   //     'Content-Type': 'application/json',
   //     'Host': 'io.adafruit.com',
@@ -164,6 +170,7 @@ const Mainpage = () => {
       <Home />
       <Banner />
       <Deal />
+      {/* <Chart/> */}
       <Feature />
       <Review />
       <ContactUs />
