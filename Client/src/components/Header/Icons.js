@@ -12,16 +12,12 @@ function Icons() {
     sessionStorage.setItem('email',"");
     window.location = "/login";
 }
-  function open(){
-    document.querySelector('.search-form').remove('active');
-    document.querySelector('.shopping-card').toggle('active');
-  }
     return (
       sessionStorage.getItem('email')==""?
     <div>
     <div className="icons" id="here">
         <div id="menu-btn" className="fas fa-bars"></div>
-        <div id="search-btn" className="fas fa-search" onClick={()=>test()}></div>
+        <div id="search-btn" className="fas fa-search"></div>
         <a id="login-btn" className="fas fa-user"></a>
         <div className="login-form">
           <h3 className="total"> HELLO</h3>

@@ -32,7 +32,7 @@ const Mainpage = () => {
     sessionStorage.setItem('email', "");
   }
   try {
-    sessionStorage.setItem('key', "aio_Xhym94eulsCijNPlpzAbm3MkFOGz");
+    sessionStorage.setItem('key', "aio_Hncl31kfAQrNu1qyRmoTruGYqp6M");
   }
   catch {
 
@@ -195,7 +195,7 @@ const Mainpage = () => {
       <Home />
       <Banner />
       <Deal />
-      {/* <Chart/> */}
+      <Chart/>
       <Feature />
       <Review />
       <ContactUs />
