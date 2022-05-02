@@ -186,21 +186,21 @@ function GetInTouch() {
     useEffect(() => {
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1").then((response) => {
             setConditionalHumd(response.data[0]['value']);
-            setValueHead(response.data[0]['value'])
+            document.getElementById("humd").value = response.data[0]['value'];
         });
         }, []);
 
     useEffect(() => {
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionheat/data?limit=1").then((response) => {
             setConditionHeat(response.data[0]['value']);
-            setValueTemperature(response.data[0]['value'])
+            document.getElementById("temperature").value = response.data[0]['value'];
         });
         }, []);
 
     useEffect(() => {
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalearth/data?limit=1").then((response) => {
             setConditionalEarth(response.data[0]['value']);
-            setValueEarth(response.data[0]['value'])
+            document.getElementById("earth").value = response.data[0]['value'];
         });
         }, []);
     useEffect(() => {

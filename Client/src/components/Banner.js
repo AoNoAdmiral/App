@@ -1,6 +1,45 @@
-import React from 'react'
-
+import React,{useState} from 'react'
+import axios from 'axios'; 
 function Banner() {
+  const [dataHeat, setDataHeat] = useState("")
+  const [dataHumd, setDataHumd] = useState("")
+  const [dataEarth, setDataEarth] = useState("")
+  setInterval(() => {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AIO-Key': sessionStorage.getItem('key')
+      }
+      .then(function (response) {
+        setDataHeat(response.data[0]['value'])
+      });
+    }, 300);
+
+    setInterval(() => {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data?limit=1", {
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AIO-Key': sessionStorage.getItem('key')
+      }
+    })
+      .then(function (response) {
+        setDataHumd(response.data[0]['value'])
+      });
+    }, 300);
+    setInterval(() => {
+      axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data?limit=1", {
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-AIO-Key': sessionStorage.getItem('key')
+        }
+      })
+        .then(function (response) {
+          setDataEarth(response.data[0]['value'])
+        });
+      }, 300);
     return (
         <section className="banner-container">
 
@@ -14,11 +53,11 @@ function Banner() {
 
                 <div class="sale-user-detail">  
                 
-                <i class="fas fa-temperature-high">   :30</i>
+                <i class="fas fa-temperature-high">   :{dataHeat}</i>
                 
-                <i class="fas fa-cloud">   :30</i>
+                <i class="fas fa-cloud">   :{dataHumd}</i>
                
-                <i class="fas fa-water">   :30</i>
+                <i class="fas fa-water">   :{dataEarth}</i>
                 </div>
               
 

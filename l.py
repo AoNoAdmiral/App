@@ -20,23 +20,6 @@ config = {
   "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
   "measurementId": "G-ZG9Z0XL8MW"
 }
-def update():
-    while True:
-        time.sleep(100)
-        mark = str(datetime.now().date())+"-"+str(datetime.now().hour)+"-"+str(datetime.now().minute)
-        data= {"Heat":Heat, "Humd": Humd, "Earth": Earth}
-        db.push(data)
-        db.child("Minute").child(mark).set(data)
-        time.sleep(60)
-        
-def update2():
-    while True:
-        time.sleep(100)
-        mark = str(datetime.now().date())
-        data= {"Heat":Heat, "Humd": Humd, "Earth": Earth}
-        db.push(data)
-        db.child("Day").child(mark).set(data)
-        time.sleep(3600*24)
         
 
 
@@ -153,8 +136,6 @@ Earth =30
 firebase = pyrebase.initialize_app(config)
 
 db = firebase.database()
-threading.Thread(target=update).start()
-threading.Thread(target=update2).start()
 while True :
     readSerial()
     time . sleep (30)

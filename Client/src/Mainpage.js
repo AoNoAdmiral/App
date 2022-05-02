@@ -32,7 +32,7 @@ const Mainpage = () => {
     sessionStorage.setItem('email', "");
   }
   try {
-    sessionStorage.setItem('key', "aio_Hncl31kfAQrNu1qyRmoTruGYqp6M");
+    sessionStorage.setItem('key', "aio_dzJq09cDAPnqWV96wrjNg9g5gouK");
   }
   catch {
 
