@@ -11,6 +11,7 @@ function Banner() {
         'Content-Type': 'application/json',
         'X-AIO-Key': sessionStorage.getItem('key')
       }
+    })
       .then(function (response) {
         setDataHeat(response.data[0]['value'])
       });
