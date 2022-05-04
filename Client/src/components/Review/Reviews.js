@@ -43,7 +43,7 @@ function Reviews() {
             <div className="swiper-slide slide">
                 <p>Tự viết</p>
                 <div className="user">
-                    <img src="https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-1/273953750_367473425379461_5324203996412969511_n.jpg?stp=dst-jpg_p200x200&_nc_cat=105&ccb=1-5&_nc_sid=7206a8&_nc_ohc=jBFkJuVZGW0AX9Eys55&tn=icknGQKY5w-1ULpp&_nc_ht=scontent.fvca1-1.fna&oh=00_AT_PC80OqC1MQExZ3fmnvRHrzKQUb4SGawxX8x08K8mEyQ&oe=626F72C4" alt=""/>
+                    <img src="https://scontent.fsgn3-1.fna.fbcdn.net/v/t39.30808-6/273115616_3174584686118548_2371916136410832451_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=_Rek3FA0NpcAX9b356W&_nc_ht=scontent.fsgn3-1.fna&oh=00_AT8ZHdX-qvRwa6xov4yF0Irn2aBtP9QSOFaUOQQOoMFiwA&oe=6276F812" alt=""/>
                     <div className="info">
                         <h3>Nguyễn Việt</h3>
                         <span>Client</span>
