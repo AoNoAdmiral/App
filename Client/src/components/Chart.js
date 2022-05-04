@@ -22,7 +22,7 @@ function Chart() {
   const [dataHumd, setDataHumd] = useState(null)
 
   // lay data chart
-  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?hours=24", {
+  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
   }, {
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ function Chart() {
       var a = handleData(response.data.data)
       setDataEarth(a)
     });
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?hours=24", {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?", {
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ function Chart() {
         var a = handleData(response.data.data)
         setDataHumd(a)
       });
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?hours=24", {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?", {
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ function Chart() {
         setDataHeat(a)
       });
   setInterval(() => {
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?hours=24", {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?", {
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -68,10 +68,10 @@ function Chart() {
         var a = handleData(response.data.data)
         setDataHeat(a)
       });
-    }, 3000);
+    }, 30000);
 
     setInterval(() => {
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?hours=24", {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?", {
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -83,10 +83,10 @@ function Chart() {
         var a = handleData(response.data.data)
         setDataHumd(a)
       });
-    }, 3000);
+    }, 30000);
 
     setInterval(() => {
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?hours=24", {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ function Chart() {
         var a = handleData(response.data.data)
         setDataEarth(a)
       });
-    }, 3000);
+    }, 30000);
 
   return (
 
