@@ -6,7 +6,7 @@ const path = require('path');
 const fetch = require('node-fetch');
 
 
-let serviceAccount = require("./btlmtdt-firebase-adminsdk-yv68p-fe100e5c45.json");
+let serviceAccount = require("./doan-4000f-firebase-adminsdk-mcb07-8744831086.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -88,11 +88,20 @@ app.post('/signin',(req,res)=>{
             bcrypt.compare(password, user.data().password, (err, result)=>{
                 if(result){
                     let data = user.data();
-                    return res.json({
-                        'status': 1,
-                        name: data.name,
-                        email: data.email,
-                        seller: data.seller,
+                    db.collection('users').doc(email).collection('ID').get().then(IT =>{
+                        let productArr = [];
+                        IT.forEach(item =>{
+                            let data = item.data();
+                            data.id =item.id;
+                            productArr.push(data);
+                        })
+                        return res.json({
+                            'status': 1,
+                            name: data.name,
+                            email: data.email,
+                            seller: data.seller,
+                            list: productArr
+                        })
                     })
                 } else{
                     return res.json({'status': 0,'alert': 'password in incorrect'});
@@ -143,101 +152,7 @@ app.post('/signup',(req,res)=>{
     })
 })
 
-async function getUser() {
-    // const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data", {
-    //     method: 'POST',
-    //         headers: {
-    //               'Content-Type': 'application/json',
-    //               'Host': 'io.adafruit.com',
-    //               'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
-    //         },
-    //         body: JSON.stringify({
-    //             "datum":{
-    //                 "value":10
-    //             }
-    //         }),
-    //   });
-    const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
-        method: 'GET',
-            headers: {
-                  'Content-Type': 'application/json',
-                  'Host': 'io.adafruit.com',
-                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
-            }
-      });
-      const movies = await response.json();
-    return movies[0]['value']
-}
-
-async function getUser2() {
-    const response = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data", {
-        method: 'GET',
-            headers: {
-                  'Content-Type': 'application/json',
-                  'Host': 'io.adafruit.com',
-                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
-            }
-      });
-    const movies = await response.json();
-    const response2 = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/earthhumd/data", {
-        method: 'GET',
-            headers: {
-                  'Content-Type': 'application/json',
-                  'Host': 'io.adafruit.com',
-                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
-            }
-      });
-    const movies2 = await response2.json();
-    const response3 = await fetch("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data", {
-        method: 'GET',
-            headers: {
-                  'Content-Type': 'application/json',
-                  'Host': 'io.adafruit.com',
-                  'X-AIO-Key':'aio_UGfg4715SOzuHZ5CiEhyKvrMv6ub'
-            }
-      });
-    const movies3 = await response3.json();
-}
-
 //routers
-//router home
-app.get("/current", (req, res) =>{
-    const x = getX();
-})
-
-//get products
-app.post('/get-products',(req, res)=>{
-    res.header('Access-Control-Allow-Origin',"*");
-    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers','Content-Type');
-    docRef = db.collection('products')
-
-    docRef.get()
-    .then(products =>{
-        if(products.empty){
-            return res.json('no products');
-        }
-        let productArr = [];
-        products.forEach(item =>{
-                let data = item.data();
-                data.id =item.id;
-                productArr.push(data);
-            })
-        res.json(productArr);
-    })
-})
-
-app.post('/addbill',(req, res)=>{
-    res.header('Access-Control-Allow-Origin',"*");
-    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers','Content-Type');
-    let { email,order} = req.body;
-    x = "order"+Math.floor(Math.random() * 1000);
-    db.collection('order').doc(x).set(req.body)
-                   .then(data => {
-                       res.json({'status': 1})
-                   })
-})
 
 // app.post('/delete-product', (req,res)=> {
 //     let {id} = req.body;
@@ -263,6 +178,6 @@ app.use((req,res)=>{
     console.log("Caught one");
 })
 
-app.listen(3005, ()=>{
+app.listen(3000, ()=>{
     console.log('listening on port 3000 .........');
 })

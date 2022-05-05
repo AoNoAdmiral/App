@@ -47,6 +47,7 @@ export default function Login(){
             showAlert(response.data.alert)
           else{
             sessionStorage.setItem('email',loginEmail); 
+            sessionStorage.setItem('list',JSON.stringify([])); 
             window.location = "/";
         }
         })
@@ -64,6 +65,7 @@ export default function Login(){
           showAlert(response.data.alert)
         else{
           sessionStorage.setItem('email',loginEmail); 
+          sessionStorage.setItem('list',JSON.stringify(response.data.list)); 
           window.location = "/";
         }
       })
