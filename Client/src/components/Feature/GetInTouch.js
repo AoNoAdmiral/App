@@ -91,6 +91,7 @@ function checkFormat(formSettingConfig, formTime) {
 }
 
 function handleInputConfigSetting(){
+    checkFormat("#form1", "#formTime");
     var heat = 0
     var humd = 0
     var earth = 0
@@ -140,6 +141,7 @@ function handleInputConfigSetting(){
 }
 
 function handleInputWateringTime(){
+    checkFormat("#form1", "#formTime");
     var time1 = 0
     var time2 = 0
     if(document.getElementById("time1").value){
@@ -175,9 +177,6 @@ function handleInputWateringTime(){
 }
 
 function GetInTouch() {
-    setTimeout(function () {
-        checkFormat("#form1", "#formTime")
-    }, 1000)
 
     const [conditionalHumd, setConditionalHumd] = useState("");
     const [conditionHeat, setConditionHeat] = useState("");
