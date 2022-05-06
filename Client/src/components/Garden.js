@@ -1,6 +1,74 @@
-import React from 'react'
-
+import React,{useState,useEffect} from 'react'
+import axios from 'axios'; 
 function Garden() {
+  const [dataHeat, setDataHeat] = useState("")
+  const [dataHumd, setDataHumd] = useState("")
+  const [dataEarth, setDataEarth] = useState("")
+  const [dataWater, setDataWater] = useState(0)
+  let data = JSON.parse(sessionStorage.getItem('list'));
+        axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-AIO-Key':  sessionStorage.getItem('key')
+            }
+          })
+        .then(function (response) {
+          setDataHeat(response.data[0]['value'])
+        });
+        axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data?limit=1", {
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-AIO-Key':  sessionStorage.getItem('key')
+            }
+          })
+        .then(function (response) {
+          setDataHumd(response.data[0]['value'])
+        });
+        axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data?limit=1", {
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-AIO-Key': sessionStorage.getItem('key')
+            }
+          })
+          .then(function (response) {
+            setDataEarth(response.data[0]['value'])
+          });
+
+  setInterval(() => {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AIO-Key': sessionStorage.getItem('key')
+      }
+    })
+  .then(function (response) {
+    setDataHeat(response.data[0]['value'])
+  });
+  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data?limit=1", {
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AIO-Key': sessionStorage.getItem('key')
+      }
+    })
+  .then(function (response) {
+    setDataHumd(response.data[0]['value'])
+  });
+  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data?limit=1", {
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AIO-Key': sessionStorage.getItem('key')
+      }
+    })
+    .then(function (response) {
+      setDataEarth(response.data[0]['value'])
+    });
+    }, 30000);
     return (
 <section className="bestseller" id="garden">
     <div class="bestseller__name">
@@ -11,31 +79,31 @@ function Garden() {
     <div class="container">
           <ul class="bestseller__list">
             <li class="bestseller__item">
-              <img src="https://i.pinimg.com/564x/94/e7/c6/94e7c6c46ff8a1a2a002f3b17c332573.jpg" alt="" class="bestseller__image" />
+              <img src="https://i.imgur.com/fFhEhfl.png" alt="" class="bestseller__image" />
               <h3 class="bestseller__name">TEMPERATURE</h3>
               <a href="product.html" data-filter="mango-188" class="bestseller__details">
-               <i class="fas fa-temperature-high">   :30</i>
+               <i class="fas fa-temperature-high">   :{dataHeat}</i>
               </a>
             </li>
             <li class="bestseller__item">
-              <img src="https://i.pinimg.com/564x/94/e7/c6/94e7c6c46ff8a1a2a002f3b17c332573.jpg" alt="" class="bestseller__image" />
-              <h3 class="bestseller__name">TEMPERATURE</h3>
+              <img src="https://i.imgur.com/0YjERwC.png" alt="" class="bestseller__image" />
+              <h3 class="bestseller__name">AIR HUMIDITY</h3>
               <a href="product.html" data-filter="lemon-4094" class="bestseller__details">
-              <i class="fas fa-cloud">   :30</i>
+              <i class="fas fa-cloud">   :{dataHumd}</i>
               </a>
             </li>
             <li class="bestseller__item">
-              <img src="https://i.pinimg.com/564x/94/e7/c6/94e7c6c46ff8a1a2a002f3b17c332573.jpg" alt="" class="bestseller__image" />
-              <h3 class="bestseller__name">TEMPERATURE</h3>
+              <img src="https://i.imgur.com/VLfKuTT.png" alt="" class="bestseller__image" />
+              <h3 class="bestseller__name">EARTH HUMIDITY</h3>
               <a href="product.html" data-filter="coconut-2989" class="bestseller__details">
-              <i class="fas fa-water">   :30</i>
+              <i class="fas fa-water">   :{dataEarth}</i>
               </a>
             </li>
             <li class="bestseller__item">
-              <img src="https://i.pinimg.com/564x/94/e7/c6/94e7c6c46ff8a1a2a002f3b17c332573.jpg" alt="" class="bestseller__image" />
-              <h3 class="bestseller__name">TEMPERATURE</h3>
+              <img src="https://i.imgur.com/H0hPPmf.png" alt="" class="bestseller__image" />
+              <h3 class="bestseller__name">WATERING</h3>
               <a href="product.html" data-filter="tangerines-274" class="bestseller__details">
-              <i class="fas fa-water">   :30</i>
+              <i class="fas fa-water">   :{dataWater==1?"ON":"OFF"}</i>
               </a>
             </li>
           </ul>
