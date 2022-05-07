@@ -19,7 +19,8 @@ function Reviews() {
             </div>
 
             <div className="swiper-slide slide">
-                <p>Tự viết đi m</p>
+                <p>Mún ngồi ở trị không ai ngồi được</p>
+                <p>Hãy ngồi fix bug code đồ án </p>
                 <div className="user">
                     <img src="https://scontent.fvca1-2.fna.fbcdn.net/v/t1.6435-9/167822044_462430468422542_1291509732230626593_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=bwoDNMsX1YcAX-SDwFd&_nc_ht=scontent.fvca1-2.fna&oh=00_AT-OmeEXHUE4dkVIUZCYHBQT8Kal9mO2FPQ5ojTU6xdkng&oe=628E42DA" alt=""/>
                     <div className="info">
@@ -30,7 +31,7 @@ function Reviews() {
             </div>
 
             <div className="swiper-slide slide">
-                <p>tự viết</p>
+                <p>Thử thách sáu ngày sáu đêm code không bug</p>
                 <div className="user">
                     <img src="https://scontent.fvca1-3.fna.fbcdn.net/v/t1.6435-9/97911460_2663917067264170_6269840348722233344_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=gD6qmd1TzdYAX8DfB8W&_nc_ht=scontent.fvca1-3.fna&oh=00_AT8IrUE6WNpRnXU68JQNmYKrc3wP2zndHkPZwnx7T7LCjQ&oe=629115AF" alt=""/>
                     <div className="info">
@@ -41,7 +42,7 @@ function Reviews() {
             </div>
 
             <div className="swiper-slide slide">
-                <p>Tự viết</p>
+                <p>Học ăn học nói học cách viết code không bug! Gét gô!</p>
                 <div className="user">
                     <img src="https://scontent.fsgn3-1.fna.fbcdn.net/v/t39.30808-6/273115616_3174584686118548_2371916136410832451_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=_Rek3FA0NpcAX9b356W&_nc_ht=scontent.fsgn3-1.fna&oh=00_AT8ZHdX-qvRwa6xov4yF0Irn2aBtP9QSOFaUOQQOoMFiwA&oe=6276F812" alt=""/>
                     <div className="info">
@@ -52,7 +53,7 @@ function Reviews() {
             </div>
 
             <div className="swiper-slide slide">
-                <p>Tự Viết</p>
+                <p>Cho một ly "start bug" bằng không! được khum?</p>
                 <div className="user">
                     <img src="https://scontent.fvca1-3.fna.fbcdn.net/v/t1.6435-1/181156345_3030581590504155_766922592283269356_n.jpg?stp=dst-jpg_p200x200&_nc_cat=111&ccb=1-5&_nc_sid=7206a8&_nc_ohc=ouM3NtvLQgUAX_5A0hr&_nc_ht=scontent.fvca1-3.fna&oh=00_AT_Sj5GLAwOPiaGCPlL4V2Y0NAwt--v7C8eptNeUs64seA&oe=628EA48C" alt=""/>
                     <div className="info">
