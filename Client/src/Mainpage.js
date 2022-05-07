@@ -4,7 +4,6 @@ import Home from './components/Home';
 import Header from './components/Header';
 import Product from './components/Product';
 import Deal from './components/Deal';
-import Feature from './components/Feature';
 import Review from './components/Review';
 import ContactUs from './components/ContactUs';
 import Blog from './components/Blog';
@@ -21,7 +20,7 @@ const Mainpage = () => {
     sessionStorage.setItem('list', JSON.stringify([]));
   }
   try {
-    sessionStorage.setItem('key', "aio_eeHZ895wZkFbJDjHSb8Hdhp1seWh");
+    sessionStorage.setItem('key', "aio_TJXd9635A8pQFfvnVInUvI2RZEcp");
   }
   catch {
 
@@ -33,7 +32,6 @@ const Mainpage = () => {
       <Home />
       <Banner />
       <Deal />
-      <Feature />
       <Review />
       <ContactUs />
       <Blog />

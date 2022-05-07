@@ -10,7 +10,7 @@ function check(text) {
 
 function checkFormat(formSettingConfig, formTime) {
     var formElement = document.querySelector(formSettingConfig)
-    var inputElement = formElement.querySelector('#heat')
+    var inputElement = formElement.querySelector('#temperature')
     if (inputElement) {
         var waringFormat1 = formElement.querySelector('#warning1')
         inputElement.onblur = function () {
@@ -98,11 +98,12 @@ function handleInputConfigSetting(){
     if(document.getElementById("humd").value){
         humd = document.getElementById("humd").value
     }
-    if(document.getElementById("heat").value){
-        heat = document.getElementById("humd").value
+    console.log(humd)
+    if(document.getElementById("temperature").value){
+        heat = document.getElementById("temperature").value
     }
     if(document.getElementById("earth").value){
-        earth = document.getElementById("humd").value
+        earth = document.getElementById("earth").value
     }
     // update Tuoi nuoc ( Doi watering qua conditionheat/humd/earth va value thanh gia tri tuong ung)
     axios.post("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data",{
@@ -182,13 +183,7 @@ function GetInTouch() {
     const [conditionHeat, setConditionHeat] = useState("");
     const [conditionalEarth, setConditionalEarth] = useState("");
     // // lay data dk
-    useEffect(() => {
-        axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1").then((response) => {
-            setConditionalHumd(response.data[0]['value']);
-            document.getElementById("humd").value = response.data[0]['value'];
-        });
-        }, []);
-
+    
     useEffect(() => {
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionheat/data?limit=1").then((response) => {
             setConditionHeat(response.data[0]['value']);
@@ -202,6 +197,14 @@ function GetInTouch() {
             document.getElementById("earth").value = response.data[0]['value'];
         });
         }, []);
+
+    useEffect(() => {
+        axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1").then((response) => {
+            setConditionalHumd(response.data[0]['value']);
+            document.getElementById("humd").value = response.data[0]['value'];
+        });
+        }, []);
+
     useEffect(() => {
             axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/mark1/data?limit=1").then((response) => {
                 document.getElementById("time1").value = response.data[0]['value'];
