@@ -41,7 +41,6 @@ function Chart() {
       }
     })
       .then(function (response) {
-        console.log(response.data.data)
         var a = handleData(response.data.data)
         setDataHumd(a)
       });
@@ -79,7 +78,6 @@ function Chart() {
       }
     })
       .then(function (response) {
-        console.log(response.data.data)
         var a = handleData(response.data.data)
         setDataHumd(a)
       });
@@ -99,34 +97,56 @@ function Chart() {
       });
     }, 30000);
 
-  return (
-
-    
+  return ( 
     <section className="contact" id="contact">
-      <h1 className="heading"> <span>Chart</span> Heat </h1>
-      <LineChart width={1300} height={400} data={dataHeat} margin={{ top: 5, right: 100, bottom: 5, left: 0 }}>
-        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
-      <h1 className="heading"> <span>Chart</span> Humid </h1>
-      <LineChart width={1300} height={400} data={dataHumd} margin={{ top: 5, right: 100, bottom: 5, left: 0 }}>
-        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
-      <h1 className="heading"> <span>Chart</span> Earth </h1>
-      <LineChart width={1300} height={400} data={dataEarth} margin={{ top: 5, right: 100, bottom: 5, left: 0 }}>
-        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
+          <div className="swiper home-slider">
+          <div className="swiper-wrapper">
+          <div className="swiper-slide slide">
+            <div >
+                <div className="content">
+                <h1 className="heading"> <span>Chart</span> Heat </h1>
+                 <LineChart width={1300} height={400} data={dataHeat} margin={{ top: 5, right: 100, bottom: 5, left: 0 }}>
+                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                <Tooltip />
+                </LineChart>
+                </div>
+            </div>
+            </div>
+          <div className="swiper-slide slide">
+            <div >
+                <div className="content">
+                <h1 className="heading"> <span>Chart</span> Humid </h1>
+                 <LineChart width={1300} height={400} data={dataHumd} margin={{ top: 5, right: 100, bottom: 5, left: 0 }}>
+                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                <Tooltip />
+                </LineChart>
+                </div>
+            </div>
+            </div>
+          <div className="swiper-slide slide">
+            <div >
+                <div className="content">
+                <h1 className="heading"> <span>Chart</span> Earth </h1>
+                 <LineChart width={1300} height={400} data={dataEarth} margin={{ top: 5, right: 100, bottom: 5, left: 0 }}>
+                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                <Tooltip />
+                </LineChart>
+                </div>
+            </div>
+            </div>
+          </div>
+            <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div>
+          </div>
     </section>
   )
 }

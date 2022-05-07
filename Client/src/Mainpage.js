@@ -21,7 +21,7 @@ const Mainpage = () => {
     sessionStorage.setItem('list', JSON.stringify([]));
   }
   try {
-    sessionStorage.setItem('key', "aio_QBmO67uHY8V8yTkVswlti6vTKdgh");
+    sessionStorage.setItem('key', "aio_eeHZ895wZkFbJDjHSb8Hdhp1seWh");
   }
   catch {
 
