@@ -1,27 +1,34 @@
 import datetime
 import sys
-import pyrebase
 import time
 from Adafruit_IO import MQTTClient
 import serial.tools.list_ports
 import serial
 import threading
-AIO_FEED_ID = "Watering"
+import json
+import requests
+
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_Qcan99Ot2yY7cMOLDjlyHeNhbm1t"
-
-config = {
-  "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
-  "authDomain": "chill-2ddd1.firebaseapp.com",
-  "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
-  "projectId": "chill-2ddd1",
-  "storageBucket": "chill-2ddd1.appspot.com",
-  "messagingSenderId": "62414238957",
-  "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
-  "measurementId": "G-ZG9Z0XL8MW"
-}
+AIO_KEY = "aio_XIcn67tMOWmZghakDjzkqsopLaJs"
         
-
+def update():
+    while True:
+        if Heat>ConditionalHeat:
+            client.publish("Watering",1) 
+        elif Heat<ConditionalHeat-5:
+            ser.write(("B#").encode()) 
+            client.publish("Watering",1) 
+        elif Humd<ConditionalHumd:
+            client.publish("Watering",1)  
+        elif Earth<ConditionalEarth:
+            client.publish("Watering",1) 
+        elif Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+            client.publish("Watering",1) 
+        elif Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+            ser.write(("A#").encode()) 
+            client.publish("Watering",1)  
+        else:
+            client.publish("Watering",0)  
 
 def processData(data):
     data = data.replace("!", "")
@@ -105,53 +112,21 @@ client . on_message = message
 client . on_subscribe = subscribe
 client . connect ()
 client . loop_background ()
-config = {
-                    "apiKey": "AIzaSyBvSDvuuBcheDg6fZUpi30Il-MUogLKwV4",
-                    "authDomain": "chill-2ddd1.firebaseapp.com",
-                    "databaseURL": "https://chill-2ddd1-default-rtdb.firebaseio.com",
-                    "projectId": "chill-2ddd1",
-                    "storageBucket": "chill-2ddd1.appspot.com",
-                    "messagingSenderId": "62414238957",
-                    "appId": "1:62414238957:web:04d88c13d1ac0510a808e4",
-                    "measurementId": "G-ZG9Z0XL8MW"
-                }       
-firebase = pyrebase.initialize_app(config)
 
-db = firebase.database()
 mess = ""
 bbc_port = ""
 if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
-ConditionalHeat0 = db.child("User").child("ConditionHeat").get().val().split("-")[0]
-ConditionalHumd0 = db.child("User").child("ConditionHeat").get().val().split("-")[1]
-ConditionalEarth0 = db.child("User").child("ConditionHumd").get().val().split("-")[0]
-ConditionalHeat1 = db.child("User").child("ConditionHumd").get().val().split("-")[1]
-ConditionalHumd1 = db.child("User").child("ConditionEarth").get().val().split("-")[0]
-ConditionalEarth1 = db.child("User").child("ConditionEarth").get().val().split("-")[1]
-Time1 = "nan"
-Time2 = "nan"      
-Heat = 30
-Humd = 30
-Earth =30   
-firebase = pyrebase.initialize_app(config)
+Time1 = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/mark1/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']
+Time2 = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/mark2/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
+ConditionalHeat = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionheat/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
+ConditionalHumd = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
+ConditionalEarth = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalearth/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']        
+Heat=30
+Humd= 30
+Earth = 30
+threading.Thread(target=update).start()
 
-db = firebase.database()
 while True :
-    readSerial()
-    time . sleep (30)
-    # if Heat>ConditionalHeat:
-    #     client.publish("Watering",1) 
-    # elif Heat<ConditionalHeat-5:
-    #     ser.write(("B#").encode()) 
-    #     client.publish("Watering",1) 
-    # elif Humd<ConditionalHumd:
-    #     client.publish("Watering",1)  
-    # elif Earth<ConditionalEarth:
-    #     client.publish("Watering",1) 
-    # elif Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
-    #     client.publish("Watering",1) 
-    # elif Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
-    #     ser.write(("A#").encode()) 
-    #     client.publish("Watering",1)  
-    # else:
-    #     client.publish("Watering",0)  
+    # readSerial()
+    time . sleep (15)
