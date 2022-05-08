@@ -5,8 +5,6 @@ import Home1 from './components/Home1';
 import Garden from './components/Garden';
 import Feature from './components/Feature';
 import Chart from './components/Chart';
-import Feature from './components/Feature';
-import Payment from './components/Payment/Payment'
 const PaymentPage = () =>{
     return (
     <div className = "App">

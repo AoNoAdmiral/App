@@ -9,7 +9,7 @@ import json
 import requests
 
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_XIcn67tMOWmZghakDjzkqsopLaJs"
+AIO_KEY = "aio_CQHj42g8KhPBVCOFJXmG7E0nOzsX"
         
 def update():
     while True:
@@ -122,7 +122,8 @@ Time2 = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airfo
 ConditionalHeat = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionheat/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
 ConditionalHumd = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
 ConditionalEarth = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalearth/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']        
-Heat=30
+print(ConditionalHeat)
+Heat= 30
 Humd= 30
 Earth = 30
 threading.Thread(target=update).start()
