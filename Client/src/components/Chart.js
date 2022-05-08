@@ -106,6 +106,8 @@ function Chart() {
     //     });
     // }, 30000);
 
+  
+
   return ( 
     <section className="contact" id="contact">
           <div className="swiper home-slider">

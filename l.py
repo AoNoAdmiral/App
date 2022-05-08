@@ -1,4 +1,5 @@
 import datetime
+from pickle import FALSE, TRUE
 import sys
 import time
 from Adafruit_IO import MQTTClient
@@ -9,25 +10,42 @@ import json
 import requests
 
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_CQHj42g8KhPBVCOFJXmG7E0nOzsX"
+AIO_KEY = "aio_gBjJ28UyNtMGzOv4gsoPkrfdv87H"
         
 def update():
     while True:
-        if Heat>ConditionalHeat:
+        watering = False
+        alert = False
+        if Heat>(conditionHeatAvg+2) or Heat < (conditionHeatAvg-2):
+            # client.publish("Watering",1) 
+            watering = True
+        elif Heat>(conditionHeatAvg+5) or Heat < (conditionHeatAvg-5):
+            # ser.write(("B#").encode()) 
+            # client.publish("Watering",1) 
+            alert = True
+            
+        if Humd>(conditionHumdAvg+2) or Humd < (conditionHumdAvg-2):
+            watering = True 
+        elif Humd>(conditionHumdAvg+5) or Humd < (conditionHumdAvg-5):
+            alert = True
+            
+        if Earth>(conditionEarthAvg+2) or Earth < (conditionEarthAvg-2):
+            watering = True 
+        elif Earth>(conditionEarthAvg+5) or Earth < (conditionEarthAvg-5):
+            alert = True
+            
+        if Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+            watering = True 
+
+        if Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+            watering = True 
+
+        if watering == True:
             client.publish("Watering",1) 
-        elif Heat<ConditionalHeat-5:
+        if alert == True:
             ser.write(("B#").encode()) 
             client.publish("Watering",1) 
-        elif Humd<ConditionalHumd:
-            client.publish("Watering",1)  
-        elif Earth<ConditionalEarth:
-            client.publish("Watering",1) 
-        elif Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
-            client.publish("Watering",1) 
-        elif Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
-            ser.write(("A#").encode()) 
-            client.publish("Watering",1)  
-        else:
+        if watering == False:
             client.publish("Watering",0)  
 
 def processData(data):
@@ -123,6 +141,9 @@ ConditionalHeat = json.loads(requests.request("GET", "https://io.adafruit.com/ap
 ConditionalHumd = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
 ConditionalEarth = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalearth/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']        
 print(ConditionalHeat)
+conditionHeatAvg = (ConditionalHeat.split("-")[0] + ConditionalHeat.split("-")[1])/2
+conditionHumdAvg = (ConditionalHumd.split("-")[0] + ConditionalHumd.split("-")[1])/2
+conditionEarthAvg = (ConditionalEarth.split("-")[0] + ConditionalEarth.split("-")[1])/2
 Heat= 30
 Humd= 30
 Earth = 30
