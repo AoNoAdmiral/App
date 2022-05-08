@@ -215,7 +215,11 @@ function GetInTouch() {
                 axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/mark2/data?limit=1").then((response) => {
                     document.getElementById("time2").value = response.data[0]['value'];
                 });
-                }, []);        
+                }, []);    
+                
+                setTimeout(() => {
+                    checkFormat("#form1", "#formTime");
+                  },5000);
         return (
         <div className="row">
 
