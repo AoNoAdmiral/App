@@ -46,6 +46,7 @@ function Garden() {
       }
     })
   .then(function (response) {
+    console.log(response.data[0]['value'])
     setDataHeat(response.data[0]['value'])
   });
   axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data?limit=1", {
@@ -68,7 +69,17 @@ function Garden() {
     .then(function (response) {
       setDataEarth(response.data[0]['value'])
     });
-    }, 30000);
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/watering/data?limit=1", {
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AIO-Key': sessionStorage.getItem('key')
+      }
+    })
+    .then(function (response) {
+      setDataWater(response.data[0]['value'])
+    });
+    }, 5000);
     return (
 <section className="bestseller" id="garden">
     <div class="bestseller__name">
@@ -82,21 +93,21 @@ function Garden() {
               <img src="https://i.imgur.com/fFhEhfl.png" alt="" class="bestseller__image" />
               <h3 class="bestseller__name">TEMPERATURE</h3>
               <a href="product.html" data-filter="mango-188" class="bestseller__details">
-               <i class="fas fa-temperature-high">   :{dataHeat}</i>
+               <i class="fas fa-temperature-high">   :{dataHeat} °C</i>
               </a>
             </li>
             <li class="bestseller__item">
               <img src="https://i.imgur.com/0YjERwC.png" alt="" class="bestseller__image" />
               <h3 class="bestseller__name">AIR HUMIDITY</h3>
               <a href="product.html" data-filter="lemon-4094" class="bestseller__details">
-              <i class="fas fa-cloud">   :{dataHumd}</i>
+              <i class="fas fa-cloud">   :{dataHumd} %</i>
               </a>
             </li>
             <li class="bestseller__item">
               <img src="https://i.imgur.com/VLfKuTT.png" alt="" class="bestseller__image" />
               <h3 class="bestseller__name">EARTH HUMIDITY</h3>
               <a href="product.html" data-filter="coconut-2989" class="bestseller__details">
-              <i class="fas fa-water">   :{dataEarth}</i>
+              <i class="fas fa-water">   :{dataEarth} %</i>
               </a>
             </li>
             <li class="bestseller__item">

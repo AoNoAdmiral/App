@@ -55,21 +55,20 @@ function Chart() {
         var a = handleData(response.data.data)
         setDataHeat(a)
       });
-  setInterval(() => {
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
-      }
-    })
-      .then(function (response) {
-        var a = handleData(response.data.data)
-        setDataHeat(a)
-      });
-    }, 30000);
+
 
     setInterval(() => {
+      axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?", {
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-AIO-Key': sessionStorage.getItem('key')
+        }
+      })
+        .then(function (response) {
+          var a = handleData(response.data.data)
+          setDataHeat(a)
+        });
     axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?", {
     }, {
       headers: {
@@ -81,20 +80,17 @@ function Chart() {
         var a = handleData(response.data.data)
         setDataHumd(a)
       });
-    }, 30000);
-
-    setInterval(() => {
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
-      }
-    })
-      .then(function (response) {
-        var a = handleData(response.data.data)
-        setDataEarth(a)
-      });
+      axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-AIO-Key': sessionStorage.getItem('key')
+        }
+      })
+        .then(function (response) {
+          var a = handleData(response.data.data)
+          setDataEarth(a)
+        });
     }, 30000);
 
   return ( 
