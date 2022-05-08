@@ -4,13 +4,18 @@ import axios from 'axios';
 
 function handleData(data){
   var time = []
+  const d = new Date();
+  var currentDate =  1// d.getDate()
+  var currentMonth = 5//d.getMonth()
   for (const x in data){
-    var name1 = data[x][0].split('T')
-    name1 = name1[1].slice(0, -4)
-    time.push({
-      name: name1,
-      uv: data[x][1]
-    })
+    if(data[x][0].slice(5,7) == currentMonth && data[x][0].slice(8,10) == currentDate){
+      var name1 = data[x][0].split('T')
+      name1 = name1[1].slice(0, -4)
+      time.push({
+        name: name1,
+        uv: data[x][1]
+      })
+    }
   }
   return time
 }
@@ -22,76 +27,84 @@ function Chart() {
   const [dataHumd, setDataHumd] = useState(null)
 
   // lay data chart
-  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
-      'X-AIO-Key': sessionStorage.getItem('key')
-    }
-  })
-    .then(function (response) {
-      var a = handleData(response.data.data)
-      setDataEarth(a)
-    });
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
-      }
-    })
-      .then(function (response) {
-        var a = handleData(response.data.data)
-        setDataHumd(a)
-      });
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
-      }
-    })
-      .then(function (response) {
+  // axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
+  // }, {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'X-AIO-Key': sessionStorage.getItem('key')
+  //   }
+  // })
+  //   .then(function (response) {
+  //     var a = handleData(response.data.data)
+  //     setDataEarth(a)
+  //   });
+  //   axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?", {
+  //   }, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'X-AIO-Key': sessionStorage.getItem('key')
+  //     }
+  //   })
+  //     .then(function (response) {
+  //       var a = handleData(response.data.data)
+  //       setDataHumd(a)
+  //     });
+
+  useEffect(() => {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?").then((response) => {
         var a = handleData(response.data.data)
         setDataHeat(a)
-      });
-
-
-    setInterval(() => {
-      axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?", {
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-AIO-Key': sessionStorage.getItem('key')
-        }
-      })
-        .then(function (response) {
-          var a = handleData(response.data.data)
-          setDataHeat(a)
-        });
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
-      }
-    })
-      .then(function (response) {
+    });
+    }, []);
+  useEffect(() => {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart").then((response) => {
         var a = handleData(response.data.data)
         setDataHumd(a)
-      });
-      axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-AIO-Key': sessionStorage.getItem('key')
-        }
-      })
-        .then(function (response) {
-          var a = handleData(response.data.data)
-          setDataEarth(a)
-        });
-    }, 30000);
+    });
+    }, []);
+  useEffect(() => {
+    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?").then((response) => {
+        var a = handleData(response.data.data)
+        setDataEarth(a)
+    });
+    }, []);
+
+
+    // setInterval(() => {
+    //   axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data/chart?", {
+    //   }, {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'X-AIO-Key': sessionStorage.getItem('key')
+    //     }
+    //   })
+    //     .then(function (response) {
+    //       var a = handleData(response.data.data)
+    //       setDataHeat(a)
+    //     });
+    // axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data/chart?", {
+    // }, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'X-AIO-Key': sessionStorage.getItem('key')
+    //   }
+    // })
+    //   .then(function (response) {
+    //     var a = handleData(response.data.data)
+    //     setDataHumd(a)
+    //   });
+    //   axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data/chart?", {
+    //   }, {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'X-AIO-Key': sessionStorage.getItem('key')
+    //     }
+    //   })
+    //     .then(function (response) {
+    //       var a = handleData(response.data.data)
+    //       setDataEarth(a)
+    //     });
+    // }, 30000);
 
   return ( 
     <section className="contact" id="contact">
