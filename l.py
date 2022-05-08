@@ -16,22 +16,20 @@ def update():
     while True:
         watering = False
         alert = False
-        if Heat>(conditionHeatAvg+2) or Heat < (conditionHeatAvg-2):
+        if Heat>int(ConditionalHeat.split("-")[1]):
             # client.publish("Watering",1) 
             watering = True
-        elif Heat>(conditionHeatAvg+5) or Heat < (conditionHeatAvg-5):
-            # ser.write(("B#").encode()) 
-            # client.publish("Watering",1) 
+        elif Heat < int(ConditionalHeat.split("-")[0]):
             alert = True
             
-        if Humd>(conditionHumdAvg+2) or Humd < (conditionHumdAvg-2):
+        if Humd>int(ConditionalHumd.split("-")[1]):
             watering = True 
-        elif Humd>(conditionHumdAvg+5) or Humd < (conditionHumdAvg-5):
+        elif Humd < int(ConditionalHumd.split("-")[0]):
             alert = True
             
-        if Earth>(conditionEarthAvg+2) or Earth < (conditionEarthAvg-2):
+        if Earth>int(ConditionalEarth.split("-")[1]):
             watering = True 
-        elif Earth>(conditionEarthAvg+5) or Earth < (conditionEarthAvg-5):
+        elif Earth < int(ConditionalEarth.split("-")[0]):
             alert = True
             
         if Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
@@ -107,14 +105,11 @@ def message ( client , feed_id , payload ):
     if feed_id=="mark2":
         Time2 = payload
     if feed_id=="ConditionHeat":
-        ConditionalHeat0 = payload.split("-")[0]
-        ConditionalHeat1 = payload.split("-")[1]
+        ConditionalHeat = payload
     if feed_id=="ConditionalHumd":
-        ConditionalHumd0 = payload.split("-")[0]
-        ConditionalHumd1 = payload.split("-")[1]
+        ConditionalHumd = payload
     if feed_id=="ConditionalEarth":
-        ConditionalEarth0 = payload.split("-")[0]
-        ConditionalEarth1 = payload.split("-")[1]
+        ConditionalEarth = payload
     if feed_id == "Watering":
         if payload == 1:
             ser.write(("A#").encode()) 
