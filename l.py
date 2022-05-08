@@ -10,7 +10,7 @@ import json
 import requests
 
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_gBjJ28UyNtMGzOv4gsoPkrfdv87H"
+AIO_KEY = "aio_fLKA62tU6UVOWp6njGjkn76v4UyV"
         
 def update():
     while True:
@@ -31,11 +31,12 @@ def update():
             watering = True 
         elif Earth < int(ConditionalEarth.split("-")[0]):
             alert = True
-            
-        if Time1 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+        
+        if datetime.datetime.strptime(str(datetime.datetime.now().strftime("%X"))[0:5],"%H:%M")-datetime.datetime.strptime(Time1,"%H:%M")<=datetime.timedelta(minutes=5):
+            print("Hello")
             watering = True 
 
-        if Time2 == str(datetime.datetime.now().strftime("%X"))[0:5]:
+        if datetime.datetime.strptime(str(datetime.datetime.now().strftime("%X"))[0:5],"%H:%M")-datetime.datetime.strptime(Time2,"%H:%M")<=datetime.timedelta(minutes=5):
             watering = True 
 
         if watering == True:
@@ -45,6 +46,7 @@ def update():
             client.publish("Watering",1) 
         if watering == False:
             client.publish("Watering",0)  
+        time.sleep(10)
 
 def processData(data):
     data = data.replace("!", "")
@@ -101,7 +103,9 @@ def message ( client , feed_id , payload ):
 
     print (" Nhan du lieu : " + payload )
     if feed_id=="mark1":
+        print(Time1)
         Time1 = payload
+        print(Time1)
     if feed_id=="mark2":
         Time2 = payload
     if feed_id=="ConditionHeat":
@@ -135,10 +139,6 @@ Time2 = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airfo
 ConditionalHeat = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionheat/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
 ConditionalHumd = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalhumd/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']      
 ConditionalEarth = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/conditionalearth/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']        
-print(ConditionalHeat)
-conditionHeatAvg = (ConditionalHeat.split("-")[0] + ConditionalHeat.split("-")[1])/2
-conditionHumdAvg = (ConditionalHumd.split("-")[0] + ConditionalHumd.split("-")[1])/2
-conditionEarthAvg = (ConditionalEarth.split("-")[0] + ConditionalEarth.split("-")[1])/2
 Heat= 30
 Humd= 30
 Earth = 30
