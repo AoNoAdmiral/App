@@ -89,11 +89,11 @@ function Banner() {
     
                     <div class="sale-user-detail">  
                     
-                    <i class="fas fa-temperature-high">   :{dataHeat}</i>
+                    <i class="fas fa-temperature-high">   :{dataHeat} °C</i>
                     
-                    <i class="fas fa-cloud">   :{dataHumd}</i>
+                    <i class="fas fa-cloud">   :{dataHumd} %</i>
                    
-                    <i class="fas fa-water">   :{dataEarth}</i>
+                    <i class="fas fa-water">   :{dataEarth} %</i>
                     </div>
                   
     

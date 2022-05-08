@@ -219,17 +219,17 @@ function GetInTouch() {
             <form action="" id="form1">
                 <h3 className="centerH3">Thông số nhà kính</h3>
                 <div className="inputBox">
-                    <label className="labelSetting">Nhiệt độ (Đơn vị: 0c):</label>
+                    <label className="labelSetting">Nhiệt độ(°C):</label>
                     <input type="text" placeholder="Ex: 20-25" id="temperature"></input>
                 </div>
                 <span className="waringFormat" id="warning1"></span>
                 <div className="inputBox">
-                    <label className="labelSetting">Độ ẩm không khí (Đơn vị: %):</label>
+                    <label className="labelSetting">Độ ẩm không khí(%):</label>
                     <input type="text" placeholder="Ex: 20-25" id="humd"></input>
                 </div>
                 <span className="waringFormat" id="warning2"></span>
                 <div className="inputBox">
-                    <label className="labelSetting">Độ ẩm của đất (Đơn vị: %):</label>
+                    <label className="labelSetting">Độ ẩm của đất(%):</label>
                     <input type="text" placeholder="Ex: 20-25" id="earth"></input>
                 </div>
                 <span className="waringFormat" id="warning3"></span>

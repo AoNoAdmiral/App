@@ -6,6 +6,16 @@ function Garden() {
   const [dataEarth, setDataEarth] = useState("")
   const [dataWater, setDataWater] = useState(0)
   let data = JSON.parse(sessionStorage.getItem('list'));
+  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/watering/data?limit=1", {
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AIO-Key': sessionStorage.getItem('key')
+      }
+    })
+    .then(function (response) {
+      setDataWater(response.data[0]['value'])
+    });
         axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
           }, {
             headers: {
