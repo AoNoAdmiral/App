@@ -7,7 +7,7 @@ import serial
 import json
 AIO_FEED_ID = "Watering"
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_fLKA62tU6UVOWp6njGjkn76v4UyV"
+AIO_KEY = "aio_jhEv983rGTulINXBKuEds5KkS1FW"
 
 
 
@@ -62,9 +62,9 @@ client . on_subscribe = subscribe
 client . connect ()
 client . loop_background ()
 mess = ""
-bbc_port = ""
+bbc_port = "COM11"
 if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
 while True :
-    client.publish("Mark1","22:14")
-    time . sleep (60)
+    ser.write(("A#").encode()) 
+    time . sleep (15)

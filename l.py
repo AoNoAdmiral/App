@@ -10,15 +10,13 @@ import json
 import requests
 
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_KDkm37Qoh1wlXVd8JSVpUQWa4Wh2"
+AIO_KEY = "aio_jhEv983rGTulINXBKuEds5KkS1FW"
         
 def update():
     while True:
-        watering = False
+        watering = True
         alert = False
-        print(ConditionalHeat.split("-")[1])
         if Heat>int(ConditionalHeat.split("-")[1]):
-            # client.publish("Watering",1) 
             watering = True
         elif Heat < int(ConditionalHeat.split("-")[0]):
             alert = True
@@ -42,29 +40,24 @@ def update():
 
         if watering == True:
             client.publish("Watering",1) 
+            ser.write(("A#").encode())
         if alert == True:
             ser.write(("B#").encode()) 
-            client.publish("Watering",1) 
         if watering == False:
             client.publish("Watering",0)  
-        time.sleep(10)
-
+        time.sleep(15)
+            
 def processData(data):
+    print(data)
     data = data.replace("!", "")
     data = data.replace("#", "")
     splitData = data.split(":")
     if splitData[0]=="1":  
-        client.publish("Heat",splitData[1])
-        if splitData[1] < ConditionalHeat:
-            ser.write(("B#").encode()) 
+        client.publish("Heat",splitData[1]) 
     if splitData[0]=="2":
         client.publish("Humd",splitData[1])
-        if splitData[1] < ConditionalHumd:
-            ser.write(("B#").encode()) 
     if splitData[0]=="3": 
         client.publish("Earth",splitData[1])  
-        if splitData[1] < ConditionalEarth:
-            ser.write(("B#").encode())  
 
 def readSerial():
     bytesToRead = ser.inWaiting()
@@ -114,14 +107,7 @@ def message ( client , feed_id , payload ):
         ConditionalHumd = payload
     if feed_id=="ConditionalEarth":
         ConditionalEarth = payload
-    if feed_id == "Watering":
-        print(payload)
-        if payload == 1:
-            ser.write(("A#").encode()) 
-            client.publish("Watering",1) 
-        if payload == 2:
-            ser.write(("B#").encode()) 
-            client.publish("Watering",1)
+
 
 client = MQTTClient ( AIO_USERNAME , AIO_KEY )
 client . on_connect = connected
