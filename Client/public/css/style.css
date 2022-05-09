@@ -1180,10 +1180,10 @@ section {
   text-align: center;
   width: 100%;
 }
-.payment {
+.Setting {
   padding: 0;
 }
-.payment .itembox{
+.Setting .itembox{
   padding: 7.6rem;
   float:left;
   width:50%;
@@ -1193,7 +1193,7 @@ section {
 .Box{
   margin:2rem;
 }
-.payment .blank{
+.Setting .blank{
   clear:both;
 }
 .line2{
@@ -1961,7 +1961,7 @@ button {
 .hide{
   left:-1000px;
 }
-.payment {
+.Setting {
   border: 2px solid #1a1a1a;
 }
 @media (max-width: 450px) {

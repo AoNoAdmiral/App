@@ -5,7 +5,7 @@ import Home1 from './components/Home1';
 import Garden from './components/Garden';
 import Feature from './components/Feature';
 import Chart from './components/Chart';
-const PaymentPage = () =>{
+const SettingPage = () =>{
     return (
     <div className = "App">
         <Header/>
@@ -19,4 +19,4 @@ const PaymentPage = () =>{
      
 }
 
-export default PaymentPage;
+export default SettingPage;

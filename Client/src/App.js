@@ -1,7 +1,7 @@
 import React from 'react';
 import Mainpage from './Mainpage.js'
 import SearchPage from './SearchPage.js'
-import PaymentPage from './PaymentPage.js'
+import SettingPage from './SettingPage.js'
 import axios from 'axios';
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 const App = () =>{
@@ -11,7 +11,7 @@ const App = () =>{
             <Routes>
                 <Route path="/" element={<Mainpage/>}/>
                 <Route path="/login" element={<SearchPage/>}/>
-                <Route path="/payment" element={<PaymentPage/>}/>
+                <Route path="/Setting" element={<SettingPage/>}/>
             </Routes>
         </Router>
      );

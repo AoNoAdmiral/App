@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {Data,Shipping} from './Data'
 import axios from 'axios';
-function Payment() {
+function Setting() {
     const [count, setCount] = useState(JSON.parse(sessionStorage.getItem("Order")));
     const [total, setTotal] = useState(0);
     const [note, setNote] = useState("");
@@ -156,7 +156,7 @@ function change3(event){
         </div>
     </div>
     <div class={POP?"left apply-form":"hide left apply-form"}>
-        <form action="#" class="payment">
+        <form action="#" class="Setting">
         <span class="closeIcon" className="closecon" onClick={()=>setPOP(0)}>
             <i class="fas fa-times"></i>
         </span>
@@ -187,4 +187,4 @@ function change3(event){
 
 
 
-export default Payment
+export default Setting
