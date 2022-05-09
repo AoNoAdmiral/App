@@ -40,40 +40,45 @@ function Banner() {
             setDataEarth(response.data[0]['value'])
           });
         })
+        setInterval(() => {
+          axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-AIO-Key': sessionStorage.getItem('key')
+            }
+          })
+        .then(function (response) {
+          setDataHeat(response.data[0]['value'])
+        });
+        axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data?limit=1", {
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-AIO-Key': sessionStorage.getItem('key')
+            }
+          })
+        .then(function (response) {
+          setDataHumd(response.data[0]['value'])
+        });
+        axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data?limit=1", {
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-AIO-Key': sessionStorage.getItem('key')
+            }
+          })
+          .then(function (response) {
+            setDataEarth(response.data[0]['value'])
+          });
+          }, 30000);
       }
-
-  setInterval(() => {
-    axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/heat/data?limit=1", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
+      else{
+        setDataEarth("");
+        setDataHumd("");
+        setDataHeat("");
       }
-    })
-  .then(function (response) {
-    setDataHeat(response.data[0]['value'])
-  });
-  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/humd/data?limit=1", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
-      }
-    })
-  .then(function (response) {
-    setDataHumd(response.data[0]['value'])
-  });
-  axios.get("https://io.adafruit.com/api/v2/Airforce/feeds/earth/data?limit=1", {
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-AIO-Key': sessionStorage.getItem('key')
-      }
-    })
-    .then(function (response) {
-      setDataEarth(response.data[0]['value'])
-    });
-    }, 30000);
+  
 
     return (
         <section className="banner-container">   

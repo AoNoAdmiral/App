@@ -10,12 +10,13 @@ import json
 import requests
 
 AIO_USERNAME = "Airforce"
-AIO_KEY = "aio_fLKA62tU6UVOWp6njGjkn76v4UyV"
+AIO_KEY = "aio_KDkm37Qoh1wlXVd8JSVpUQWa4Wh2"
         
 def update():
     while True:
         watering = False
         alert = False
+        print(ConditionalHeat.split("-")[1])
         if Heat>int(ConditionalHeat.split("-")[1]):
             # client.publish("Watering",1) 
             watering = True
@@ -52,15 +53,15 @@ def processData(data):
     data = data.replace("!", "")
     data = data.replace("#", "")
     splitData = data.split(":")
-    if splitData[0]==1:
+    if splitData[0]=="1":  
         client.publish("Heat",splitData[1])
         if splitData[1] < ConditionalHeat:
             ser.write(("B#").encode()) 
-    if splitData[0]==2:
+    if splitData[0]=="2":
         client.publish("Humd",splitData[1])
         if splitData[1] < ConditionalHumd:
             ser.write(("B#").encode()) 
-    if splitData[0]==3: 
+    if splitData[0]=="3": 
         client.publish("Earth",splitData[1])  
         if splitData[1] < ConditionalEarth:
             ser.write(("B#").encode())  
@@ -86,6 +87,7 @@ def connected ( client ) :
     client.subscribe("ConditionHeat")
     client.subscribe("ConditionalHumd")
     client.subscribe("ConditionalEarth")
+    client.subscribe("Watering")
 
 def subscribe ( client , userdata , mid , granted_qos ):
     print (" Subcribe thanh cong ...")
@@ -103,9 +105,7 @@ def message ( client , feed_id , payload ):
 
     print (" Nhan du lieu : " + payload )
     if feed_id=="mark1":
-        print(Time1)
         Time1 = payload
-        print(Time1)
     if feed_id=="mark2":
         Time2 = payload
     if feed_id=="ConditionHeat":
@@ -115,6 +115,7 @@ def message ( client , feed_id , payload ):
     if feed_id=="ConditionalEarth":
         ConditionalEarth = payload
     if feed_id == "Watering":
+        print(payload)
         if payload == 1:
             ser.write(("A#").encode()) 
             client.publish("Watering",1) 
@@ -131,7 +132,7 @@ client . connect ()
 client . loop_background ()
 
 mess = ""
-bbc_port = ""
+bbc_port = "COM11"
 if len(bbc_port) > 0:
     ser = serial.Serial(port=bbc_port, baudrate=115200)
 Time1 = json.loads(requests.request("GET", "https://io.adafruit.com/api/v2/Airforce/feeds/mark1/data?limit=1", headers= {'X-AIO-Key': AIO_KEY}).text)[0]['value']
@@ -145,5 +146,5 @@ Earth = 30
 threading.Thread(target=update).start()
 
 while True :
-    # readSerial()
+    readSerial()
     time . sleep (15)

@@ -19,7 +19,7 @@ function Reviews() {
             </div>
 
             <div className="swiper-slide slide">
-                <p>Mún ngồi ở trị không ai ngồi được</p>
+                <p>Mún ngồi ở trí không ai ngồi được</p>
                 <p>Hãy ngồi fix bug code đồ án </p>
                 <div className="user">
                     <img src="https://scontent.fvca1-2.fna.fbcdn.net/v/t1.6435-9/167822044_462430468422542_1291509732230626593_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=bwoDNMsX1YcAX-SDwFd&_nc_ht=scontent.fvca1-2.fna&oh=00_AT-OmeEXHUE4dkVIUZCYHBQT8Kal9mO2FPQ5ojTU6xdkng&oe=628E42DA" alt=""/>
