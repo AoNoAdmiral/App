@@ -2,6 +2,7 @@
   "dependencies": {
     "chart.js": "^3.7.1",
     "react-chartjs-2": "^4.1.0",
-    "recharts": "^2.1.9"
+    "recharts": "^2.1.9",
+    "webpack": "^5.73.0"
   }
 }
